@@ -26,6 +26,9 @@ A mobile-friendly PWA for professional gelato and sorbet recipe formulation.
 6. Passion Fruit Sorbet
 7. Coconut-Vanilla Gelato
 8. Salted Caramel Gelato
+9. Apple Cider Sorbet
+10. Lemon Olive Oil Gelato
+11. Fior di Latte
 
 ## Deploy to GitHub Pages
 
