@@ -1,34 +1,18 @@
-# Gelato Formulator
+# Shot Tracker
 
-A mobile-friendly PWA for professional gelato and sorbet recipe formulation.
+A mobile-friendly PWA for tracking peptide doses and schedules.
 
 ## Features
 
-- 🍨 Recipe management with real-time formulation stats
-- 📊 Sugar%, fat%, MSNF%, total solids%, freezing point calculations
-- 🔍 Search and filter recipes by name or type
-- ⚖️ Scale recipes in 1000g increments
-- ✅ Ingredient checklist for production
-- 📦 62 ingredient database with nutritional profiles
+- 📅 Daily dose tracking with calendar view
+- 💉 Reconstitution calculator with visual syringe
+- 📦 **Inventory tracking** — Track vials, remaining amounts, auto-deduct on dose
+- 📊 97 peptide database with purpose categories (Healing, Muscle, GH Release, Fat Loss, Cognitive, Immune, etc.)
 - 🔒 PIN protection (default: 0119)
+- 🔴 **Lock button** — Red exit button to lock app from any screen
 - 📱 Works offline as PWA
-- 💾 Auto-merge new recipes on update
+- 💾 Local storage persistence
 - 📤 Export/import data backups
-- 📄 CSV/Excel recipe import
-
-## Pre-loaded Recipes
-
-1. Chocolate Sorbet
-2. Buttermilk Gelato
-3. Chocolate Gelato w/ Callebaut 70.5%
-4. Blueberry-Coconut Sorbet
-5. Strawberry Gelato
-6. Passion Fruit Sorbet
-7. Coconut-Vanilla Gelato
-8. Salted Caramel Gelato
-9. Apple Cider Sorbet
-10. Lemon Olive Oil Gelato
-11. Fior di Latte
 
 ## Deploy to GitHub Pages
 
@@ -47,10 +31,12 @@ A mobile-friendly PWA for professional gelato and sorbet recipe formulation.
 ## Usage
 
 1. Open the app and enter PIN: **0119**
-2. Browse recipes in the **Recipes** tab
-3. Tap a recipe to view, scale, and check off ingredients
-4. Create new recipes with real-time formulation feedback
-5. View target ranges in the **Targets** tab
+2. View/manage schedules in the **Schedules** tab
+3. Log doses in the **Today** tab — auto-deducts from inventory
+4. Track vials in the **Inventory** tab
+5. Use the **Calc** tab for reconstitution math
+6. Browse peptides by category or purpose in the **Database** tab
+7. Tap the red **Lock** button to exit and lock the app
 
 ## Add to Home Screen
 
@@ -58,4 +44,4 @@ On mobile, tap Share → Add to Home Screen for app-like experience.
 
 ## Data
 
-All data is stored locally in your browser's localStorage. New default recipes are automatically merged on app updates without losing your custom recipes.
+All data is stored locally in your browser's localStorage. Use Export/Import in Settings to backup your data.
