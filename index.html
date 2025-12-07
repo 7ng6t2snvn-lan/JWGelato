@@ -550,6 +550,9 @@
       // Citrus
       { id: 60, name: 'Lemon Juice', fat: 0, sugar: 2.5, msnf: 0, fiber: 0.3, pac: 2.5, pod: 2.5, category: 'fruit-citrus' },
       
+      // Salt
+      { id: 65, name: 'Sea Salt Flakes', fat: 0, sugar: 0, msnf: 0, fiber: 0, pac: 0, pod: 0, category: 'other' },
+      
       // Prepared
       { id: 70, name: 'Salted Caramel for Gelato', fat: 25.41, sugar: 43.69, msnf: 1.56, fiber: 0, pac: 48.73, pod: 43.18, category: 'prepared' },
     ];
@@ -669,17 +672,19 @@
       },
       {
         id: 8,
-        name: 'Salted Caramel Gelato Test #5',
+        name: 'Salted Caramel Gelato',
         type: 'gelato',
         batchSize: 4000,
         items: [
-          { ingredientId: 1, amount: 1745 },   // Milk 3.6%
-          { ingredientId: 70, amount: 1527 },  // Salted Caramel for Gelato
-          { ingredientId: 20, amount: 13.5 },  // Tara Gum
-          { ingredientId: 4, amount: 65 },     // SMP
-          { ingredientId: 10, amount: 218 },   // Sucrose
-          { ingredientId: 25, amount: 436 },   // Water
-          { ingredientId: 14, amount: 80 },    // Inulin
+          { ingredientId: 10, amount: 499.5 },  // Caster/White Sugar (A) - for caramel
+          { ingredientId: 65, amount: 16 },     // Sea Salt Flakes
+          { ingredientId: 10, amount: 79.9 },   // Caster/White Sugar (B)
+          { ingredientId: 20, amount: 13.5 },   // Tara Gum
+          { ingredientId: 1, amount: 2597.4 },  // Whole Milk
+          { ingredientId: 2, amount: 479.5 },   // Cream 40%
+          { ingredientId: 4, amount: 179.8 },   // Skimmed Milk Powder
+          { ingredientId: 12, amount: 105 },    // Dry Glucose Powder (42DE)
+          { ingredientId: 14, amount: 80 },     // Inulin
         ]
       },
       {
