@@ -1,13 +1,12 @@
 {
   "name": "Gelato Formulator",
   "short_name": "Gelato",
-  "description": "Professional gelato and sorbet formulation calculator",
+  "description": "Professional gelato formulation calculator",
   "start_url": "./index.html",
-  "scope": "./",
   "display": "standalone",
-  "background_color": "#1e3a5f",
-  "theme_color": "#1e3a5f",
-  "orientation": "portrait",
+  "background_color": "#1a1a2e",
+  "theme_color": "#1a1a2e",
+  "orientation": "portrait-primary",
   "icons": [
     {
       "src": "./icon-192.png",
