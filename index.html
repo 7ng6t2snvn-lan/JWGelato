@@ -4,1211 +4,139 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="theme-color" content="#1a1a2e">
+  <meta name="theme-color" content="#0f172a">
   <title>Gelato Formulator</title>
   <link rel="manifest" href="./manifest.json">
-  <link rel="apple-touch-icon" href="./icon-192.png">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
-  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
-  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-    
-    :root {
-      --bg-primary: #1a1a2e;
-      --bg-secondary: #16213e;
-      --bg-card: #1f2a48;
-      --bg-card-hover: #283555;
-      --accent-pink: #e94560;
-      --accent-gold: #f4a261;
-      --accent-green: #2a9d8f;
-      --accent-blue: #4cc9f0;
-      --accent-red: #ef4444;
-      --text-primary: #f1f5f9;
-      --text-secondary: #94a3b8;
-      --text-muted: #64748b;
-      --border-color: #2d3b4f;
-    }
-    
-    body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      background: var(--bg-primary);
-      color: var(--text-primary);
-      min-height: 100vh;
-      overflow-x: hidden;
-    }
-    
-    html { height: -webkit-fill-available; }
-    #root { min-height: 100vh; min-height: -webkit-fill-available; }
-    
-    ::-webkit-scrollbar { width: 6px; }
-    ::-webkit-scrollbar-track { background: var(--bg-secondary); }
-    ::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 3px; }
-    
-    .pin-container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      padding: 20px;
-      background: linear-gradient(135deg, var(--bg-primary) 0%, #0f0f1a 100%);
-    }
-    
-    .pin-logo { font-size: 48px; margin-bottom: 16px; }
-    .pin-title { font-size: 24px; font-weight: 700; margin-bottom: 8px; }
-    .pin-subtitle { font-size: 13px; color: var(--text-secondary); margin-bottom: 32px; }
-    
-    .pin-dots { display: flex; gap: 16px; margin-bottom: 32px; }
-    
-    .pin-dot {
-      width: 16px; height: 16px; border-radius: 50%;
-      border: 2px solid var(--border-color);
-      background: transparent; transition: all 0.2s;
-    }
-    
-    .pin-dot.filled {
-      background: var(--accent-pink);
-      border-color: var(--accent-pink);
-      box-shadow: 0 0 12px rgba(233, 69, 96, 0.4);
-    }
-    
-    .pin-dot.error {
-      background: var(--accent-red);
-      border-color: var(--accent-red);
-      animation: shake 0.4s ease-in-out;
-    }
-    
-    @keyframes shake {
-      0%, 100% { transform: translateX(0); }
-      20%, 60% { transform: translateX(-8px); }
-      40%, 80% { transform: translateX(8px); }
-    }
-    
-    .pin-keypad { display: grid; grid-template-columns: repeat(3, 72px); gap: 16px; }
-    
-    .pin-key {
-      width: 72px; height: 72px; border-radius: 50%;
-      border: 1px solid var(--border-color);
-      background: var(--bg-card); color: var(--text-primary);
-      font-size: 28px; font-weight: 500;
-      display: flex; align-items: center; justify-content: center;
-      cursor: pointer; transition: all 0.15s;
-    }
-    
-    .pin-key:active {
-      background: var(--accent-pink);
-      border-color: var(--accent-pink);
-      transform: scale(0.95);
-    }
-    
-    .pin-key.empty { visibility: hidden; }
-    .pin-key.delete { font-size: 20px; }
-    
-    .app-container {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      background: var(--bg-primary);
-    }
-    
-    .header {
-      padding: 16px 20px;
-      padding-top: max(16px, env(safe-area-inset-top));
-      background: var(--bg-secondary);
-      border-bottom: 1px solid var(--border-color);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    
-    .header-title {
-      font-size: 18px; font-weight: 700;
-      display: flex; align-items: center; gap: 8px;
-    }
-    
-    .header-title span { font-size: 20px; }
-    
-    .content {
-      flex: 1;
-      padding: 16px;
-      padding-bottom: 100px;
-      overflow-y: auto;
-    }
-    
-    .nav {
-      position: fixed;
-      bottom: 0; left: 0; right: 0;
-      background: var(--bg-secondary);
-      border-top: 1px solid var(--border-color);
-      padding: 8px 12px;
-      padding-bottom: max(8px, env(safe-area-inset-bottom));
-      display: flex;
-      justify-content: space-around;
-    }
-    
-    .nav-item {
-      display: flex; flex-direction: column;
-      align-items: center; gap: 4px;
-      padding: 8px 12px; border-radius: 12px;
-      cursor: pointer; transition: all 0.2s;
-      color: var(--text-muted);
-      background: transparent; border: none;
-      font-family: inherit;
-    }
-    
-    .nav-item.active {
-      color: var(--accent-pink);
-      background: rgba(233, 69, 96, 0.1);
-    }
-    
-    .nav-item svg { width: 22px; height: 22px; }
-    .nav-item span { font-size: 10px; font-weight: 500; }
-    
-    .recipe-card {
-      background: var(--bg-card);
-      border-radius: 16px;
-      padding: 16px;
-      margin-bottom: 12px;
-      border: 1px solid var(--border-color);
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-    
-    .recipe-card:hover { background: var(--bg-card-hover); }
-    
-    .recipe-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 8px;
-    }
-    
-    .recipe-name { font-size: 16px; font-weight: 600; }
-    
-    .recipe-badge {
-      font-size: 10px;
-      padding: 4px 8px;
-      border-radius: 6px;
-      font-weight: 500;
-    }
-    
-    .recipe-badge.gelato {
-      background: rgba(233, 69, 96, 0.2);
-      color: var(--accent-pink);
-    }
-    
-    .recipe-badge.sorbet {
-      background: rgba(76, 201, 240, 0.2);
-      color: var(--accent-blue);
-    }
-    
-    .recipe-meta {
-      display: flex; gap: 16px;
-      font-size: 12px; color: var(--text-secondary);
-    }
-    
-    .recipe-stats {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 8px;
-      margin-top: 12px;
-      padding-top: 12px;
-      border-top: 1px solid var(--border-color);
-    }
-    
-    .stat-item { text-align: center; }
-    .stat-value { font-size: 14px; font-weight: 600; font-family: 'JetBrains Mono', monospace; }
-    .stat-label { font-size: 9px; color: var(--text-muted); text-transform: uppercase; }
-    
-    .stat-value.good { color: var(--accent-green); }
-    .stat-value.warn { color: var(--accent-gold); }
-    .stat-value.bad { color: var(--accent-red); }
-    
-    .btn {
-      display: flex; align-items: center; justify-content: center; gap: 8px;
-      padding: 12px 20px; border-radius: 12px;
-      font-size: 14px; font-weight: 600;
-      cursor: pointer; transition: all 0.2s;
-      border: none; font-family: inherit;
-    }
-    
-    .btn-primary { background: var(--accent-pink); color: white; }
-    .btn-primary:hover { background: #d63d56; }
-    
-    .btn-secondary {
-      background: var(--bg-card);
-      color: var(--text-primary);
-      border: 1px solid var(--border-color);
-    }
-    
-    .btn-danger { background: rgba(239, 68, 68, 0.2); color: var(--accent-red); }
-    
-    .modal-overlay {
-      position: fixed; inset: 0;
-      background: rgba(0, 0, 0, 0.8);
-      display: flex; align-items: flex-end; justify-content: center;
-      z-index: 100; padding: 20px;
-    }
-    
-    .modal {
-      background: var(--bg-secondary);
-      border-radius: 24px 24px 0 0;
-      width: 100%; max-width: 480px;
-      max-height: 90vh; overflow-y: auto;
-      padding: 24px;
-      animation: slideUp 0.3s ease;
-    }
-    
-    @keyframes slideUp {
-      from { transform: translateY(100%); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
-    }
-    
-    .modal-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 20px;
-    }
-    
-    .modal-title { font-size: 18px; font-weight: 700; }
-    
-    .modal-close {
-      width: 32px; height: 32px; border-radius: 50%;
-      background: var(--bg-card); border: none;
-      color: var(--text-secondary); cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-    }
-    
-    .form-group { margin-bottom: 16px; }
-    .form-label { display: block; font-size: 12px; color: var(--text-secondary); margin-bottom: 6px; font-weight: 500; }
-    
-    .form-input, .form-select {
-      width: 100%; padding: 12px 16px;
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: 12px;
-      color: var(--text-primary);
-      font-size: 14px; font-family: inherit;
-    }
-    
-    .form-input:focus, .form-select:focus {
-      outline: none;
-      border-color: var(--accent-pink);
-    }
-    
-    .search-container { margin-bottom: 16px; }
-    
-    .search-input {
-      width: 100%; padding: 12px 16px; padding-left: 44px;
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: 12px;
-      color: var(--text-primary);
-      font-size: 14px; font-family: inherit;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2364748B'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z'%3E%3C/path%3E%3C/svg%3E");
-      background-repeat: no-repeat;
-      background-position: 14px center;
-      background-size: 20px;
-    }
-    
-    .filter-tabs {
-      display: flex; gap: 8px;
-      margin-bottom: 16px;
-      overflow-x: auto;
-      padding-bottom: 8px;
-    }
-    
-    .filter-tab {
-      padding: 8px 14px;
-      border-radius: 20px;
-      font-size: 12px; font-weight: 500;
-      white-space: nowrap;
-      cursor: pointer; transition: all 0.2s;
-      background: var(--bg-card);
-      color: var(--text-secondary);
-      border: 1px solid var(--border-color);
-      font-family: inherit;
-    }
-    
-    .filter-tab.active {
-      background: var(--accent-pink);
-      color: white;
-      border-color: var(--accent-pink);
-    }
-    
-    .ingredient-row {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 12px;
-      background: var(--bg-card);
-      border-radius: 12px;
-      margin-bottom: 8px;
-    }
-    
-    .ingredient-name { flex: 1; font-size: 14px; }
-    .ingredient-amount { font-size: 14px; font-family: 'JetBrains Mono', monospace; color: var(--accent-gold); }
-    
-    .targets-section { margin-bottom: 24px; }
-    .targets-title { font-size: 14px; font-weight: 600; margin-bottom: 12px; color: var(--accent-pink); }
-    
-    .target-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 12px;
-      background: var(--bg-card);
-      border-radius: 12px;
-      margin-bottom: 8px;
-    }
-    
-    .target-label { font-size: 13px; }
-    .target-range { font-size: 13px; font-family: 'JetBrains Mono', monospace; color: var(--text-secondary); }
-    
-    .settings-section { margin-bottom: 24px; }
-    .settings-title { font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }
-    
-    .settings-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 14px 16px;
-      background: var(--bg-card);
-      border-radius: 12px;
-      margin-bottom: 8px;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-    
-    .settings-item:hover { background: var(--bg-card-hover); }
-    .settings-item-label { font-size: 14px; }
-    .settings-item-value { font-size: 13px; color: var(--text-secondary); font-family: 'JetBrains Mono', monospace; }
-    
-    .empty-state {
-      text-align: center;
-      padding: 40px 20px;
-      color: var(--text-secondary);
-    }
-    
-    .empty-state-icon { font-size: 48px; margin-bottom: 16px; }
-    .empty-state-text { font-size: 14px; line-height: 1.6; }
-    
-    .error-container {
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      min-height: 100vh; padding: 20px;
-      text-align: center; background: var(--bg-primary);
-    }
-    
-    .error-icon { font-size: 64px; margin-bottom: 20px; }
-    .error-title { font-size: 20px; font-weight: 700; margin-bottom: 8px; color: var(--accent-red); }
-    .error-message { font-size: 14px; color: var(--text-secondary); margin-bottom: 24px; max-width: 300px; }
-    
-    .scale-controls {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 12px;
-      margin-bottom: 16px;
-    }
-    
-    .scale-btn {
-      width: 40px; height: 40px;
-      border-radius: 50%;
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      color: var(--text-primary);
-      font-size: 20px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    
-    .scale-value {
-      font-size: 18px;
-      font-weight: 600;
-      font-family: 'JetBrains Mono', monospace;
-      min-width: 100px;
-      text-align: center;
-    }
+    *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+    :root{--bg:#0f172a;--card:#1e293b;--input:#334155;--accent:#f59e0b;--success:#10b981;--warn:#f59e0b;--danger:#ef4444;--text:#f8fafc;--text2:#94a3b8;--muted:#64748b;--border:#334155;--r:12px}
+    body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+    .pin-screen{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;background:linear-gradient(180deg,#0f172a,#1e293b)}
+    .pin-logo{font-size:56px;margin-bottom:16px}.pin-title{font-size:28px;font-weight:700;margin-bottom:8px}.pin-sub{font-size:14px;color:var(--text2);margin-bottom:40px}
+    .pin-dots{display:flex;gap:16px;margin-bottom:40px}.pin-dot{width:14px;height:14px;border-radius:50%;border:2px solid var(--accent);transition:all .15s}.pin-dot.filled{background:var(--accent)}.pin-dot.error{border-color:var(--danger);background:var(--danger);animation:shake .3s}
+    @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+    .pin-pad{display:grid;grid-template-columns:repeat(3,72px);gap:14px}.pin-key{width:72px;height:72px;border-radius:50%;border:1px solid var(--border);background:var(--card);color:var(--text);font-size:26px;font-weight:600;cursor:pointer}.pin-key:active{background:var(--accent);transform:scale(.95)}.pin-key.empty{visibility:hidden}
+    .app{min-height:100vh;display:flex;flex-direction:column}
+    .header{background:var(--card);border-bottom:1px solid var(--border);padding:16px 20px;position:sticky;top:0;z-index:100}
+    .header-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}.header-brand{display:flex;align-items:center;gap:10px}.header-icon{font-size:26px}.header-title{font-size:20px;font-weight:700}
+    .header-btns{display:flex;gap:8px}.icon-btn{width:38px;height:38px;border-radius:8px;border:1px solid var(--border);background:transparent;color:var(--text2);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center}.icon-btn:hover{background:var(--input);color:var(--text)}
+    .tabs{display:flex;gap:4px;background:var(--bg);padding:4px;border-radius:var(--r)}.tab{flex:1;padding:10px 12px;border-radius:8px;border:none;background:transparent;color:var(--text2);font-size:13px;font-weight:600;cursor:pointer}.tab.active{background:var(--accent);color:var(--bg)}
+    .content{flex:1;padding:20px;padding-bottom:40px}
+    .page-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}.page-title{font-size:20px;font-weight:700}.page-sub{font-size:13px;color:var(--muted)}
+    .add-btn{display:flex;align-items:center;gap:6px;padding:10px 16px;border-radius:8px;border:none;background:var(--accent);color:var(--bg);font-size:14px;font-weight:600;cursor:pointer}
+    .filters{display:flex;gap:8px;margin-bottom:16px;overflow-x:auto}.filter{padding:8px 14px;border-radius:20px;border:1px solid var(--border);background:transparent;color:var(--text2);font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap}.filter.active{background:rgba(245,158,11,.15);border-color:var(--accent);color:var(--accent)}
+    .recipe-grid{display:flex;flex-direction:column;gap:12px}
+    .recipe-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:16px;cursor:pointer}.recipe-card:hover{border-color:var(--accent)}
+    .recipe-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px}.recipe-info{display:flex;align-items:center;gap:12px}.recipe-emoji{font-size:36px}.recipe-name{font-size:16px;font-weight:600;margin-bottom:2px}.recipe-meta{font-size:12px;color:var(--muted)}
+    .badge{padding:4px 10px;border-radius:10px;font-size:10px;font-weight:700;text-transform:uppercase}.badge-gelato{background:rgba(245,158,11,.15);color:var(--accent)}.badge-sorbet{background:rgba(168,85,247,.15);color:#c084fc}
+    .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.stat-box{text-align:center;padding:10px 6px;background:var(--bg);border-radius:8px}.stat-val{font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:600}.stat-val.good{color:var(--success)}.stat-val.warn{color:var(--warn)}.stat-val.bad{color:var(--danger)}.stat-lbl{font-size:10px;color:var(--muted);text-transform:uppercase;margin-top:2px}
+    .detail-header{display:flex;align-items:center;gap:12px;margin-bottom:20px}.back-btn{width:40px;height:40px;border-radius:8px;border:1px solid var(--border);background:transparent;color:var(--text);font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center}.detail-title{flex:1}.detail-name{font-size:22px;font-weight:700}.detail-sub{font-size:13px;color:var(--muted)}.detail-btns{display:flex;gap:8px}
+    .stats-panel{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:16px;margin-bottom:16px}.stats-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}@media(min-width:400px){.stats-grid{grid-template-columns:repeat(3,1fr)}}
+    .stat-card{background:var(--bg);border-radius:8px;padding:12px}.stat-card-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px}.stat-card-lbl{font-size:11px;color:var(--muted);text-transform:uppercase}.stat-card-badge{font-size:9px;padding:2px 6px;border-radius:4px;font-weight:600}.stat-card-badge.good{background:rgba(16,185,129,.15);color:var(--success)}.stat-card-badge.warn{background:rgba(245,158,11,.15);color:var(--warn)}.stat-card-badge.bad{background:rgba(239,68,68,.15);color:var(--danger)}.stat-card-val{font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:600}.stat-card-target{font-size:10px;color:var(--muted)}
+    .ing-section{background:var(--card);border:1px solid var(--border);border-radius:var(--r);overflow:hidden}.ing-header{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--border)}.ing-title{font-size:14px;font-weight:600}
+    .ing-row{display:flex;align-items:center;padding:12px 16px;border-bottom:1px solid var(--border)}.ing-row:last-child{border-bottom:none}.ing-name{flex:1;font-size:14px}.ing-amt{font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:500;color:var(--accent);min-width:80px;text-align:right}.ing-remove{width:32px;height:32px;border-radius:6px;border:none;background:transparent;color:var(--muted);font-size:18px;cursor:pointer;margin-left:8px}.ing-remove:hover{background:rgba(239,68,68,.15);color:var(--danger)}
+    .total-row{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;background:var(--bg);font-weight:600}.total-val{font-family:'JetBrains Mono',monospace;color:var(--accent)}
+    .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(4px);display:flex;align-items:flex-end;justify-content:center;z-index:1000}@media(min-width:500px){.modal-overlay{align-items:center;padding:20px}}
+    .modal{background:var(--card);border-radius:var(--r) var(--r) 0 0;width:100%;max-width:480px;max-height:90vh;overflow:hidden;display:flex;flex-direction:column}@media(min-width:500px){.modal{border-radius:var(--r)}}
+    .modal-header{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--border)}.modal-title{font-size:18px;font-weight:600}.modal-close{width:36px;height:36px;border-radius:8px;border:none;background:transparent;color:var(--muted);font-size:24px;cursor:pointer}
+    .modal-body{flex:1;overflow-y:auto;padding:20px}.modal-footer{padding:16px 20px;border-top:1px solid var(--border);display:flex;gap:12px}
+    .btn{flex:1;padding:14px 20px;border-radius:8px;border:none;font-size:14px;font-weight:600;cursor:pointer}.btn-primary{background:var(--accent);color:var(--bg)}.btn-secondary{background:var(--input);color:var(--text)}.btn:disabled{opacity:.5;cursor:not-allowed}
+    .form-group{margin-bottom:16px}.form-label{display:block;font-size:12px;font-weight:500;color:var(--text2);margin-bottom:6px}.form-input{width:100%;padding:12px 14px;border-radius:8px;border:1px solid var(--border);background:var(--input);color:var(--text);font-size:15px}.form-input:focus{outline:none;border-color:var(--accent)}.form-select{width:100%;padding:12px 14px;border-radius:8px;border:1px solid var(--border);background:var(--input);color:var(--text);font-size:15px;cursor:pointer}
+    .search-box{position:relative}.search-results{position:absolute;top:100%;left:0;right:0;background:var(--card);border:1px solid var(--border);border-radius:8px;margin-top:4px;max-height:220px;overflow-y:auto;z-index:10}.search-item{padding:12px 14px;cursor:pointer;border-bottom:1px solid var(--border)}.search-item:last-child{border-bottom:none}.search-item:hover{background:var(--input)}.search-item-name{font-size:14px;font-weight:500}.search-item-meta{font-size:11px;color:var(--muted);margin-top:2px}
+    .settings-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);margin-bottom:16px;overflow:hidden}.settings-card-title{padding:14px 16px;font-size:13px;font-weight:600;border-bottom:1px solid var(--border)}.settings-row{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--border);cursor:pointer}.settings-row:last-child{border-bottom:none}.settings-row:hover{background:var(--bg)}.settings-text{font-size:14px}.settings-value{font-size:14px;color:var(--muted)}.settings-danger .settings-card-title{color:var(--danger)}.settings-danger .settings-row{color:var(--danger)}
+    .empty{text-align:center;padding:60px 20px}.empty-icon{font-size:56px;margin-bottom:16px;opacity:.4}.empty-title{font-size:18px;font-weight:600;margin-bottom:8px}.empty-text{color:var(--muted);margin-bottom:24px}
   </style>
 </head>
 <body>
-  <div id="root"></div>
-  
-  <script>
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./sw.js')
-          .then(reg => console.log('SW registered'))
-          .catch(err => console.log('SW failed:', err));
-      });
-    }
-  </script>
-  
-  <script type="text/babel">
-    const { useState, useEffect, useCallback, useMemo } = React;
-    
-    const APP_VERSION = '3.0.0';
-    const BUILD_DATE = '2025-12-06';
-    
-    // Error Boundary
-    class ErrorBoundary extends React.Component {
-      constructor(props) {
-        super(props);
-        this.state = { hasError: false };
-      }
-      
-      static getDerivedStateFromError(error) {
-        return { hasError: true };
-      }
-      
-      handleReset = () => window.location.reload();
-      
-      handleClearData = () => {
-        if (confirm('Clear all data?')) {
-          localStorage.clear();
-          window.location.reload();
-        }
-      };
-      
-      render() {
-        if (this.state.hasError) {
-          return (
-            <div className="error-container">
-              <div className="error-icon">⚠️</div>
-              <div className="error-title">Something went wrong</div>
-              <div className="error-message">Try refreshing or clearing data.</div>
-              <button className="btn btn-primary" onClick={this.handleReset} style={{ marginBottom: 12 }}>Refresh</button>
-              <button className="btn btn-danger" onClick={this.handleClearData}>Clear Data</button>
-            </div>
-          );
-        }
-        return this.props.children;
-      }
-    }
-    
-    // Icons
-    const Icons = {
-      Book: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>,
-      Target: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>,
-      Database: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>,
-      Settings: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>,
-      Plus: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 5v14M5 12h14"/></svg>,
-      Download: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>,
-      Upload: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>,
-      Refresh: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>,
-      Trash: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>,
-      ChevronLeft: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M15 18l-6-6 6-6"/></svg>,
-    };
-    
-    // Ingredient Database
-    const INGREDIENT_DATABASE = [
-      // Dairy
-      { id: 1, name: 'Milk 3.6%', fat: 3.6, sugar: 4.8, msnf: 8.9, fiber: 0, pac: 4.8, pod: 100, category: 'dairy' },
-      { id: 2, name: 'Cream 40%', fat: 40, sugar: 2.8, msnf: 5.2, fiber: 0, pac: 2.8, pod: 100, category: 'dairy' },
-      { id: 3, name: 'Cream 35%', fat: 35, sugar: 2.9, msnf: 5.5, fiber: 0, pac: 2.9, pod: 100, category: 'dairy' },
-      { id: 4, name: 'SMP (Skim Milk Powder)', fat: 1, sugar: 52, msnf: 97, fiber: 0, pac: 52, pod: 100, category: 'dairy' },
-      { id: 5, name: 'Buttermilk', fat: 0.9, sugar: 4.8, msnf: 9, fiber: 0, pac: 4.8, pod: 100, category: 'dairy' },
-      
-      // Sugars
-      { id: 10, name: 'Sucrose', fat: 0, sugar: 100, msnf: 0, fiber: 0, pac: 100, pod: 100, category: 'sugar' },
-      { id: 11, name: 'Dextrose', fat: 0, sugar: 100, msnf: 0, fiber: 0, pac: 180, pod: 70, category: 'sugar' },
-      { id: 12, name: 'Glucose Syrup 42DE', fat: 0, sugar: 80, msnf: 0, fiber: 0, pac: 80, pod: 40, category: 'sugar' },
-      { id: 13, name: 'Trimoline (Invert Sugar)', fat: 0, sugar: 100, msnf: 0, fiber: 0, pac: 130, pod: 130, category: 'sugar' },
-      { id: 14, name: 'Inulin', fat: 0, sugar: 0, msnf: 0, fiber: 90, pac: 10, pod: 0, category: 'sugar' },
-      { id: 15, name: 'Maltodextrin', fat: 0, sugar: 95, msnf: 0, fiber: 0, pac: 5, pod: 5, category: 'sugar' },
-      
-      // Stabilizers
-      { id: 20, name: 'Tara Gum', fat: 0, sugar: 0, msnf: 0, fiber: 80, pac: 0, pod: 0, category: 'stabilizer' },
-      { id: 21, name: 'Perfect Gelato Stabilizer', fat: 0, sugar: 32, msnf: 0, fiber: 57, pac: 177, pod: 74, category: 'stabilizer' },
-      
-      // Water
-      { id: 25, name: 'Water', fat: 0, sugar: 0, msnf: 0, fiber: 0, pac: 0, pod: 0, category: 'other' },
-      
-      // Chocolate & Cacao
-      { id: 30, name: 'Cacao 22-24%', fat: 23, sugar: 0, msnf: 0, fiber: 33, pac: 0, pod: 0, category: 'chocolate' },
-      { id: 31, name: 'Callebaut 70.5% Chocolate', fat: 41, sugar: 28, msnf: 0, fiber: 11, pac: 28, pod: 28, category: 'chocolate' },
-      { id: 32, name: 'Chocolate 66% BTSW', fat: 40, sugar: 30, msnf: 0, fiber: 10, pac: 30, pod: 30, category: 'chocolate' },
-      
-      // Fats & Oils
-      { id: 40, name: 'Coconut Oil', fat: 100, sugar: 0, msnf: 0, fiber: 0, pac: 0, pod: 0, category: 'fats' },
-      { id: 41, name: 'Extra Virgin Olive Oil', fat: 100, sugar: 0, msnf: 0, fiber: 0, pac: 0, pod: 0, category: 'fats' },
-      
-      // Fruit Purees
-      { id: 50, name: 'Boiron Coconut', fat: 24, sugar: 3, msnf: 0, fiber: 2, pac: 3, pod: 3, category: 'fruit-tropical' },
-      { id: 51, name: 'Boiron Blueberry', fat: 0.3, sugar: 10, msnf: 0, fiber: 2.4, pac: 10, pod: 10, category: 'fruit-berry' },
-      { id: 52, name: 'Strawberry Purée', fat: 0.3, sugar: 5, msnf: 0, fiber: 2, pac: 5, pod: 5, category: 'fruit-berry' },
-      { id: 53, name: 'Passion Fruit Purée', fat: 0.7, sugar: 11, msnf: 0, fiber: 10, pac: 11, pod: 11, category: 'fruit-tropical' },
-      { id: 54, name: 'Rhubarb Strawberry Purée', fat: 0.2, sugar: 4, msnf: 0, fiber: 2, pac: 4, pod: 4, category: 'fruit-berry' },
-      
-      // Citrus
-      { id: 60, name: 'Lemon Juice', fat: 0, sugar: 2.5, msnf: 0, fiber: 0.3, pac: 2.5, pod: 2.5, category: 'fruit-citrus' },
-      
-      // Salt
-      { id: 65, name: 'Sea Salt Flakes', fat: 0, sugar: 0, msnf: 0, fiber: 0, pac: 0, pod: 0, category: 'other' },
-      
-      // Prepared
-      { id: 70, name: 'Salted Caramel for Gelato', fat: 25.41, sugar: 43.69, msnf: 1.56, fiber: 0, pac: 48.73, pod: 43.18, category: 'prepared' },
-    ];
-    
-    // Default Recipes - All 4kg batches with Tara Gum 13.5g
-    const DEFAULT_RECIPES = [
-      {
-        id: 1,
-        name: 'Chocolate Sorbet',
-        type: 'sorbet',
-        batchSize: 4000,
-        items: [
-          { ingredientId: 25, amount: 2600 },  // Water
-          { ingredientId: 10, amount: 800 },   // Sucrose
-          { ingredientId: 11, amount: 240 },   // Dextrose
-          { ingredientId: 15, amount: 100 },   // Maltodextrin
-          { ingredientId: 20, amount: 13.5 },  // Tara Gum
-          { ingredientId: 30, amount: 240 },   // Cacao 22-24%
-        ]
-      },
-      {
-        id: 2,
-        name: 'Buttermilk Gelato',
-        type: 'gelato',
-        batchSize: 4000,
-        items: [
-          { ingredientId: 1, amount: 1431 },   // Milk 3.6%
-          { ingredientId: 3, amount: 858 },    // Cream 35%
-          { ingredientId: 5, amount: 716 },    // Buttermilk
-          { ingredientId: 10, amount: 626 },   // Sucrose
-          { ingredientId: 11, amount: 179 },   // Dextrose
-          { ingredientId: 12, amount: 89.5 },  // Glucose Syrup 42DE
-          { ingredientId: 4, amount: 89.5 },   // SMP
-          { ingredientId: 20, amount: 13.5 },  // Tara Gum
-        ]
-      },
-      {
-        id: 3,
-        name: 'Chocolate Gelato w/ Callebaut 70.5%',
-        type: 'gelato',
-        batchSize: 4000,
-        items: [
-          { ingredientId: 1, amount: 2405 },   // Milk 3.6%
-          { ingredientId: 12, amount: 185 },   // Glucose Syrup 42DE
-          { ingredientId: 11, amount: 148 },   // Dextrose
-          { ingredientId: 4, amount: 111 },    // SMP
-          { ingredientId: 30, amount: 67 },    // Cacao 22-24%
-          { ingredientId: 10, amount: 259 },   // Sucrose
-          { ingredientId: 20, amount: 13.5 },  // Tara Gum
-          { ingredientId: 31, amount: 740 },   // Callebaut 70.5%
-          { ingredientId: 13, amount: 74 },    // Trimoline
-        ]
-      },
-      {
-        id: 4,
-        name: 'Blueberry-Coconut Sorbet',
-        type: 'sorbet',
-        batchSize: 4000,
-        items: [
-          { ingredientId: 50, amount: 998 },   // Boiron Coconut
-          { ingredientId: 51, amount: 1996 },  // Boiron Blueberry
-          { ingredientId: 10, amount: 499 },   // Sucrose
-          { ingredientId: 12, amount: 200 },   // Glucose Syrup 42DE
-          { ingredientId: 11, amount: 200 },   // Dextrose
-          { ingredientId: 25, amount: 100 },   // Water
-          { ingredientId: 20, amount: 13.5 },  // Tara Gum
-        ]
-      },
-      {
-        id: 5,
-        name: 'Strawberry Gelato',
-        type: 'gelato',
-        batchSize: 4000,
-        items: [
-          { ingredientId: 52, amount: 1186 },  // Strawberry Purée
-          { ingredientId: 1, amount: 822 },    // Milk 3.6%
-          { ingredientId: 2, amount: 889 },    // Cream 40%
-          { ingredientId: 10, amount: 267 },   // Sucrose
-          { ingredientId: 11, amount: 283 },   // Dextrose
-          { ingredientId: 12, amount: 118 },   // Glucose Syrup 42DE
-          { ingredientId: 4, amount: 89 },     // SMP
-          { ingredientId: 20, amount: 13.5 },  // Tara Gum
-          { ingredientId: 25, amount: 334 },   // Water
-        ]
-      },
-      {
-        id: 6,
-        name: 'Passion Fruit Sorbet',
-        type: 'sorbet',
-        batchSize: 4000,
-        items: [
-          { ingredientId: 53, amount: 1200 },  // Passion Fruit
-          { ingredientId: 60, amount: 40 },    // Lemon
-          { ingredientId: 10, amount: 720 },   // Sucrose
-          { ingredientId: 11, amount: 120 },   // Dextrose
-          { ingredientId: 12, amount: 160 },   // Glucose Syrup 42DE
-          { ingredientId: 20, amount: 13.5 },  // Tara Gum
-          { ingredientId: 25, amount: 1420 },  // Water
-          { ingredientId: 14, amount: 320 },   // Inulin
-        ]
-      },
-      {
-        id: 7,
-        name: 'Coconut-Vanilla Gelato',
-        type: 'gelato',
-        batchSize: 4000,
-        items: [
-          { ingredientId: 2, amount: 68 },     // Cream 40%
-          { ingredientId: 1, amount: 1689 },   // Milk 3.6%
-          { ingredientId: 50, amount: 1351 },  // Boiron Coconut
-          { ingredientId: 10, amount: 676 },   // Sucrose
-          { ingredientId: 11, amount: 68 },    // Dextrose
-          { ingredientId: 12, amount: 68 },    // Glucose Syrup 42DE
-          { ingredientId: 20, amount: 13.5 },  // Tara Gum
-          { ingredientId: 40, amount: 68 },    // Coconut Oil
-        ]
-      },
-      {
-        id: 8,
-        name: 'Salted Caramel Gelato',
-        type: 'gelato',
-        batchSize: 4000,
-        items: [
-          { ingredientId: 10, amount: 499.5 },  // Caster/White Sugar (A) - for caramel
-          { ingredientId: 65, amount: 16 },     // Sea Salt Flakes
-          { ingredientId: 10, amount: 79.9 },   // Caster/White Sugar (B)
-          { ingredientId: 20, amount: 13.5 },   // Tara Gum
-          { ingredientId: 1, amount: 2597.4 },  // Whole Milk
-          { ingredientId: 2, amount: 479.5 },   // Cream 40%
-          { ingredientId: 4, amount: 179.8 },   // Skimmed Milk Powder
-          { ingredientId: 12, amount: 105 },    // Dry Glucose Powder (42DE)
-          { ingredientId: 14, amount: 80 },     // Inulin
-        ]
-      },
-      {
-        id: 9,
-        name: 'Fior di Latte',
-        type: 'gelato',
-        batchSize: 4000,
-        items: [
-          { ingredientId: 1, amount: 2220 },   // Milk 3.6%
-          { ingredientId: 2, amount: 800 },    // Cream 40%
-          { ingredientId: 10, amount: 560 },   // Sucrose
-          { ingredientId: 12, amount: 140 },   // Glucose Syrup 42DE
-          { ingredientId: 11, amount: 80 },    // Dextrose
-          { ingredientId: 4, amount: 180 },    // SMP
-          { ingredientId: 20, amount: 13.5 },  // Tara Gum
-        ]
-      },
-      {
-        id: 10,
-        name: 'Lemon Olive Oil Gelato',
-        type: 'gelato',
-        batchSize: 4000,
-        items: [
-          { ingredientId: 1, amount: 1553 },   // Milk 3.6%
-          { ingredientId: 2, amount: 388 },    // Cream 40%
-          { ingredientId: 4, amount: 175 },    // SMP
-          { ingredientId: 10, amount: 544 },   // Sucrose
-          { ingredientId: 12, amount: 291 },   // Glucose Syrup 42DE
-          { ingredientId: 11, amount: 194 },   // Dextrose
-          { ingredientId: 20, amount: 13.5 },  // Tara Gum
-          { ingredientId: 41, amount: 155 },   // EVOO
-          { ingredientId: 25, amount: 680 },   // Water
-        ]
-      },
-      {
-        id: 11,
-        name: 'Chocolate Gelato Test 2',
-        type: 'gelato',
-        batchSize: 4000,
-        items: [
-          { ingredientId: 1, amount: 2600 },   // Milk 3.6%
-          { ingredientId: 12, amount: 200 },   // Glucose Syrup 42DE
-          { ingredientId: 11, amount: 160 },   // Dextrose
-          { ingredientId: 4, amount: 120 },    // SMP
-          { ingredientId: 30, amount: 72 },    // Cacao 22-24%
-          { ingredientId: 10, amount: 200 },   // Sucrose
-          { ingredientId: 20, amount: 13.5 },  // Tara Gum
-          { ingredientId: 32, amount: 600 },   // Chocolate 66%
-          { ingredientId: 13, amount: 40 },    // Trimoline
-        ]
-      },
-      {
-        id: 12,
-        name: 'Rhubarb Strawberry Gelato',
-        type: 'gelato',
-        batchSize: 4000,
-        items: [
-          { ingredientId: 54, amount: 1154 },  // Rhubarb Strawberry Purée
-          { ingredientId: 1, amount: 865 },    // Milk 3.6%
-          { ingredientId: 2, amount: 865 },    // Cream 40%
-          { ingredientId: 10, amount: 260 },   // Sucrose
-          { ingredientId: 11, amount: 360 },   // Dextrose
-          { ingredientId: 12, amount: 115 },   // Glucose Syrup 42DE
-          { ingredientId: 4, amount: 87 },     // SMP
-          { ingredientId: 20, amount: 13.5 },  // Tara Gum
-          { ingredientId: 25, amount: 288 },   // Water
-        ]
-      },
-    ];
-    
-    // Target ranges
-    const GELATO_TARGETS = {
-      fat: { min: 6, max: 10, ideal: 8, label: 'Fat %' },
-      sugar: { min: 18, max: 22, ideal: 20, label: 'Sugar %' },
-      msnf: { min: 7, max: 11, ideal: 9, label: 'MSNF %' },
-      totalSolids: { min: 35, max: 42, ideal: 38, label: 'Total Solids %' },
-    };
-    
-    const SORBET_TARGETS = {
-      fat: { min: 0, max: 3, ideal: 0, label: 'Fat %' },
-      sugar: { min: 26, max: 32, ideal: 29, label: 'Sugar %' },
-      totalSolids: { min: 28, max: 35, ideal: 31, label: 'Total Solids %' },
-    };
-    
-    // Main App
-    function App() {
-      const [isAuthenticated, setIsAuthenticated] = useState(false);
-      const [pin, setPin] = useState('');
-      const [pinError, setPinError] = useState(false);
-      const [activeTab, setActiveTab] = useState('recipes');
-      const [recipes, setRecipes] = useState([]);
-      const [search, setSearch] = useState('');
-      const [typeFilter, setTypeFilter] = useState('all');
-      const [selectedRecipe, setSelectedRecipe] = useState(null);
-      const [scaleMultiplier, setScaleMultiplier] = useState(1);
-      const [dataLoaded, setDataLoaded] = useState(false);
-      
-      const CORRECT_PIN = '0119';
-      
-      // Load data
-      useEffect(() => {
-        try {
-          const saved = localStorage.getItem('gelato-recipes');
-          const savedAuth = sessionStorage.getItem('gelato-auth');
-          
-          if (saved) {
-            setRecipes(JSON.parse(saved));
-          } else {
-            setRecipes(DEFAULT_RECIPES);
-          }
-          
-          if (savedAuth === 'true') setIsAuthenticated(true);
-          setDataLoaded(true);
-        } catch (e) {
-          setRecipes(DEFAULT_RECIPES);
-          setDataLoaded(true);
-        }
-      }, []);
-      
-      // Save data
-      useEffect(() => {
-        if (dataLoaded && recipes.length > 0) {
-          localStorage.setItem('gelato-recipes', JSON.stringify(recipes));
-        }
-      }, [recipes, dataLoaded]);
-      
-      // PIN handling
-      const handlePinInput = (digit) => {
-        if (pin.length < 4) {
-          const newPin = pin + digit;
-          setPin(newPin);
-          setPinError(false);
-          
-          if (newPin.length === 4) {
-            if (newPin === CORRECT_PIN) {
-              setTimeout(() => {
-                setIsAuthenticated(true);
-                sessionStorage.setItem('gelato-auth', 'true');
-              }, 200);
-            } else {
-              setPinError(true);
-              setTimeout(() => { setPin(''); setPinError(false); }, 600);
-            }
-          }
-        }
-      };
-      
-      const handlePinDelete = () => { setPin(pin.slice(0, -1)); setPinError(false); };
-      
-      // Calculate recipe stats
-      const calculateStats = useCallback((recipe, multiplier = 1) => {
-        let totalWeight = 0;
-        let totalFat = 0;
-        let totalSugar = 0;
-        let totalMsnf = 0;
-        let totalFiber = 0;
-        let totalSolids = 0;
-        
-        recipe.items.forEach(item => {
-          const ingredient = INGREDIENT_DATABASE.find(i => i.id === item.ingredientId);
-          if (!ingredient) return;
-          
-          const amount = item.amount * multiplier;
-          totalWeight += amount;
-          
-          const fatG = (ingredient.fat / 100) * amount;
-          const sugarG = (ingredient.sugar / 100) * amount;
-          const msnfG = (ingredient.msnf / 100) * amount;
-          const fiberG = (ingredient.fiber / 100) * amount;
-          
-          totalFat += fatG;
-          totalSugar += sugarG;
-          totalMsnf += msnfG;
-          totalFiber += fiberG;
-          totalSolids += fatG + sugarG + msnfG + fiberG;
-        });
-        
-        return {
-          weight: totalWeight,
-          fat: totalWeight > 0 ? (totalFat / totalWeight) * 100 : 0,
-          sugar: totalWeight > 0 ? (totalSugar / totalWeight) * 100 : 0,
-          msnf: totalWeight > 0 ? (totalMsnf / totalWeight) * 100 : 0,
-          fiber: totalWeight > 0 ? (totalFiber / totalWeight) * 100 : 0,
-          totalSolids: totalWeight > 0 ? (totalSolids / totalWeight) * 100 : 0,
-        };
-      }, []);
-      
-      // Get status class for stat
-      const getStatClass = (value, target) => {
-        if (value >= target.min && value <= target.max) return 'good';
-        if (Math.abs(value - target.ideal) <= 3) return 'warn';
-        return 'bad';
-      };
-      
-      // Filter recipes
-      const filteredRecipes = useMemo(() => {
-        return recipes.filter(r => {
-          const matchesSearch = r.name.toLowerCase().includes(search.toLowerCase());
-          const matchesType = typeFilter === 'all' || r.type === typeFilter;
-          return matchesSearch && matchesType;
-        });
-      }, [recipes, search, typeFilter]);
-      
-      // Export
-      const exportData = () => {
-        const data = { version: APP_VERSION, recipes };
-        const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `gelato-backup-${new Date().toISOString().split('T')[0]}.json`;
-        a.click();
-      };
-      
-      // Import
-      const importData = (e) => {
-        const file = e.target.files[0];
-        if (file) {
-          const reader = new FileReader();
-          reader.onload = (evt) => {
-            try {
-              const data = JSON.parse(evt.target.result);
-              if (data.recipes) setRecipes(data.recipes);
-              alert('Imported successfully!');
-            } catch { alert('Error importing'); }
-          };
-          reader.readAsText(file);
-        }
-      };
-      
-      // Force refresh
-      const forceRefresh = () => {
-        if ('serviceWorker' in navigator) {
-          navigator.serviceWorker.getRegistrations().then(regs => {
-            regs.forEach(r => r.unregister());
-          });
-        }
-        caches.keys().then(names => { names.forEach(n => caches.delete(n)); });
-        window.location.reload(true);
-      };
-      
-      // Clear data
-      const clearData = () => {
-        if (confirm('Clear all data and restore defaults?')) {
-          localStorage.removeItem('gelato-recipes');
-          setRecipes(DEFAULT_RECIPES);
-        }
-      };
-      
-      // PIN Screen
-      if (!isAuthenticated) {
-        return (
-          <div className="pin-container">
-            <div className="pin-logo">🍨</div>
-            <div className="pin-title">Gelato Formulator</div>
-            <div className="pin-subtitle">Enter PIN to continue</div>
-            <div className="pin-dots">
-              {[0,1,2,3].map(i => (
-                <div key={i} className={`pin-dot ${pin.length > i ? 'filled' : ''} ${pinError ? 'error' : ''}`} />
-              ))}
-            </div>
-            <div className="pin-keypad">
-              {[1,2,3,4,5,6,7,8,9,'',0,'⌫'].map((k, i) => (
-                <button key={i} className={`pin-key ${k === '' ? 'empty' : ''} ${k === '⌫' ? 'delete' : ''}`}
-                  onClick={() => k === '⌫' ? handlePinDelete() : k !== '' && handlePinInput(String(k))}>
-                  {k}
-                </button>
-              ))}
-            </div>
-          </div>
-        );
-      }
-      
-      // Recipe Detail View
-      if (selectedRecipe) {
-        const stats = calculateStats(selectedRecipe, scaleMultiplier);
-        const targets = selectedRecipe.type === 'gelato' ? GELATO_TARGETS : SORBET_TARGETS;
-        
-        return (
-          <div className="app-container">
-            <header className="header">
-              <button onClick={() => { setSelectedRecipe(null); setScaleMultiplier(1); }} style={{ background: 'none', border: 'none', color: 'var(--text-primary)', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 8 }}>
-                <Icons.ChevronLeft /> Back
-              </button>
-              <span className={`recipe-badge ${selectedRecipe.type}`}>{selectedRecipe.type}</span>
-            </header>
-            
-            <main className="content">
-              <h1 style={{ fontSize: 20, fontWeight: 700, marginBottom: 8 }}>{selectedRecipe.name}</h1>
-              
-              <div className="scale-controls">
-                <button className="scale-btn" onClick={() => setScaleMultiplier(Math.max(0.5, scaleMultiplier - 0.5))}>−</button>
-                <div className="scale-value">{(selectedRecipe.batchSize * scaleMultiplier / 1000).toFixed(1)} kg</div>
-                <button className="scale-btn" onClick={() => setScaleMultiplier(scaleMultiplier + 0.5)}>+</button>
-              </div>
-              
-              <div className="recipe-stats" style={{ marginBottom: 20 }}>
-                <div className="stat-item">
-                  <div className={`stat-value ${getStatClass(stats.fat, targets.fat)}`}>{stats.fat.toFixed(1)}%</div>
-                  <div className="stat-label">Fat</div>
-                </div>
-                <div className="stat-item">
-                  <div className={`stat-value ${getStatClass(stats.sugar, targets.sugar)}`}>{stats.sugar.toFixed(1)}%</div>
-                  <div className="stat-label">Sugar</div>
-                </div>
-                {selectedRecipe.type === 'gelato' && (
-                  <div className="stat-item">
-                    <div className={`stat-value ${getStatClass(stats.msnf, targets.msnf)}`}>{stats.msnf.toFixed(1)}%</div>
-                    <div className="stat-label">MSNF</div>
-                  </div>
-                )}
-                <div className="stat-item">
-                  <div className={`stat-value ${getStatClass(stats.totalSolids, targets.totalSolids)}`}>{stats.totalSolids.toFixed(1)}%</div>
-                  <div className="stat-label">Solids</div>
-                </div>
-              </div>
-              
-              <h3 style={{ fontSize: 14, fontWeight: 600, marginBottom: 12, color: 'var(--accent-pink)' }}>Ingredients</h3>
-              
-              {selectedRecipe.items.map((item, idx) => {
-                const ingredient = INGREDIENT_DATABASE.find(i => i.id === item.ingredientId);
-                return (
-                  <div key={idx} className="ingredient-row">
-                    <span className="ingredient-name">{ingredient?.name || 'Unknown'}</span>
-                    <span className="ingredient-amount">{(item.amount * scaleMultiplier).toFixed(1)}g</span>
-                  </div>
-                );
-              })}
-              
-              <div style={{ marginTop: 20, padding: 16, background: 'var(--bg-card)', borderRadius: 12 }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
-                  <span style={{ color: 'var(--text-secondary)', fontSize: 13 }}>Total Weight</span>
-                  <span style={{ fontFamily: 'JetBrains Mono', fontWeight: 600 }}>{stats.weight.toFixed(0)}g</span>
-                </div>
-                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <span style={{ color: 'var(--text-secondary)', fontSize: 13 }}>Fiber</span>
-                  <span style={{ fontFamily: 'JetBrains Mono' }}>{stats.fiber.toFixed(1)}%</span>
-                </div>
-              </div>
-            </main>
-          </div>
-        );
-      }
-      
-      return (
-        <div className="app-container">
-          <header className="header">
-            <div className="header-title"><span>🍨</span> Gelato Formulator</div>
-            <div style={{ fontSize: 10, color: 'var(--text-muted)', fontFamily: 'JetBrains Mono' }}>v{APP_VERSION}</div>
-          </header>
-          
-          <main className="content">
-            {/* Recipes Tab */}
-            {activeTab === 'recipes' && (
-              <>
-                <div className="search-container">
-                  <input type="text" className="search-input" placeholder="Search recipes..." value={search} onChange={e => setSearch(e.target.value)} />
-                </div>
-                
-                <div className="filter-tabs">
-                  {['all', 'gelato', 'sorbet'].map(t => (
-                    <button key={t} className={`filter-tab ${typeFilter === t ? 'active' : ''}`} onClick={() => setTypeFilter(t)}>
-                      {t === 'all' ? 'All' : t.charAt(0).toUpperCase() + t.slice(1)}
-                    </button>
-                  ))}
-                </div>
-                
-                {filteredRecipes.length === 0 ? (
-                  <div className="empty-state">
-                    <div className="empty-state-icon">📋</div>
-                    <div className="empty-state-text">No recipes found</div>
-                  </div>
-                ) : (
-                  filteredRecipes.map(recipe => {
-                    const stats = calculateStats(recipe);
-                    const targets = recipe.type === 'gelato' ? GELATO_TARGETS : SORBET_TARGETS;
-                    return (
-                      <div key={recipe.id} className="recipe-card" onClick={() => setSelectedRecipe(recipe)}>
-                        <div className="recipe-header">
-                          <div className="recipe-name">{recipe.name}</div>
-                          <span className={`recipe-badge ${recipe.type}`}>{recipe.type}</span>
-                        </div>
-                        <div className="recipe-meta">
-                          <span>{recipe.items.length} ingredients</span>
-                          <span>{(recipe.batchSize / 1000).toFixed(1)} kg</span>
-                        </div>
-                        <div className="recipe-stats">
-                          <div className="stat-item">
-                            <div className={`stat-value ${getStatClass(stats.fat, targets.fat)}`}>{stats.fat.toFixed(1)}%</div>
-                            <div className="stat-label">Fat</div>
-                          </div>
-                          <div className="stat-item">
-                            <div className={`stat-value ${getStatClass(stats.sugar, targets.sugar)}`}>{stats.sugar.toFixed(1)}%</div>
-                            <div className="stat-label">Sugar</div>
-                          </div>
-                          <div className="stat-item">
-                            <div className="stat-value">{stats.msnf.toFixed(1)}%</div>
-                            <div className="stat-label">MSNF</div>
-                          </div>
-                          <div className="stat-item">
-                            <div className={`stat-value ${getStatClass(stats.totalSolids, targets.totalSolids)}`}>{stats.totalSolids.toFixed(1)}%</div>
-                            <div className="stat-label">Solids</div>
-                          </div>
-                        </div>
-                      </div>
-                    );
-                  })
-                )}
-              </>
-            )}
-            
-            {/* Targets Tab */}
-            {activeTab === 'targets' && (
-              <>
-                <div className="targets-section">
-                  <div className="targets-title">🍨 Gelato Targets</div>
-                  {Object.entries(GELATO_TARGETS).map(([key, t]) => (
-                    <div key={key} className="target-row">
-                      <span className="target-label">{t.label}</span>
-                      <span className="target-range">{t.min}% – {t.max}% (ideal: {t.ideal}%)</span>
-                    </div>
-                  ))}
-                </div>
-                
-                <div className="targets-section">
-                  <div className="targets-title">🍧 Sorbet Targets</div>
-                  {Object.entries(SORBET_TARGETS).map(([key, t]) => (
-                    <div key={key} className="target-row">
-                      <span className="target-label">{t.label}</span>
-                      <span className="target-range">{t.min}% – {t.max}% (ideal: {t.ideal}%)</span>
-                    </div>
-                  ))}
-                </div>
-              </>
-            )}
-            
-            {/* Ingredients Tab */}
-            {activeTab === 'ingredients' && (
-              <>
-                <div className="search-container">
-                  <input type="text" className="search-input" placeholder="Search ingredients..." value={search} onChange={e => setSearch(e.target.value)} />
-                </div>
-                
-                {INGREDIENT_DATABASE.filter(i => i.name.toLowerCase().includes(search.toLowerCase())).map(ing => (
-                  <div key={ing.id} className="ingredient-row" style={{ flexDirection: 'column', alignItems: 'flex-start', gap: 8 }}>
-                    <div style={{ fontWeight: 600, fontSize: 14 }}>{ing.name}</div>
-                    <div style={{ display: 'flex', gap: 16, fontSize: 11, color: 'var(--text-secondary)' }}>
-                      <span>Fat: {ing.fat}%</span>
-                      <span>Sugar: {ing.sugar}%</span>
-                      <span>MSNF: {ing.msnf}%</span>
-                      <span>Fiber: {ing.fiber}%</span>
-                    </div>
-                  </div>
-                ))}
-              </>
-            )}
-            
-            {/* Settings Tab */}
-            {activeTab === 'settings' && (
-              <>
-                <div className="settings-section">
-                  <h3 className="settings-title">Data Management</h3>
-                  <div className="settings-item" onClick={exportData}>
-                    <span className="settings-item-label">Export Data</span>
-                    <Icons.Download />
-                  </div>
-                  <label className="settings-item">
-                    <span className="settings-item-label">Import Data</span>
-                    <input type="file" accept=".json" onChange={importData} style={{ display: 'none' }} />
-                    <Icons.Upload />
-                  </label>
-                  <div className="settings-item" onClick={forceRefresh}>
-                    <span className="settings-item-label">Force Refresh App</span>
-                    <Icons.Refresh />
-                  </div>
-                  <div className="settings-item" onClick={clearData}>
-                    <span className="settings-item-label" style={{ color: 'var(--accent-red)' }}>Reset to Defaults</span>
-                    <Icons.Trash />
-                  </div>
-                </div>
-                
-                <div className="settings-section">
-                  <h3 className="settings-title">App Info</h3>
-                  <div className="settings-item">
-                    <span className="settings-item-label">Version</span>
-                    <span className="settings-item-value">{APP_VERSION}</span>
-                  </div>
-                  <div className="settings-item">
-                    <span className="settings-item-label">Recipes</span>
-                    <span className="settings-item-value">{recipes.length}</span>
-                  </div>
-                  <div className="settings-item">
-                    <span className="settings-item-label">Ingredients</span>
-                    <span className="settings-item-value">{INGREDIENT_DATABASE.length}</span>
-                  </div>
-                </div>
-              </>
-            )}
-          </main>
-          
-          <nav className="nav">
-            <button className={`nav-item ${activeTab === 'recipes' ? 'active' : ''}`} onClick={() => setActiveTab('recipes')}>
-              <Icons.Book />
-              <span>Recipes</span>
-            </button>
-            <button className={`nav-item ${activeTab === 'targets' ? 'active' : ''}`} onClick={() => setActiveTab('targets')}>
-              <Icons.Target />
-              <span>Targets</span>
-            </button>
-            <button className={`nav-item ${activeTab === 'ingredients' ? 'active' : ''}`} onClick={() => setActiveTab('ingredients')}>
-              <Icons.Database />
-              <span>Ingredients</span>
-            </button>
-            <button className={`nav-item ${activeTab === 'settings' ? 'active' : ''}`} onClick={() => setActiveTab('settings')}>
-              <Icons.Settings />
-              <span>Settings</span>
-            </button>
-          </nav>
-        </div>
-      );
-    }
-    
-    const root = ReactDOM.createRoot(document.getElementById('root'));
-    root.render(<ErrorBoundary><App /></ErrorBoundary>);
-  </script>
+<div id="root"></div>
+<script type="text/babel">
+const{useState,useEffect,useMemo}=React;
+const V='4.0.0',D='2025-12-08';
+const INGS=[
+{id:1,name:'Whole Milk 3.6%',fat:3.6,sugar:4.8,msnf:8.9,solids:12.5,pac:4.8,pod:16,cat:'dairy'},
+{id:2,name:'Cream 38%',fat:38,sugar:2.6,msnf:5.2,solids:45.8,pac:2.6,pod:9,cat:'dairy'},
+{id:3,name:'Cream 40%',fat:40,sugar:2.5,msnf:5,solids:47.5,pac:2.5,pod:8,cat:'dairy'},
+{id:4,name:'Skim Milk Powder',fat:.8,sugar:52,msnf:97,solids:97,pac:52,pod:52,cat:'dairy'},
+{id:5,name:'Buttermilk',fat:.9,sugar:4.8,msnf:8.5,solids:9.4,pac:4.8,pod:16,cat:'dairy'},
+{id:10,name:'Sucrose',fat:0,sugar:100,msnf:0,solids:100,pac:100,pod:100,cat:'sugar'},
+{id:11,name:'Dextrose',fat:0,sugar:92,msnf:0,solids:92,pac:180,pod:70,cat:'sugar'},
+{id:12,name:'Glucose Syrup 38DE',fat:0,sugar:80,msnf:0,solids:80,pac:90,pod:45,cat:'sugar'},
+{id:13,name:'Glucose Powder 42DE',fat:0,sugar:95,msnf:0,solids:95,pac:90,pod:45,cat:'sugar'},
+{id:14,name:'Inulin',fat:0,sugar:0,msnf:0,solids:92,pac:10,pod:10,cat:'sugar'},
+{id:15,name:'Trimoline',fat:0,sugar:78,msnf:0,solids:78,pac:190,pod:130,cat:'sugar'},
+{id:16,name:'Maltodextrin',fat:0,sugar:5,msnf:0,solids:95,pac:10,pod:10,cat:'sugar'},
+{id:20,name:'Tara Gum',fat:0,sugar:0,msnf:0,solids:90,pac:0,pod:0,cat:'stab'},
+{id:21,name:'Guar Gum',fat:0,sugar:0,msnf:0,solids:90,pac:0,pod:0,cat:'stab'},
+{id:22,name:'Kappa Carrageenan',fat:0,sugar:0,msnf:0,solids:90,pac:0,pod:0,cat:'stab'},
+{id:23,name:'Locust Bean Gum',fat:0,sugar:0,msnf:0,solids:90,pac:0,pod:0,cat:'stab'},
+{id:30,name:'Cacao 22-24%',fat:23,sugar:0,msnf:0,solids:97,pac:0,pod:0,cat:'choc'},
+{id:31,name:'Callebaut 70.5%',fat:41,sugar:28,msnf:0,solids:99,pac:28,pod:28,cat:'choc'},
+{id:32,name:'Chocolate 66%',fat:40,sugar:30,msnf:0,solids:99,pac:30,pod:30,cat:'choc'},
+{id:40,name:'Hazelnut Paste',fat:61,sugar:6,msnf:0,solids:98,pac:6,pod:6,cat:'nuts'},
+{id:41,name:'Pistachio Paste',fat:54,sugar:8,msnf:0,solids:98,pac:8,pod:8,cat:'nuts'},
+{id:50,name:'Boiron Coconut',fat:24,sugar:3,msnf:0,solids:31,pac:5,pod:5,cat:'fruit'},
+{id:51,name:'Boiron Blueberry',fat:.3,sugar:10,msnf:0,solids:13,pac:19,pod:19,cat:'fruit'},
+{id:52,name:'Strawberry Purée',fat:.3,sugar:5,msnf:0,solids:8,pac:10,pod:10,cat:'fruit'},
+{id:53,name:'Passion Fruit Purée',fat:.7,sugar:11,msnf:0,solids:23,pac:21,pod:21,cat:'fruit'},
+{id:54,name:'Rhubarb Strawberry Purée',fat:.2,sugar:4,msnf:0,solids:7,pac:8,pod:8,cat:'fruit'},
+{id:55,name:'Lemon Juice',fat:0,sugar:2.5,msnf:0,solids:3,pac:5,pod:5,cat:'fruit'},
+{id:60,name:'Coconut Oil',fat:100,sugar:0,msnf:0,solids:100,pac:0,pod:0,cat:'fat'},
+{id:61,name:'Olive Oil',fat:100,sugar:0,msnf:0,solids:100,pac:0,pod:0,cat:'fat'},
+{id:70,name:'Water',fat:0,sugar:0,msnf:0,solids:0,pac:0,pod:0,cat:'other'},
+{id:71,name:'Sea Salt',fat:0,sugar:0,msnf:0,solids:100,pac:0,pod:0,cat:'other'},
+];
+const DEF_RECIPES=[
+{id:1,name:'Chocolate Sorbet',type:'sorbet',items:[{ingId:70,amt:2600},{ingId:10,amt:800},{ingId:11,amt:240},{ingId:16,amt:100},{ingId:20,amt:13.5},{ingId:30,amt:240}]},
+{id:2,name:'Buttermilk Gelato',type:'gelato',items:[{ingId:1,amt:1431},{ingId:2,amt:858},{ingId:5,amt:716},{ingId:10,amt:626},{ingId:11,amt:179},{ingId:12,amt:90},{ingId:4,amt:90},{ingId:20,amt:13.5}]},
+{id:3,name:'Chocolate Gelato w/ Callebaut',type:'gelato',items:[{ingId:1,amt:2405},{ingId:12,amt:185},{ingId:11,amt:148},{ingId:4,amt:111},{ingId:30,amt:67},{ingId:10,amt:259},{ingId:20,amt:13.5},{ingId:31,amt:740},{ingId:15,amt:74}]},
+{id:4,name:'Blueberry-Coconut Sorbet',type:'sorbet',items:[{ingId:50,amt:998},{ingId:51,amt:1996},{ingId:10,amt:499},{ingId:12,amt:200},{ingId:11,amt:200},{ingId:70,amt:100},{ingId:20,amt:13.5}]},
+{id:5,name:'Strawberry Gelato',type:'gelato',items:[{ingId:52,amt:1186},{ingId:1,amt:822},{ingId:3,amt:889},{ingId:10,amt:267},{ingId:11,amt:283},{ingId:12,amt:118},{ingId:4,amt:89},{ingId:20,amt:13.5},{ingId:70,amt:334}]},
+{id:6,name:'Passion Fruit Sorbet',type:'sorbet',items:[{ingId:53,amt:1200},{ingId:55,amt:40},{ingId:10,amt:720},{ingId:11,amt:120},{ingId:12,amt:160},{ingId:20,amt:20},{ingId:70,amt:1420},{ingId:14,amt:320}]},
+{id:7,name:'Coconut-Vanilla Gelato',type:'gelato',items:[{ingId:3,amt:68},{ingId:1,amt:1689},{ingId:50,amt:1351},{ingId:10,amt:676},{ingId:11,amt:68},{ingId:12,amt:68},{ingId:20,amt:13.5},{ingId:60,amt:68}]},
+{id:8,name:'Salted Caramel Gelato',type:'gelato',items:[{ingId:10,amt:579},{ingId:71,amt:16},{ingId:20,amt:13.5},{ingId:1,amt:2597},{ingId:3,amt:480},{ingId:4,amt:180},{ingId:13,amt:105},{ingId:14,amt:80}]},
+{id:9,name:'Fior di Latte',type:'gelato',items:[{ingId:1,amt:2232},{ingId:2,amt:750},{ingId:4,amt:150},{ingId:10,amt:400},{ingId:11,amt:120},{ingId:12,amt:336},{ingId:20,amt:8},{ingId:21,amt:5},{ingId:22,amt:2}]},
+{id:10,name:'Fior di Latte TEST (Glucose Syrup)',type:'gelato',items:[{ingId:1,amt:1115},{ingId:2,amt:375},{ingId:4,amt:75},{ingId:10,amt:200},{ingId:11,amt:60},{ingId:12,amt:168},{ingId:20,amt:4},{ingId:21,amt:2.5},{ingId:22,amt:1}]},
+{id:11,name:'Lemon Olive Oil Gelato',type:'gelato',items:[{ingId:1,amt:1400},{ingId:2,amt:800},{ingId:4,amt:90},{ingId:10,amt:200},{ingId:11,amt:150},{ingId:12,amt:280},{ingId:20,amt:13.5},{ingId:61,amt:80},{ingId:55,amt:100}]},
+{id:12,name:'Rhubarb Strawberry Gelato',type:'gelato',items:[{ingId:54,amt:2308},{ingId:1,amt:1730},{ingId:2,amt:1730},{ingId:10,amt:520},{ingId:11,amt:720},{ingId:12,amt:230},{ingId:4,amt:174},{ingId:20,amt:13.5},{ingId:70,amt:576}]},
+];
+const TGTS={gelato:{fat:{min:6,max:10,ideal:9},sugar:{min:18,max:26,ideal:25},msnf:{min:6,max:12,ideal:9},solids:{min:35,max:42,ideal:38}},sorbet:{fat:{min:0,max:3,ideal:0},sugar:{min:24,max:32,ideal:28},msnf:{min:0,max:2,ideal:0},solids:{min:28,max:38,ideal:32}}};
+const getIng=id=>INGS.find(i=>i.id===id);
+const calc=items=>{let tw=0,tf=0,ts=0,tm=0,tso=0,tpac=0,tpod=0;items.forEach(it=>{const ing=getIng(it.ingId);if(!ing)return;tw+=it.amt;tf+=(it.amt*ing.fat)/100;ts+=(it.amt*ing.sugar)/100;tm+=(it.amt*ing.msnf)/100;tso+=(it.amt*ing.solids)/100;tpac+=(it.amt*ing.pac)/100;tpod+=(it.amt*ing.pod)/100});if(tw===0)return{tw:0,fat:0,sugar:0,msnf:0,solids:0,fp:0,pod:0};return{tw,fat:(tf/tw)*100,sugar:(ts/tw)*100,msnf:(tm/tw)*100,solids:(tso/tw)*100,fp:-(tpac/tw)*.1,pod:tpod/tw}};
+const getSt=(v,t)=>{if(!t)return'good';if(v>=t.min&&v<=t.max)return'good';if(Math.abs(v-t.ideal)<=(t.max-t.min)*.6)return'warn';return'bad'};
+function PinScreen({onUnlock}){const[pin,setPin]=useState('');const[err,setErr]=useState(false);const handleKey=k=>{if(err)setErr(false);if(k==='back')return setPin(p=>p.slice(0,-1));if(pin.length<4){const np=pin+k;setPin(np);if(np.length===4){if(np==='0119')setTimeout(onUnlock,150);else{setErr(true);setTimeout(()=>{setPin('');setErr(false)},400)}}}};return(<div className="pin-screen"><div className="pin-logo">🍨</div><h1 className="pin-title">Gelato Formulator</h1><p className="pin-sub">Enter PIN to continue</p><div className="pin-dots">{[0,1,2,3].map(i=><div key={i} className={`pin-dot ${pin.length>i?'filled':''} ${err?'error':''}`}/>)}</div><div className="pin-pad">{[1,2,3,4,5,6,7,8,9,'',0,'←'].map((k,i)=><button key={i} className={`pin-key ${k===''?'empty':''}`} onClick={()=>k!==''&&handleKey(k==='←'?'back':String(k))}>{k}</button>)}</div></div>)}
+function App(){const[unlocked,setUnlocked]=useState(false);const[tab,setTab]=useState('recipes');const[recipes,setRecipes]=useState([]);const[filter,setFilter]=useState('all');const[selRecipe,setSelRecipe]=useState(null);const[editMode,setEditMode]=useState(false);const[showNew,setShowNew]=useState(false);const[showAddIng,setShowAddIng]=useState(false);
+useEffect(()=>{const saved=localStorage.getItem('gelato-v4');if(saved)setRecipes(JSON.parse(saved));else{setRecipes(DEF_RECIPES);localStorage.setItem('gelato-v4',JSON.stringify(DEF_RECIPES))}if(sessionStorage.getItem('gelato-unlocked'))setUnlocked(true)},[]);
+useEffect(()=>{if(recipes.length)localStorage.setItem('gelato-v4',JSON.stringify(recipes))},[recipes]);
+const handleUnlock=()=>{setUnlocked(true);sessionStorage.setItem('gelato-unlocked','1')};
+const filtered=useMemo(()=>filter==='all'?recipes:recipes.filter(r=>r.type===filter),[recipes,filter]);
+const handleSave=r=>{setRecipes(prev=>{const idx=prev.findIndex(x=>x.id===r.id);if(idx>=0){const u=[...prev];u[idx]=r;return u}return[...prev,{...r,id:Date.now()}]});setSelRecipe(r);setEditMode(false);setShowNew(false)};
+const handleDelete=id=>{if(confirm('Delete this recipe?')){setRecipes(p=>p.filter(r=>r.id!==id));setSelRecipe(null)}};
+const handleDupe=r=>{const nr={...r,id:Date.now(),name:`${r.name} (Copy)`,items:[...r.items]};setRecipes(p=>[...p,nr]);setSelRecipe(nr)};
+const handleExport=()=>{const blob=new Blob([JSON.stringify(recipes,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`gelato-${new Date().toISOString().split('T')[0]}.json`;a.click()};
+const handleImport=()=>{const inp=document.createElement('input');inp.type='file';inp.accept='.json';inp.onchange=e=>{const reader=new FileReader();reader.onload=ev=>{try{const d=JSON.parse(ev.target.result);if(Array.isArray(d)){setRecipes(d);alert(`Imported ${d.length} recipes`)}}catch{alert('Invalid file')}};reader.readAsText(e.target.files[0])};inp.click()};
+const handleReset=()=>{if(confirm('Reset all recipes to defaults?')){setRecipes(DEF_RECIPES);localStorage.setItem('gelato-v4',JSON.stringify(DEF_RECIPES));setSelRecipe(null)}};
+if(!unlocked)return<PinScreen onUnlock={handleUnlock}/>;
+return(<div className="app"><header className="header"><div className="header-top"><div className="header-brand"><span className="header-icon">🍨</span><span className="header-title">Gelato Formulator</span></div><div className="header-btns"><button className="icon-btn" onClick={handleExport}>📤</button><button className="icon-btn" onClick={handleImport}>📥</button></div></div><div className="tabs"><button className={`tab ${tab==='recipes'?'active':''}`} onClick={()=>{setTab('recipes');setSelRecipe(null)}}>Recipes</button><button className={`tab ${tab==='ingredients'?'active':''}`} onClick={()=>setTab('ingredients')}>Ingredients</button><button className={`tab ${tab==='settings'?'active':''}`} onClick={()=>setTab('settings')}>Settings</button></div></header>
+<main className="content">{tab==='recipes'&&!selRecipe&&<><div className="page-header"><div><h2 className="page-title">Recipes</h2><span className="page-sub">{filtered.length} recipes</span></div><button className="add-btn" onClick={()=>setShowNew(true)}>+ New Recipe</button></div><div className="filters">{['all','gelato','sorbet'].map(f=><button key={f} className={`filter ${filter===f?'active':''}`} onClick={()=>setFilter(f)}>{f.charAt(0).toUpperCase()+f.slice(1)}</button>)}</div>{filtered.length===0?<div className="empty"><div className="empty-icon">📝</div><h3 className="empty-title">No recipes yet</h3><p className="empty-text">Create your first recipe</p><button className="add-btn" onClick={()=>setShowNew(true)}>+ New Recipe</button></div>:<div className="recipe-grid">{filtered.map(r=><RecipeCard key={r.id} recipe={r} onClick={()=>setSelRecipe({...r})}/>)}</div>}</>}
+{tab==='recipes'&&selRecipe&&<RecipeDetail recipe={selRecipe} editMode={editMode} setEditMode={setEditMode} onBack={()=>setSelRecipe(null)} onSave={handleSave} onDelete={()=>handleDelete(selRecipe.id)} onDupe={()=>handleDupe(selRecipe)} onChange={setSelRecipe} showAddIng={showAddIng} setShowAddIng={setShowAddIng}/>}
+{tab==='ingredients'&&<IngredientList/>}{tab==='settings'&&<Settings count={recipes.length} onReset={handleReset}/>}</main>
+{showNew&&<NewRecipeModal onClose={()=>setShowNew(false)} onSave={handleSave}/>}</div>)}
+function RecipeCard({recipe,onClick}){const c=calc(recipe.items);const t=TGTS[recipe.type];return(<div className="recipe-card" onClick={onClick}><div className="recipe-top"><div className="recipe-info"><span className="recipe-emoji">{recipe.type==='gelato'?'🍨':'🍧'}</span><div><div className="recipe-name">{recipe.name}</div><div className="recipe-meta">{recipe.items.length} ing • {c.tw.toFixed(0)}g</div></div></div><span className={`badge badge-${recipe.type}`}>{recipe.type}</span></div><div className="stats"><div className="stat-box"><div className={`stat-val ${getSt(c.fat,t.fat)}`}>{c.fat.toFixed(1)}%</div><div className="stat-lbl">Fat</div></div><div className="stat-box"><div className={`stat-val ${getSt(c.sugar,t.sugar)}`}>{c.sugar.toFixed(1)}%</div><div className="stat-lbl">Sugar</div></div><div className="stat-box"><div className={`stat-val ${getSt(c.solids,t.solids)}`}>{c.solids.toFixed(1)}%</div><div className="stat-lbl">Solids</div></div><div className="stat-box"><div className="stat-val">{c.fp.toFixed(1)}°</div><div className="stat-lbl">FP</div></div></div></div>)}
+function RecipeDetail({recipe,editMode,setEditMode,onBack,onSave,onDelete,onDupe,onChange,showAddIng,setShowAddIng}){const c=calc(recipe.items);const t=TGTS[recipe.type];const updateAmt=(idx,amt)=>{const ni=[...recipe.items];ni[idx]={...ni[idx],amt:parseFloat(amt)||0};onChange({...recipe,items:ni})};const removeIng=idx=>onChange({...recipe,items:recipe.items.filter((_,i)=>i!==idx)});const addIng=(ingId,amt)=>{onChange({...recipe,items:[...recipe.items,{ingId,amt}]});setShowAddIng(false)};
+return(<div><div className="detail-header"><button className="back-btn" onClick={onBack}>←</button><div className="detail-title"><h2 className="detail-name">{recipe.name}</h2><div className="detail-sub">{recipe.type} • {c.tw.toFixed(0)}g</div></div><div className="detail-btns">{editMode?<button className="icon-btn" onClick={()=>onSave(recipe)} style={{background:'var(--success)',color:'white'}}>✓</button>:<><button className="icon-btn" onClick={()=>setEditMode(true)}>✏️</button><button className="icon-btn" onClick={onDupe}>📋</button><button className="icon-btn" onClick={onDelete} style={{color:'var(--danger)'}}>🗑️</button></>}</div></div>
+<div className="stats-panel"><div className="stats-grid"><StatCard label="Fat" value={c.fat} target={t.fat} unit="%"/><StatCard label="Sugar" value={c.sugar} target={t.sugar} unit="%"/><StatCard label="MSNF" value={c.msnf} target={t.msnf} unit="%"/><StatCard label="Solids" value={c.solids} target={t.solids} unit="%"/><StatCard label="F.Point" value={c.fp} unit="°C"/><StatCard label="POD" value={c.pod} unit=""/></div></div>
+<div className="ing-section"><div className="ing-header"><span className="ing-title">Ingredients</span>{editMode&&<button className="add-btn" onClick={()=>setShowAddIng(true)} style={{padding:'8px 12px',fontSize:'12px'}}>+ Add</button>}</div>{recipe.items.map((it,idx)=>{const ing=getIng(it.ingId);if(!ing)return null;return(<div key={idx} className="ing-row"><span className="ing-name">{ing.name}</span>{editMode?<input type="number" value={it.amt} onChange={e=>updateAmt(idx,e.target.value)} className="form-input" style={{width:'90px',textAlign:'right',padding:'8px'}}/>:<span className="ing-amt">{it.amt}g</span>}{editMode&&<button className="ing-remove" onClick={()=>removeIng(idx)}>×</button>}</div>)})}<div className="total-row"><span>Total</span><span className="total-val">{c.tw.toFixed(0)}g</span></div></div>
+{showAddIng&&<AddIngModal onClose={()=>setShowAddIng(false)} onAdd={addIng} existingIds={recipe.items.map(i=>i.ingId)}/>}</div>)}
+function StatCard({label,value,target,unit}){const st=getSt(value,target);return(<div className="stat-card"><div className="stat-card-top"><span className="stat-card-lbl">{label}</span>{target&&<span className={`stat-card-badge ${st}`}>{st==='good'?'✓':st==='warn'?'~':'!'}</span>}</div><div className={`stat-card-val ${st}`}>{value.toFixed(1)}{unit}</div>{target&&<div className="stat-card-target">{target.min}–{target.max}{unit}</div>}</div>)}
+function NewRecipeModal({onClose,onSave}){const[name,setName]=useState('');const[type,setType]=useState('gelato');const handleSubmit=()=>{if(name.trim())onSave({id:Date.now(),name:name.trim(),type,items:[]})};return(<div className="modal-overlay" onClick={onClose}><div className="modal" onClick={e=>e.stopPropagation()}><div className="modal-header"><h3 className="modal-title">New Recipe</h3><button className="modal-close" onClick={onClose}>×</button></div><div className="modal-body"><div className="form-group"><label className="form-label">Recipe Name</label><input type="text" className="form-input" placeholder="e.g. Pistachio Gelato" value={name} onChange={e=>setName(e.target.value)} autoFocus/></div><div className="form-group"><label className="form-label">Type</label><select className="form-select" value={type} onChange={e=>setType(e.target.value)}><option value="gelato">Gelato</option><option value="sorbet">Sorbet</option></select></div></div><div className="modal-footer"><button className="btn btn-secondary" onClick={onClose}>Cancel</button><button className="btn btn-primary" onClick={handleSubmit} disabled={!name.trim()}>Create</button></div></div></div>)}
+function AddIngModal({onClose,onAdd,existingIds}){const[search,setSearch]=useState('');const[selId,setSelId]=useState(null);const[amt,setAmt]=useState('');const filtered=INGS.filter(i=>!existingIds.includes(i.id)&&i.name.toLowerCase().includes(search.toLowerCase()));const handleAdd=()=>{if(selId&&amt)onAdd(selId,parseFloat(amt))};return(<div className="modal-overlay" onClick={onClose}><div className="modal" onClick={e=>e.stopPropagation()}><div className="modal-header"><h3 className="modal-title">Add Ingredient</h3><button className="modal-close" onClick={onClose}>×</button></div><div className="modal-body"><div className="form-group search-box"><label className="form-label">Search Ingredient</label><input type="text" className="form-input" placeholder="Type to search..." value={search} onChange={e=>{setSearch(e.target.value);setSelId(null)}} autoFocus/>{search&&!selId&&<div className="search-results">{filtered.slice(0,8).map(i=><div key={i.id} className="search-item" onClick={()=>{setSelId(i.id);setSearch(i.name)}}><div className="search-item-name">{i.name}</div><div className="search-item-meta">Fat: {i.fat}% • Sugar: {i.sugar}% • Solids: {i.solids}%</div></div>)}{filtered.length===0&&<div className="search-item"><div className="search-item-name" style={{color:'var(--muted)'}}>No results</div></div>}</div>}</div>{selId&&<div className="form-group"><label className="form-label">Amount (grams)</label><input type="number" className="form-input" placeholder="e.g. 500" value={amt} onChange={e=>setAmt(e.target.value)}/></div>}</div><div className="modal-footer"><button className="btn btn-secondary" onClick={onClose}>Cancel</button><button className="btn btn-primary" onClick={handleAdd} disabled={!selId||!amt}>Add</button></div></div></div>)}
+function IngredientList(){const[search,setSearch]=useState('');const[cat,setCat]=useState('all');const cats=['all','dairy','sugar','stab','choc','fruit','nuts','fat','other'];const filtered=INGS.filter(i=>(cat==='all'||i.cat===cat)&&i.name.toLowerCase().includes(search.toLowerCase()));return(<><div className="page-header"><div><h2 className="page-title">Ingredients</h2><span className="page-sub">{INGS.length} items</span></div></div><div className="form-group"><input type="text" className="form-input" placeholder="Search..." value={search} onChange={e=>setSearch(e.target.value)}/></div><div className="filters" style={{marginBottom:'16px'}}>{cats.map(c=><button key={c} className={`filter ${cat===c?'active':''}`} onClick={()=>setCat(c)}>{c==='stab'?'Stabilizer':c.charAt(0).toUpperCase()+c.slice(1)}</button>)}</div><div className="ing-section">{filtered.map(i=><div key={i.id} className="ing-row" style={{flexWrap:'wrap',gap:'6px'}}><span className="ing-name" style={{flex:'1 1 100%',marginBottom:'2px'}}>{i.name}</span><span style={{fontSize:'11px',color:'var(--muted)'}}>Fat: {i.fat}%</span><span style={{fontSize:'11px',color:'var(--muted)'}}>Sugar: {i.sugar}%</span><span style={{fontSize:'11px',color:'var(--muted)'}}>MSNF: {i.msnf}%</span><span style={{fontSize:'11px',color:'var(--muted)'}}>Solids: {i.solids}%</span></div>)}</div></>)}
+function Settings({count,onReset}){return(<><h2 className="page-title" style={{marginBottom:'16px'}}>Settings</h2><div className="settings-card"><div className="settings-card-title">App Info</div><div className="settings-row"><span className="settings-text">Version</span><span className="settings-value">{V}</span></div><div className="settings-row"><span className="settings-text">Build</span><span className="settings-value">{D}</span></div><div className="settings-row"><span className="settings-text">Recipes</span><span className="settings-value">{count}</span></div><div className="settings-row"><span className="settings-text">Ingredients</span><span className="settings-value">{INGS.length}</span></div></div><div className="settings-card"><div className="settings-card-title">Gelato Targets (Luca)</div><div className="settings-row"><span className="settings-text">Sugar</span><span className="settings-value">25%</span></div><div className="settings-row"><span className="settings-text">Fat</span><span className="settings-value">9%</span></div><div className="settings-row"><span className="settings-text">Total Solids</span><span className="settings-value">38%</span></div><div className="settings-row"><span className="settings-text">Freezing Point</span><span className="settings-value">-2.9°C</span></div><div className="settings-row"><span className="settings-text">SMP Range</span><span className="settings-value">2.5–5%</span></div></div><div className="settings-card settings-danger"><div className="settings-card-title">Danger Zone</div><div className="settings-row" onClick={onReset}><span className="settings-text">Reset All Data</span><span className="settings-value">→</span></div></div></>)}
+ReactDOM.render(<App/>,document.getElementById('root'));
+</script>
 </body>
 </html>
