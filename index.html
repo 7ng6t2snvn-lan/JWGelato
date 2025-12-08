@@ -4,139 +4,354 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="theme-color" content="#0f172a">
   <title>Gelato Formulator</title>
   <link rel="manifest" href="./manifest.json">
+  <link rel="apple-touch-icon" href="./icon-192.png">
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
-  <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <style>
-    *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-    :root{--bg:#0f172a;--card:#1e293b;--input:#334155;--accent:#f59e0b;--success:#10b981;--warn:#f59e0b;--danger:#ef4444;--text:#f8fafc;--text2:#94a3b8;--muted:#64748b;--border:#334155;--r:12px}
-    body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
-    .pin-screen{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;background:linear-gradient(180deg,#0f172a,#1e293b)}
-    .pin-logo{font-size:56px;margin-bottom:16px}.pin-title{font-size:28px;font-weight:700;margin-bottom:8px}.pin-sub{font-size:14px;color:var(--text2);margin-bottom:40px}
-    .pin-dots{display:flex;gap:16px;margin-bottom:40px}.pin-dot{width:14px;height:14px;border-radius:50%;border:2px solid var(--accent);transition:all .15s}.pin-dot.filled{background:var(--accent)}.pin-dot.error{border-color:var(--danger);background:var(--danger);animation:shake .3s}
-    @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
-    .pin-pad{display:grid;grid-template-columns:repeat(3,72px);gap:14px}.pin-key{width:72px;height:72px;border-radius:50%;border:1px solid var(--border);background:var(--card);color:var(--text);font-size:26px;font-weight:600;cursor:pointer}.pin-key:active{background:var(--accent);transform:scale(.95)}.pin-key.empty{visibility:hidden}
-    .app{min-height:100vh;display:flex;flex-direction:column}
-    .header{background:var(--card);border-bottom:1px solid var(--border);padding:16px 20px;position:sticky;top:0;z-index:100}
-    .header-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}.header-brand{display:flex;align-items:center;gap:10px}.header-icon{font-size:26px}.header-title{font-size:20px;font-weight:700}
-    .header-btns{display:flex;gap:8px}.icon-btn{width:38px;height:38px;border-radius:8px;border:1px solid var(--border);background:transparent;color:var(--text2);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center}.icon-btn:hover{background:var(--input);color:var(--text)}
-    .tabs{display:flex;gap:4px;background:var(--bg);padding:4px;border-radius:var(--r)}.tab{flex:1;padding:10px 12px;border-radius:8px;border:none;background:transparent;color:var(--text2);font-size:13px;font-weight:600;cursor:pointer}.tab.active{background:var(--accent);color:var(--bg)}
-    .content{flex:1;padding:20px;padding-bottom:40px}
-    .page-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}.page-title{font-size:20px;font-weight:700}.page-sub{font-size:13px;color:var(--muted)}
-    .add-btn{display:flex;align-items:center;gap:6px;padding:10px 16px;border-radius:8px;border:none;background:var(--accent);color:var(--bg);font-size:14px;font-weight:600;cursor:pointer}
-    .filters{display:flex;gap:8px;margin-bottom:16px;overflow-x:auto}.filter{padding:8px 14px;border-radius:20px;border:1px solid var(--border);background:transparent;color:var(--text2);font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap}.filter.active{background:rgba(245,158,11,.15);border-color:var(--accent);color:var(--accent)}
-    .recipe-grid{display:flex;flex-direction:column;gap:12px}
-    .recipe-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:16px;cursor:pointer}.recipe-card:hover{border-color:var(--accent)}
-    .recipe-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px}.recipe-info{display:flex;align-items:center;gap:12px}.recipe-emoji{font-size:36px}.recipe-name{font-size:16px;font-weight:600;margin-bottom:2px}.recipe-meta{font-size:12px;color:var(--muted)}
-    .badge{padding:4px 10px;border-radius:10px;font-size:10px;font-weight:700;text-transform:uppercase}.badge-gelato{background:rgba(245,158,11,.15);color:var(--accent)}.badge-sorbet{background:rgba(168,85,247,.15);color:#c084fc}
-    .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.stat-box{text-align:center;padding:10px 6px;background:var(--bg);border-radius:8px}.stat-val{font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:600}.stat-val.good{color:var(--success)}.stat-val.warn{color:var(--warn)}.stat-val.bad{color:var(--danger)}.stat-lbl{font-size:10px;color:var(--muted);text-transform:uppercase;margin-top:2px}
-    .detail-header{display:flex;align-items:center;gap:12px;margin-bottom:20px}.back-btn{width:40px;height:40px;border-radius:8px;border:1px solid var(--border);background:transparent;color:var(--text);font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center}.detail-title{flex:1}.detail-name{font-size:22px;font-weight:700}.detail-sub{font-size:13px;color:var(--muted)}.detail-btns{display:flex;gap:8px}
-    .stats-panel{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:16px;margin-bottom:16px}.stats-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}@media(min-width:400px){.stats-grid{grid-template-columns:repeat(3,1fr)}}
-    .stat-card{background:var(--bg);border-radius:8px;padding:12px}.stat-card-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px}.stat-card-lbl{font-size:11px;color:var(--muted);text-transform:uppercase}.stat-card-badge{font-size:9px;padding:2px 6px;border-radius:4px;font-weight:600}.stat-card-badge.good{background:rgba(16,185,129,.15);color:var(--success)}.stat-card-badge.warn{background:rgba(245,158,11,.15);color:var(--warn)}.stat-card-badge.bad{background:rgba(239,68,68,.15);color:var(--danger)}.stat-card-val{font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:600}.stat-card-target{font-size:10px;color:var(--muted)}
-    .ing-section{background:var(--card);border:1px solid var(--border);border-radius:var(--r);overflow:hidden}.ing-header{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--border)}.ing-title{font-size:14px;font-weight:600}
-    .ing-row{display:flex;align-items:center;padding:12px 16px;border-bottom:1px solid var(--border)}.ing-row:last-child{border-bottom:none}.ing-name{flex:1;font-size:14px}.ing-amt{font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:500;color:var(--accent);min-width:80px;text-align:right}.ing-remove{width:32px;height:32px;border-radius:6px;border:none;background:transparent;color:var(--muted);font-size:18px;cursor:pointer;margin-left:8px}.ing-remove:hover{background:rgba(239,68,68,.15);color:var(--danger)}
-    .total-row{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;background:var(--bg);font-weight:600}.total-val{font-family:'JetBrains Mono',monospace;color:var(--accent)}
-    .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(4px);display:flex;align-items:flex-end;justify-content:center;z-index:1000}@media(min-width:500px){.modal-overlay{align-items:center;padding:20px}}
-    .modal{background:var(--card);border-radius:var(--r) var(--r) 0 0;width:100%;max-width:480px;max-height:90vh;overflow:hidden;display:flex;flex-direction:column}@media(min-width:500px){.modal{border-radius:var(--r)}}
-    .modal-header{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--border)}.modal-title{font-size:18px;font-weight:600}.modal-close{width:36px;height:36px;border-radius:8px;border:none;background:transparent;color:var(--muted);font-size:24px;cursor:pointer}
-    .modal-body{flex:1;overflow-y:auto;padding:20px}.modal-footer{padding:16px 20px;border-top:1px solid var(--border);display:flex;gap:12px}
-    .btn{flex:1;padding:14px 20px;border-radius:8px;border:none;font-size:14px;font-weight:600;cursor:pointer}.btn-primary{background:var(--accent);color:var(--bg)}.btn-secondary{background:var(--input);color:var(--text)}.btn:disabled{opacity:.5;cursor:not-allowed}
-    .form-group{margin-bottom:16px}.form-label{display:block;font-size:12px;font-weight:500;color:var(--text2);margin-bottom:6px}.form-input{width:100%;padding:12px 14px;border-radius:8px;border:1px solid var(--border);background:var(--input);color:var(--text);font-size:15px}.form-input:focus{outline:none;border-color:var(--accent)}.form-select{width:100%;padding:12px 14px;border-radius:8px;border:1px solid var(--border);background:var(--input);color:var(--text);font-size:15px;cursor:pointer}
-    .search-box{position:relative}.search-results{position:absolute;top:100%;left:0;right:0;background:var(--card);border:1px solid var(--border);border-radius:8px;margin-top:4px;max-height:220px;overflow-y:auto;z-index:10}.search-item{padding:12px 14px;cursor:pointer;border-bottom:1px solid var(--border)}.search-item:last-child{border-bottom:none}.search-item:hover{background:var(--input)}.search-item-name{font-size:14px;font-weight:500}.search-item-meta{font-size:11px;color:var(--muted);margin-top:2px}
-    .settings-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);margin-bottom:16px;overflow:hidden}.settings-card-title{padding:14px 16px;font-size:13px;font-weight:600;border-bottom:1px solid var(--border)}.settings-row{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--border);cursor:pointer}.settings-row:last-child{border-bottom:none}.settings-row:hover{background:var(--bg)}.settings-text{font-size:14px}.settings-value{font-size:14px;color:var(--muted)}.settings-danger .settings-card-title{color:var(--danger)}.settings-danger .settings-row{color:var(--danger)}
-    .empty{text-align:center;padding:60px 20px}.empty-icon{font-size:56px;margin-bottom:16px;opacity:.4}.empty-title{font-size:18px;font-weight:600;margin-bottom:8px}.empty-text{color:var(--muted);margin-bottom:24px}
+    * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    :root {
+      --bg-base: #0f172a; --bg-surface: #1e293b; --bg-elevated: #334155; --bg-hover: #3b4a63;
+      --accent: #f59e0b; --accent-light: #fbbf24; --accent-soft: rgba(245, 158, 11, 0.15);
+      --success: #10b981; --success-soft: rgba(16, 185, 129, 0.15);
+      --warning: #f59e0b; --warning-soft: rgba(245, 158, 11, 0.15);
+      --danger: #ef4444; --danger-soft: rgba(239, 68, 68, 0.15);
+      --info: #3b82f6; --info-soft: rgba(59, 130, 246, 0.15);
+      --text-primary: #f8fafc; --text-secondary: #94a3b8; --text-muted: #64748b;
+      --border: #334155; --border-light: #475569;
+    }
+    body { font-family: 'DM Sans', -apple-system, sans-serif; background: var(--bg-base); color: var(--text-primary); min-height: 100vh; }
+    html { height: -webkit-fill-available; }
+    #root { min-height: 100vh; display: flex; flex-direction: column; }
+    .pin-screen { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 24px; background: linear-gradient(145deg, var(--bg-base), #1a1a2e); }
+    .pin-logo { width: 80px; height: 80px; background: var(--accent-soft); border-radius: 24px; display: flex; align-items: center; justify-content: center; font-size: 40px; margin-bottom: 24px; }
+    .pin-title { font-size: 24px; font-weight: 700; margin-bottom: 8px; }
+    .pin-subtitle { color: var(--text-secondary); margin-bottom: 32px; }
+    .pin-dots { display: flex; gap: 16px; margin-bottom: 32px; }
+    .pin-dot { width: 16px; height: 16px; border-radius: 50%; background: var(--bg-elevated); border: 2px solid var(--border-light); transition: all 0.2s; }
+    .pin-dot.filled { background: var(--accent); border-color: var(--accent); }
+    .pin-dot.error { background: var(--danger); border-color: var(--danger); animation: shake 0.4s; }
+    @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-8px)} 75%{transform:translateX(8px)} }
+    .pin-keypad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .pin-key { width: 72px; height: 72px; border-radius: 50%; background: var(--bg-surface); border: 1px solid var(--border); color: var(--text-primary); font-size: 28px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+    .pin-key:active { background: var(--bg-elevated); transform: scale(0.95); }
+    .pin-key.empty { visibility: hidden; }
+    .app-container { flex: 1; display: flex; flex-direction: column; }
+    .header { background: var(--bg-surface); border-bottom: 1px solid var(--border); padding: 16px 20px; position: sticky; top: 0; z-index: 100; }
+    .header-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+    .header-brand { display: flex; align-items: center; gap: 12px; }
+    .header-icon { width: 40px; height: 40px; background: var(--accent-soft); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 22px; }
+    .header-title { font-size: 18px; font-weight: 700; }
+    .header-btn { width: 40px; height: 40px; border-radius: 12px; background: var(--bg-elevated); border: none; color: var(--text-secondary); font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+    .tabs { display: flex; gap: 4px; background: var(--bg-base); border-radius: 12px; padding: 4px; }
+    .tab { flex: 1; padding: 10px 16px; border-radius: 10px; border: none; background: transparent; color: var(--text-muted); font-size: 14px; font-weight: 600; cursor: pointer; }
+    .tab.active { background: var(--accent); color: var(--bg-base); }
+    .content { flex: 1; padding: 20px; overflow-y: auto; padding-bottom: 100px; }
+    .search-box { position: relative; margin-bottom: 16px; }
+    .search-input { width: 100%; padding: 14px 16px 14px 44px; border-radius: 12px; background: var(--bg-surface); border: 1px solid var(--border); color: var(--text-primary); font-size: 15px; font-family: inherit; }
+    .search-input:focus { outline: none; border-color: var(--accent); }
+    .search-input::placeholder { color: var(--text-muted); }
+    .search-icon { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--text-muted); }
+    .filter-chips { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 8px; margin-bottom: 16px; -webkit-overflow-scrolling: touch; }
+    .filter-chips::-webkit-scrollbar { display: none; }
+    .filter-chip { padding: 8px 14px; border-radius: 20px; border: none; background: var(--bg-surface); color: var(--text-secondary); font-size: 13px; font-weight: 600; cursor: pointer; white-space: nowrap; }
+    .filter-chip.active { background: var(--accent); color: var(--bg-base); }
+    .recipe-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+    .recipe-count { color: var(--text-secondary); font-size: 14px; }
+    .add-btn { display: flex; align-items: center; gap: 8px; padding: 10px 16px; border-radius: 10px; background: var(--accent); border: none; color: var(--bg-base); font-size: 14px; font-weight: 600; cursor: pointer; }
+    .recipe-list { display: flex; flex-direction: column; gap: 12px; }
+    .recipe-card { background: var(--bg-surface); border: 1px solid var(--border); border-radius: 16px; padding: 16px; cursor: pointer; }
+    .recipe-card:hover { border-color: var(--border-light); }
+    .recipe-card-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 12px; }
+    .recipe-card-info { display: flex; align-items: center; gap: 12px; }
+    .recipe-card-icon { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px; }
+    .recipe-card-icon.gelato { background: var(--warning-soft); }
+    .recipe-card-icon.sorbet { background: var(--info-soft); }
+    .recipe-card-name { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
+    .recipe-card-meta { font-size: 13px; color: var(--text-muted); }
+    .recipe-card-badge { padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; text-transform: uppercase; }
+    .recipe-card-badge.gelato { background: var(--warning-soft); color: var(--accent); }
+    .recipe-card-badge.sorbet { background: var(--info-soft); color: var(--info); }
+    .recipe-card-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+    .recipe-stat { text-align: center; padding: 8px; background: var(--bg-base); border-radius: 8px; }
+    .recipe-stat-value { font-size: 15px; font-weight: 700; font-family: 'JetBrains Mono', monospace; }
+    .recipe-stat-value.good { color: var(--success); }
+    .recipe-stat-value.warning { color: var(--warning); }
+    .recipe-stat-value.bad { color: var(--danger); }
+    .recipe-stat-label { font-size: 10px; color: var(--text-muted); text-transform: uppercase; margin-top: 2px; }
+    .detail-header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+    .back-btn { width: 40px; height: 40px; border-radius: 12px; background: var(--bg-surface); border: 1px solid var(--border); color: var(--text-primary); font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+    .detail-title { flex: 1; }
+    .detail-name { font-size: 20px; font-weight: 700; margin-bottom: 4px; }
+    .detail-meta { font-size: 14px; color: var(--text-secondary); }
+    .detail-actions { display: flex; gap: 8px; }
+    .detail-action-btn { width: 40px; height: 40px; border-radius: 12px; background: var(--bg-surface); border: 1px solid var(--border); color: var(--text-secondary); font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+    .detail-action-btn.danger { color: var(--danger); }
+    .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 20px; }
+    .stat-card { background: var(--bg-surface); border: 1px solid var(--border); border-radius: 14px; padding: 14px; }
+    .stat-card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+    .stat-card-label { font-size: 12px; color: var(--text-muted); text-transform: uppercase; }
+    .stat-card-target { font-size: 11px; color: var(--text-muted); }
+    .stat-card-value { font-size: 28px; font-weight: 700; font-family: 'JetBrains Mono', monospace; }
+    .stat-card-value.good { color: var(--success); }
+    .stat-card-value.warning { color: var(--warning); }
+    .stat-card-value.bad { color: var(--danger); }
+    .stat-card-bar { height: 4px; background: var(--bg-elevated); border-radius: 2px; margin-top: 8px; }
+    .stat-card-fill { height: 100%; border-radius: 2px; }
+    .stat-card-fill.good { background: var(--success); }
+    .stat-card-fill.warning { background: var(--warning); }
+    .stat-card-fill.bad { background: var(--danger); }
+    .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+    .section-title { font-size: 14px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; }
+    .section-btn { padding: 8px 14px; border-radius: 8px; background: var(--accent-soft); border: none; color: var(--accent); font-size: 13px; font-weight: 600; cursor: pointer; }
+    .ingredients-list { background: var(--bg-surface); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; }
+    .ingredient-row { display: flex; align-items: center; padding: 14px 16px; border-bottom: 1px solid var(--border); }
+    .ingredient-row:last-child { border-bottom: none; }
+    .ingredient-name { flex: 1; font-size: 15px; }
+    .ingredient-amount-input { background: transparent; border: none; width: 70px; text-align: right; font-family: 'JetBrains Mono'; font-size: 15px; font-weight: 600; color: var(--accent); }
+    .ingredient-amount-input:focus { outline: none; }
+    .ingredient-unit { color: var(--text-muted); margin: 0 12px 0 4px; }
+    .ingredient-remove { width: 32px; height: 32px; border-radius: 8px; background: var(--danger-soft); border: none; color: var(--danger); font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+    .ingredient-total { display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; background: var(--bg-elevated); font-weight: 600; }
+    .ingredient-total-value { font-size: 18px; font-family: 'JetBrains Mono', monospace; color: var(--accent); }
+    .ing-card { background: var(--bg-surface); border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 10px; }
+    .ing-card-name { font-weight: 600; margin-bottom: 6px; }
+    .ing-card-stats { display: flex; flex-wrap: wrap; gap: 8px; }
+    .ing-card-stat { font-size: 12px; color: var(--text-muted); background: var(--bg-base); padding: 4px 8px; border-radius: 6px; }
+    .ing-card-stat span { color: var(--text-primary); font-weight: 600; font-family: 'JetBrains Mono'; }
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); display: flex; align-items: flex-end; justify-content: center; z-index: 1000; padding: 20px; }
+    .modal { background: var(--bg-surface); border-radius: 20px 20px 0 0; width: 100%; max-width: 500px; max-height: 85vh; overflow: hidden; display: flex; flex-direction: column; }
+    .modal-header { display: flex; align-items: center; justify-content: space-between; padding: 20px; border-bottom: 1px solid var(--border); }
+    .modal-title { font-size: 18px; font-weight: 700; }
+    .modal-close { width: 36px; height: 36px; border-radius: 10px; background: var(--bg-elevated); border: none; color: var(--text-secondary); font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+    .modal-content { flex: 1; overflow-y: auto; padding: 20px; }
+    .modal-footer { padding: 16px 20px; border-top: 1px solid var(--border); display: flex; gap: 12px; }
+    .modal-btn { flex: 1; padding: 14px; border-radius: 12px; border: none; font-size: 15px; font-weight: 600; cursor: pointer; }
+    .modal-btn.primary { background: var(--accent); color: var(--bg-base); }
+    .modal-btn.secondary { background: var(--bg-elevated); color: var(--text-primary); }
+    .form-group { margin-bottom: 16px; }
+    .form-label { display: block; font-size: 13px; font-weight: 600; color: var(--text-secondary); margin-bottom: 8px; }
+    .form-input { width: 100%; padding: 14px 16px; border-radius: 12px; background: var(--bg-base); border: 1px solid var(--border); color: var(--text-primary); font-size: 16px; font-family: inherit; }
+    .form-input:focus { outline: none; border-color: var(--accent); }
+    .form-select { width: 100%; padding: 14px 16px; border-radius: 12px; background: var(--bg-base); border: 1px solid var(--border); color: var(--text-primary); font-size: 16px; cursor: pointer; }
+    .search-results { background: var(--bg-elevated); border: 1px solid var(--border); border-radius: 12px; margin-top: 8px; max-height: 250px; overflow-y: auto; }
+    .search-result-item { padding: 12px 16px; cursor: pointer; border-bottom: 1px solid var(--border); }
+    .search-result-item:last-child { border-bottom: none; }
+    .search-result-item:hover { background: var(--bg-hover); }
+    .search-result-name { font-weight: 500; margin-bottom: 4px; }
+    .search-result-meta { font-size: 12px; color: var(--text-muted); }
+    .settings-section { background: var(--bg-surface); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; margin-bottom: 16px; }
+    .settings-section-title { padding: 14px 16px; font-size: 12px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; background: var(--bg-elevated); border-bottom: 1px solid var(--border); }
+    .settings-item { display: flex; align-items: center; justify-content: space-between; padding: 16px; border-bottom: 1px solid var(--border); cursor: pointer; }
+    .settings-item:last-child { border-bottom: none; }
+    .settings-item:hover { background: var(--bg-elevated); }
+    .settings-item-label { font-size: 15px; }
+    .settings-item-value { font-size: 14px; color: var(--text-muted); }
+    .settings-item.danger .settings-item-label { color: var(--danger); }
+    .toast { position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%); background: var(--bg-elevated); border: 1px solid var(--border); padding: 12px 20px; border-radius: 12px; font-size: 14px; font-weight: 500; z-index: 1001; animation: slideUp 0.3s; }
+    @keyframes slideUp { from{opacity:0;transform:translateX(-50%) translateY(20px)} to{opacity:1;transform:translateX(-50%) translateY(0)} }
+    @media (min-width: 768px) { .content { max-width: 600px; margin: 0 auto; } .stats-grid { grid-template-columns: repeat(4, 1fr); } .modal { border-radius: 20px; margin: auto; } }
   </style>
 </head>
 <body>
-<div id="root"></div>
-<script type="text/babel">
-const{useState,useEffect,useMemo}=React;
-const V='4.0.0',D='2025-12-08';
-const INGS=[
-{id:1,name:'Whole Milk 3.6%',fat:3.6,sugar:4.8,msnf:8.9,solids:12.5,pac:4.8,pod:16,cat:'dairy'},
-{id:2,name:'Cream 38%',fat:38,sugar:2.6,msnf:5.2,solids:45.8,pac:2.6,pod:9,cat:'dairy'},
-{id:3,name:'Cream 40%',fat:40,sugar:2.5,msnf:5,solids:47.5,pac:2.5,pod:8,cat:'dairy'},
-{id:4,name:'Skim Milk Powder',fat:.8,sugar:52,msnf:97,solids:97,pac:52,pod:52,cat:'dairy'},
-{id:5,name:'Buttermilk',fat:.9,sugar:4.8,msnf:8.5,solids:9.4,pac:4.8,pod:16,cat:'dairy'},
-{id:10,name:'Sucrose',fat:0,sugar:100,msnf:0,solids:100,pac:100,pod:100,cat:'sugar'},
-{id:11,name:'Dextrose',fat:0,sugar:92,msnf:0,solids:92,pac:180,pod:70,cat:'sugar'},
-{id:12,name:'Glucose Syrup 38DE',fat:0,sugar:80,msnf:0,solids:80,pac:90,pod:45,cat:'sugar'},
-{id:13,name:'Glucose Powder 42DE',fat:0,sugar:95,msnf:0,solids:95,pac:90,pod:45,cat:'sugar'},
-{id:14,name:'Inulin',fat:0,sugar:0,msnf:0,solids:92,pac:10,pod:10,cat:'sugar'},
-{id:15,name:'Trimoline',fat:0,sugar:78,msnf:0,solids:78,pac:190,pod:130,cat:'sugar'},
-{id:16,name:'Maltodextrin',fat:0,sugar:5,msnf:0,solids:95,pac:10,pod:10,cat:'sugar'},
-{id:20,name:'Tara Gum',fat:0,sugar:0,msnf:0,solids:90,pac:0,pod:0,cat:'stab'},
-{id:21,name:'Guar Gum',fat:0,sugar:0,msnf:0,solids:90,pac:0,pod:0,cat:'stab'},
-{id:22,name:'Kappa Carrageenan',fat:0,sugar:0,msnf:0,solids:90,pac:0,pod:0,cat:'stab'},
-{id:23,name:'Locust Bean Gum',fat:0,sugar:0,msnf:0,solids:90,pac:0,pod:0,cat:'stab'},
-{id:30,name:'Cacao 22-24%',fat:23,sugar:0,msnf:0,solids:97,pac:0,pod:0,cat:'choc'},
-{id:31,name:'Callebaut 70.5%',fat:41,sugar:28,msnf:0,solids:99,pac:28,pod:28,cat:'choc'},
-{id:32,name:'Chocolate 66%',fat:40,sugar:30,msnf:0,solids:99,pac:30,pod:30,cat:'choc'},
-{id:40,name:'Hazelnut Paste',fat:61,sugar:6,msnf:0,solids:98,pac:6,pod:6,cat:'nuts'},
-{id:41,name:'Pistachio Paste',fat:54,sugar:8,msnf:0,solids:98,pac:8,pod:8,cat:'nuts'},
-{id:50,name:'Boiron Coconut',fat:24,sugar:3,msnf:0,solids:31,pac:5,pod:5,cat:'fruit'},
-{id:51,name:'Boiron Blueberry',fat:.3,sugar:10,msnf:0,solids:13,pac:19,pod:19,cat:'fruit'},
-{id:52,name:'Strawberry Purée',fat:.3,sugar:5,msnf:0,solids:8,pac:10,pod:10,cat:'fruit'},
-{id:53,name:'Passion Fruit Purée',fat:.7,sugar:11,msnf:0,solids:23,pac:21,pod:21,cat:'fruit'},
-{id:54,name:'Rhubarb Strawberry Purée',fat:.2,sugar:4,msnf:0,solids:7,pac:8,pod:8,cat:'fruit'},
-{id:55,name:'Lemon Juice',fat:0,sugar:2.5,msnf:0,solids:3,pac:5,pod:5,cat:'fruit'},
-{id:60,name:'Coconut Oil',fat:100,sugar:0,msnf:0,solids:100,pac:0,pod:0,cat:'fat'},
-{id:61,name:'Olive Oil',fat:100,sugar:0,msnf:0,solids:100,pac:0,pod:0,cat:'fat'},
-{id:70,name:'Water',fat:0,sugar:0,msnf:0,solids:0,pac:0,pod:0,cat:'other'},
-{id:71,name:'Sea Salt',fat:0,sugar:0,msnf:0,solids:100,pac:0,pod:0,cat:'other'},
-];
-const DEF_RECIPES=[
-{id:1,name:'Chocolate Sorbet',type:'sorbet',items:[{ingId:70,amt:2600},{ingId:10,amt:800},{ingId:11,amt:240},{ingId:16,amt:100},{ingId:20,amt:13.5},{ingId:30,amt:240}]},
-{id:2,name:'Buttermilk Gelato',type:'gelato',items:[{ingId:1,amt:1431},{ingId:2,amt:858},{ingId:5,amt:716},{ingId:10,amt:626},{ingId:11,amt:179},{ingId:12,amt:90},{ingId:4,amt:90},{ingId:20,amt:13.5}]},
-{id:3,name:'Chocolate Gelato w/ Callebaut',type:'gelato',items:[{ingId:1,amt:2405},{ingId:12,amt:185},{ingId:11,amt:148},{ingId:4,amt:111},{ingId:30,amt:67},{ingId:10,amt:259},{ingId:20,amt:13.5},{ingId:31,amt:740},{ingId:15,amt:74}]},
-{id:4,name:'Blueberry-Coconut Sorbet',type:'sorbet',items:[{ingId:50,amt:998},{ingId:51,amt:1996},{ingId:10,amt:499},{ingId:12,amt:200},{ingId:11,amt:200},{ingId:70,amt:100},{ingId:20,amt:13.5}]},
-{id:5,name:'Strawberry Gelato',type:'gelato',items:[{ingId:52,amt:1186},{ingId:1,amt:822},{ingId:3,amt:889},{ingId:10,amt:267},{ingId:11,amt:283},{ingId:12,amt:118},{ingId:4,amt:89},{ingId:20,amt:13.5},{ingId:70,amt:334}]},
-{id:6,name:'Passion Fruit Sorbet',type:'sorbet',items:[{ingId:53,amt:1200},{ingId:55,amt:40},{ingId:10,amt:720},{ingId:11,amt:120},{ingId:12,amt:160},{ingId:20,amt:20},{ingId:70,amt:1420},{ingId:14,amt:320}]},
-{id:7,name:'Coconut-Vanilla Gelato',type:'gelato',items:[{ingId:3,amt:68},{ingId:1,amt:1689},{ingId:50,amt:1351},{ingId:10,amt:676},{ingId:11,amt:68},{ingId:12,amt:68},{ingId:20,amt:13.5},{ingId:60,amt:68}]},
-{id:8,name:'Salted Caramel Gelato',type:'gelato',items:[{ingId:10,amt:579},{ingId:71,amt:16},{ingId:20,amt:13.5},{ingId:1,amt:2597},{ingId:3,amt:480},{ingId:4,amt:180},{ingId:13,amt:105},{ingId:14,amt:80}]},
-{id:9,name:'Fior di Latte',type:'gelato',items:[{ingId:1,amt:2232},{ingId:2,amt:750},{ingId:4,amt:150},{ingId:10,amt:400},{ingId:11,amt:120},{ingId:12,amt:336},{ingId:20,amt:8},{ingId:21,amt:5},{ingId:22,amt:2}]},
-{id:10,name:'Fior di Latte TEST (Glucose Syrup)',type:'gelato',items:[{ingId:1,amt:1115},{ingId:2,amt:375},{ingId:4,amt:75},{ingId:10,amt:200},{ingId:11,amt:60},{ingId:12,amt:168},{ingId:20,amt:4},{ingId:21,amt:2.5},{ingId:22,amt:1}]},
-{id:11,name:'Lemon Olive Oil Gelato',type:'gelato',items:[{ingId:1,amt:1400},{ingId:2,amt:800},{ingId:4,amt:90},{ingId:10,amt:200},{ingId:11,amt:150},{ingId:12,amt:280},{ingId:20,amt:13.5},{ingId:61,amt:80},{ingId:55,amt:100}]},
-{id:12,name:'Rhubarb Strawberry Gelato',type:'gelato',items:[{ingId:54,amt:2308},{ingId:1,amt:1730},{ingId:2,amt:1730},{ingId:10,amt:520},{ingId:11,amt:720},{ingId:12,amt:230},{ingId:4,amt:174},{ingId:20,amt:13.5},{ingId:70,amt:576}]},
-];
-const TGTS={gelato:{fat:{min:6,max:10,ideal:9},sugar:{min:18,max:26,ideal:25},msnf:{min:6,max:12,ideal:9},solids:{min:35,max:42,ideal:38}},sorbet:{fat:{min:0,max:3,ideal:0},sugar:{min:24,max:32,ideal:28},msnf:{min:0,max:2,ideal:0},solids:{min:28,max:38,ideal:32}}};
-const getIng=id=>INGS.find(i=>i.id===id);
-const calc=items=>{let tw=0,tf=0,ts=0,tm=0,tso=0,tpac=0,tpod=0;items.forEach(it=>{const ing=getIng(it.ingId);if(!ing)return;tw+=it.amt;tf+=(it.amt*ing.fat)/100;ts+=(it.amt*ing.sugar)/100;tm+=(it.amt*ing.msnf)/100;tso+=(it.amt*ing.solids)/100;tpac+=(it.amt*ing.pac)/100;tpod+=(it.amt*ing.pod)/100});if(tw===0)return{tw:0,fat:0,sugar:0,msnf:0,solids:0,fp:0,pod:0};return{tw,fat:(tf/tw)*100,sugar:(ts/tw)*100,msnf:(tm/tw)*100,solids:(tso/tw)*100,fp:-(tpac/tw)*.1,pod:tpod/tw}};
-const getSt=(v,t)=>{if(!t)return'good';if(v>=t.min&&v<=t.max)return'good';if(Math.abs(v-t.ideal)<=(t.max-t.min)*.6)return'warn';return'bad'};
-function PinScreen({onUnlock}){const[pin,setPin]=useState('');const[err,setErr]=useState(false);const handleKey=k=>{if(err)setErr(false);if(k==='back')return setPin(p=>p.slice(0,-1));if(pin.length<4){const np=pin+k;setPin(np);if(np.length===4){if(np==='0119')setTimeout(onUnlock,150);else{setErr(true);setTimeout(()=>{setPin('');setErr(false)},400)}}}};return(<div className="pin-screen"><div className="pin-logo">🍨</div><h1 className="pin-title">Gelato Formulator</h1><p className="pin-sub">Enter PIN to continue</p><div className="pin-dots">{[0,1,2,3].map(i=><div key={i} className={`pin-dot ${pin.length>i?'filled':''} ${err?'error':''}`}/>)}</div><div className="pin-pad">{[1,2,3,4,5,6,7,8,9,'',0,'←'].map((k,i)=><button key={i} className={`pin-key ${k===''?'empty':''}`} onClick={()=>k!==''&&handleKey(k==='←'?'back':String(k))}>{k}</button>)}</div></div>)}
-function App(){const[unlocked,setUnlocked]=useState(false);const[tab,setTab]=useState('recipes');const[recipes,setRecipes]=useState([]);const[filter,setFilter]=useState('all');const[selRecipe,setSelRecipe]=useState(null);const[editMode,setEditMode]=useState(false);const[showNew,setShowNew]=useState(false);const[showAddIng,setShowAddIng]=useState(false);
-useEffect(()=>{const saved=localStorage.getItem('gelato-v4');if(saved)setRecipes(JSON.parse(saved));else{setRecipes(DEF_RECIPES);localStorage.setItem('gelato-v4',JSON.stringify(DEF_RECIPES))}if(sessionStorage.getItem('gelato-unlocked'))setUnlocked(true)},[]);
-useEffect(()=>{if(recipes.length)localStorage.setItem('gelato-v4',JSON.stringify(recipes))},[recipes]);
-const handleUnlock=()=>{setUnlocked(true);sessionStorage.setItem('gelato-unlocked','1')};
-const filtered=useMemo(()=>filter==='all'?recipes:recipes.filter(r=>r.type===filter),[recipes,filter]);
-const handleSave=r=>{setRecipes(prev=>{const idx=prev.findIndex(x=>x.id===r.id);if(idx>=0){const u=[...prev];u[idx]=r;return u}return[...prev,{...r,id:Date.now()}]});setSelRecipe(r);setEditMode(false);setShowNew(false)};
-const handleDelete=id=>{if(confirm('Delete this recipe?')){setRecipes(p=>p.filter(r=>r.id!==id));setSelRecipe(null)}};
-const handleDupe=r=>{const nr={...r,id:Date.now(),name:`${r.name} (Copy)`,items:[...r.items]};setRecipes(p=>[...p,nr]);setSelRecipe(nr)};
-const handleExport=()=>{const blob=new Blob([JSON.stringify(recipes,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`gelato-${new Date().toISOString().split('T')[0]}.json`;a.click()};
-const handleImport=()=>{const inp=document.createElement('input');inp.type='file';inp.accept='.json';inp.onchange=e=>{const reader=new FileReader();reader.onload=ev=>{try{const d=JSON.parse(ev.target.result);if(Array.isArray(d)){setRecipes(d);alert(`Imported ${d.length} recipes`)}}catch{alert('Invalid file')}};reader.readAsText(e.target.files[0])};inp.click()};
-const handleReset=()=>{if(confirm('Reset all recipes to defaults?')){setRecipes(DEF_RECIPES);localStorage.setItem('gelato-v4',JSON.stringify(DEF_RECIPES));setSelRecipe(null)}};
-if(!unlocked)return<PinScreen onUnlock={handleUnlock}/>;
-return(<div className="app"><header className="header"><div className="header-top"><div className="header-brand"><span className="header-icon">🍨</span><span className="header-title">Gelato Formulator</span></div><div className="header-btns"><button className="icon-btn" onClick={handleExport}>📤</button><button className="icon-btn" onClick={handleImport}>📥</button></div></div><div className="tabs"><button className={`tab ${tab==='recipes'?'active':''}`} onClick={()=>{setTab('recipes');setSelRecipe(null)}}>Recipes</button><button className={`tab ${tab==='ingredients'?'active':''}`} onClick={()=>setTab('ingredients')}>Ingredients</button><button className={`tab ${tab==='settings'?'active':''}`} onClick={()=>setTab('settings')}>Settings</button></div></header>
-<main className="content">{tab==='recipes'&&!selRecipe&&<><div className="page-header"><div><h2 className="page-title">Recipes</h2><span className="page-sub">{filtered.length} recipes</span></div><button className="add-btn" onClick={()=>setShowNew(true)}>+ New Recipe</button></div><div className="filters">{['all','gelato','sorbet'].map(f=><button key={f} className={`filter ${filter===f?'active':''}`} onClick={()=>setFilter(f)}>{f.charAt(0).toUpperCase()+f.slice(1)}</button>)}</div>{filtered.length===0?<div className="empty"><div className="empty-icon">📝</div><h3 className="empty-title">No recipes yet</h3><p className="empty-text">Create your first recipe</p><button className="add-btn" onClick={()=>setShowNew(true)}>+ New Recipe</button></div>:<div className="recipe-grid">{filtered.map(r=><RecipeCard key={r.id} recipe={r} onClick={()=>setSelRecipe({...r})}/>)}</div>}</>}
-{tab==='recipes'&&selRecipe&&<RecipeDetail recipe={selRecipe} editMode={editMode} setEditMode={setEditMode} onBack={()=>setSelRecipe(null)} onSave={handleSave} onDelete={()=>handleDelete(selRecipe.id)} onDupe={()=>handleDupe(selRecipe)} onChange={setSelRecipe} showAddIng={showAddIng} setShowAddIng={setShowAddIng}/>}
-{tab==='ingredients'&&<IngredientList/>}{tab==='settings'&&<Settings count={recipes.length} onReset={handleReset}/>}</main>
-{showNew&&<NewRecipeModal onClose={()=>setShowNew(false)} onSave={handleSave}/>}</div>)}
-function RecipeCard({recipe,onClick}){const c=calc(recipe.items);const t=TGTS[recipe.type];return(<div className="recipe-card" onClick={onClick}><div className="recipe-top"><div className="recipe-info"><span className="recipe-emoji">{recipe.type==='gelato'?'🍨':'🍧'}</span><div><div className="recipe-name">{recipe.name}</div><div className="recipe-meta">{recipe.items.length} ing • {c.tw.toFixed(0)}g</div></div></div><span className={`badge badge-${recipe.type}`}>{recipe.type}</span></div><div className="stats"><div className="stat-box"><div className={`stat-val ${getSt(c.fat,t.fat)}`}>{c.fat.toFixed(1)}%</div><div className="stat-lbl">Fat</div></div><div className="stat-box"><div className={`stat-val ${getSt(c.sugar,t.sugar)}`}>{c.sugar.toFixed(1)}%</div><div className="stat-lbl">Sugar</div></div><div className="stat-box"><div className={`stat-val ${getSt(c.solids,t.solids)}`}>{c.solids.toFixed(1)}%</div><div className="stat-lbl">Solids</div></div><div className="stat-box"><div className="stat-val">{c.fp.toFixed(1)}°</div><div className="stat-lbl">FP</div></div></div></div>)}
-function RecipeDetail({recipe,editMode,setEditMode,onBack,onSave,onDelete,onDupe,onChange,showAddIng,setShowAddIng}){const c=calc(recipe.items);const t=TGTS[recipe.type];const updateAmt=(idx,amt)=>{const ni=[...recipe.items];ni[idx]={...ni[idx],amt:parseFloat(amt)||0};onChange({...recipe,items:ni})};const removeIng=idx=>onChange({...recipe,items:recipe.items.filter((_,i)=>i!==idx)});const addIng=(ingId,amt)=>{onChange({...recipe,items:[...recipe.items,{ingId,amt}]});setShowAddIng(false)};
-return(<div><div className="detail-header"><button className="back-btn" onClick={onBack}>←</button><div className="detail-title"><h2 className="detail-name">{recipe.name}</h2><div className="detail-sub">{recipe.type} • {c.tw.toFixed(0)}g</div></div><div className="detail-btns">{editMode?<button className="icon-btn" onClick={()=>onSave(recipe)} style={{background:'var(--success)',color:'white'}}>✓</button>:<><button className="icon-btn" onClick={()=>setEditMode(true)}>✏️</button><button className="icon-btn" onClick={onDupe}>📋</button><button className="icon-btn" onClick={onDelete} style={{color:'var(--danger)'}}>🗑️</button></>}</div></div>
-<div className="stats-panel"><div className="stats-grid"><StatCard label="Fat" value={c.fat} target={t.fat} unit="%"/><StatCard label="Sugar" value={c.sugar} target={t.sugar} unit="%"/><StatCard label="MSNF" value={c.msnf} target={t.msnf} unit="%"/><StatCard label="Solids" value={c.solids} target={t.solids} unit="%"/><StatCard label="F.Point" value={c.fp} unit="°C"/><StatCard label="POD" value={c.pod} unit=""/></div></div>
-<div className="ing-section"><div className="ing-header"><span className="ing-title">Ingredients</span>{editMode&&<button className="add-btn" onClick={()=>setShowAddIng(true)} style={{padding:'8px 12px',fontSize:'12px'}}>+ Add</button>}</div>{recipe.items.map((it,idx)=>{const ing=getIng(it.ingId);if(!ing)return null;return(<div key={idx} className="ing-row"><span className="ing-name">{ing.name}</span>{editMode?<input type="number" value={it.amt} onChange={e=>updateAmt(idx,e.target.value)} className="form-input" style={{width:'90px',textAlign:'right',padding:'8px'}}/>:<span className="ing-amt">{it.amt}g</span>}{editMode&&<button className="ing-remove" onClick={()=>removeIng(idx)}>×</button>}</div>)})}<div className="total-row"><span>Total</span><span className="total-val">{c.tw.toFixed(0)}g</span></div></div>
-{showAddIng&&<AddIngModal onClose={()=>setShowAddIng(false)} onAdd={addIng} existingIds={recipe.items.map(i=>i.ingId)}/>}</div>)}
-function StatCard({label,value,target,unit}){const st=getSt(value,target);return(<div className="stat-card"><div className="stat-card-top"><span className="stat-card-lbl">{label}</span>{target&&<span className={`stat-card-badge ${st}`}>{st==='good'?'✓':st==='warn'?'~':'!'}</span>}</div><div className={`stat-card-val ${st}`}>{value.toFixed(1)}{unit}</div>{target&&<div className="stat-card-target">{target.min}–{target.max}{unit}</div>}</div>)}
-function NewRecipeModal({onClose,onSave}){const[name,setName]=useState('');const[type,setType]=useState('gelato');const handleSubmit=()=>{if(name.trim())onSave({id:Date.now(),name:name.trim(),type,items:[]})};return(<div className="modal-overlay" onClick={onClose}><div className="modal" onClick={e=>e.stopPropagation()}><div className="modal-header"><h3 className="modal-title">New Recipe</h3><button className="modal-close" onClick={onClose}>×</button></div><div className="modal-body"><div className="form-group"><label className="form-label">Recipe Name</label><input type="text" className="form-input" placeholder="e.g. Pistachio Gelato" value={name} onChange={e=>setName(e.target.value)} autoFocus/></div><div className="form-group"><label className="form-label">Type</label><select className="form-select" value={type} onChange={e=>setType(e.target.value)}><option value="gelato">Gelato</option><option value="sorbet">Sorbet</option></select></div></div><div className="modal-footer"><button className="btn btn-secondary" onClick={onClose}>Cancel</button><button className="btn btn-primary" onClick={handleSubmit} disabled={!name.trim()}>Create</button></div></div></div>)}
-function AddIngModal({onClose,onAdd,existingIds}){const[search,setSearch]=useState('');const[selId,setSelId]=useState(null);const[amt,setAmt]=useState('');const filtered=INGS.filter(i=>!existingIds.includes(i.id)&&i.name.toLowerCase().includes(search.toLowerCase()));const handleAdd=()=>{if(selId&&amt)onAdd(selId,parseFloat(amt))};return(<div className="modal-overlay" onClick={onClose}><div className="modal" onClick={e=>e.stopPropagation()}><div className="modal-header"><h3 className="modal-title">Add Ingredient</h3><button className="modal-close" onClick={onClose}>×</button></div><div className="modal-body"><div className="form-group search-box"><label className="form-label">Search Ingredient</label><input type="text" className="form-input" placeholder="Type to search..." value={search} onChange={e=>{setSearch(e.target.value);setSelId(null)}} autoFocus/>{search&&!selId&&<div className="search-results">{filtered.slice(0,8).map(i=><div key={i.id} className="search-item" onClick={()=>{setSelId(i.id);setSearch(i.name)}}><div className="search-item-name">{i.name}</div><div className="search-item-meta">Fat: {i.fat}% • Sugar: {i.sugar}% • Solids: {i.solids}%</div></div>)}{filtered.length===0&&<div className="search-item"><div className="search-item-name" style={{color:'var(--muted)'}}>No results</div></div>}</div>}</div>{selId&&<div className="form-group"><label className="form-label">Amount (grams)</label><input type="number" className="form-input" placeholder="e.g. 500" value={amt} onChange={e=>setAmt(e.target.value)}/></div>}</div><div className="modal-footer"><button className="btn btn-secondary" onClick={onClose}>Cancel</button><button className="btn btn-primary" onClick={handleAdd} disabled={!selId||!amt}>Add</button></div></div></div>)}
-function IngredientList(){const[search,setSearch]=useState('');const[cat,setCat]=useState('all');const cats=['all','dairy','sugar','stab','choc','fruit','nuts','fat','other'];const filtered=INGS.filter(i=>(cat==='all'||i.cat===cat)&&i.name.toLowerCase().includes(search.toLowerCase()));return(<><div className="page-header"><div><h2 className="page-title">Ingredients</h2><span className="page-sub">{INGS.length} items</span></div></div><div className="form-group"><input type="text" className="form-input" placeholder="Search..." value={search} onChange={e=>setSearch(e.target.value)}/></div><div className="filters" style={{marginBottom:'16px'}}>{cats.map(c=><button key={c} className={`filter ${cat===c?'active':''}`} onClick={()=>setCat(c)}>{c==='stab'?'Stabilizer':c.charAt(0).toUpperCase()+c.slice(1)}</button>)}</div><div className="ing-section">{filtered.map(i=><div key={i.id} className="ing-row" style={{flexWrap:'wrap',gap:'6px'}}><span className="ing-name" style={{flex:'1 1 100%',marginBottom:'2px'}}>{i.name}</span><span style={{fontSize:'11px',color:'var(--muted)'}}>Fat: {i.fat}%</span><span style={{fontSize:'11px',color:'var(--muted)'}}>Sugar: {i.sugar}%</span><span style={{fontSize:'11px',color:'var(--muted)'}}>MSNF: {i.msnf}%</span><span style={{fontSize:'11px',color:'var(--muted)'}}>Solids: {i.solids}%</span></div>)}</div></>)}
-function Settings({count,onReset}){return(<><h2 className="page-title" style={{marginBottom:'16px'}}>Settings</h2><div className="settings-card"><div className="settings-card-title">App Info</div><div className="settings-row"><span className="settings-text">Version</span><span className="settings-value">{V}</span></div><div className="settings-row"><span className="settings-text">Build</span><span className="settings-value">{D}</span></div><div className="settings-row"><span className="settings-text">Recipes</span><span className="settings-value">{count}</span></div><div className="settings-row"><span className="settings-text">Ingredients</span><span className="settings-value">{INGS.length}</span></div></div><div className="settings-card"><div className="settings-card-title">Gelato Targets (Luca)</div><div className="settings-row"><span className="settings-text">Sugar</span><span className="settings-value">25%</span></div><div className="settings-row"><span className="settings-text">Fat</span><span className="settings-value">9%</span></div><div className="settings-row"><span className="settings-text">Total Solids</span><span className="settings-value">38%</span></div><div className="settings-row"><span className="settings-text">Freezing Point</span><span className="settings-value">-2.9°C</span></div><div className="settings-row"><span className="settings-text">SMP Range</span><span className="settings-value">2.5–5%</span></div></div><div className="settings-card settings-danger"><div className="settings-card-title">Danger Zone</div><div className="settings-row" onClick={onReset}><span className="settings-text">Reset All Data</span><span className="settings-value">→</span></div></div></>)}
-ReactDOM.render(<App/>,document.getElementById('root'));
-</script>
+  <div id="root"></div>
+  <script type="text/babel">
+    const { useState, useEffect, useMemo } = React;
+    const APP_VERSION = '4.1.0', BUILD_DATE = '2025-12-08', CORRECT_PIN = '0119';
+    
+    const INGREDIENT_DB = [
+      // DAIRY
+      { id: 1, name: 'Whole Milk 3.6%', fat: 3.6, sugar: 4.8, msnf: 8.9, fiber: 0, pac: 4.8, pod: 16, category: 'dairy' },
+      { id: 2, name: 'Cream 38%', fat: 38, sugar: 2.8, msnf: 5.5, fiber: 0, pac: 2.8, pod: 9.3, category: 'dairy' },
+      { id: 3, name: 'Cream 40%', fat: 40, sugar: 2.7, msnf: 5.2, fiber: 0, pac: 2.7, pod: 9, category: 'dairy' },
+      { id: 4, name: 'Cream 35%', fat: 35, sugar: 2.9, msnf: 5.8, fiber: 0, pac: 2.9, pod: 9.7, category: 'dairy' },
+      { id: 5, name: 'Skim Milk Powder (SMP)', fat: 0.8, sugar: 52, msnf: 97, fiber: 0, pac: 52, pod: 52, category: 'dairy' },
+      { id: 6, name: 'Buttermilk', fat: 0.9, sugar: 4.8, msnf: 8.5, fiber: 0, pac: 4.8, pod: 16, category: 'dairy' },
+      { id: 7, name: 'Whole Milk Powder', fat: 26, sugar: 38, msnf: 70, fiber: 0, pac: 38, pod: 38, category: 'dairy' },
+      { id: 8, name: 'Cream Cheese', fat: 32.14, sugar: 3.5, msnf: 5, fiber: 0, pac: 3.5, pod: 0, category: 'dairy' },
+      { id: 9, name: 'Mascarpone', fat: 44, sugar: 3, msnf: 4, fiber: 0, pac: 3, pod: 0, category: 'dairy' },
+      // SUGARS
+      { id: 10, name: 'Sucrose (White Sugar)', fat: 0, sugar: 100, msnf: 0, fiber: 0, pac: 100, pod: 100, category: 'sugar' },
+      { id: 11, name: 'Dextrose', fat: 0, sugar: 92, msnf: 0, fiber: 0, pac: 180, pod: 70, category: 'sugar' },
+      { id: 12, name: 'Glucose Syrup 38DE', fat: 0, sugar: 80, msnf: 0, fiber: 0, pac: 90, pod: 45, category: 'sugar' },
+      { id: 13, name: 'Glucose Powder 42DE', fat: 0, sugar: 95, msnf: 0, fiber: 0, pac: 100, pod: 50, category: 'sugar' },
+      { id: 14, name: 'Trimoline (Invert Sugar)', fat: 0, sugar: 82, msnf: 0, fiber: 0, pac: 190, pod: 170, category: 'sugar' },
+      { id: 15, name: 'Inulin', fat: 0, sugar: 0, msnf: 0, fiber: 90, pac: 10, pod: 10, category: 'sugar' },
+      { id: 16, name: 'Maltodextrin', fat: 0, sugar: 95, msnf: 0, fiber: 0, pac: 50, pod: 30, category: 'sugar' },
+      { id: 17, name: 'Honey', fat: 0, sugar: 82, msnf: 0, fiber: 0, pac: 97, pod: 130, category: 'sugar' },
+      { id: 18, name: 'Brown Sugar', fat: 0, sugar: 100, msnf: 0, fiber: 0, pac: 99, pod: 99, category: 'sugar' },
+      { id: 19, name: 'Rich Syrup', fat: 0, sugar: 66.73, msnf: 0, fiber: 0, pac: 66.73, pod: 66.73, category: 'sugar' },
+      // STABILIZERS
+      { id: 20, name: 'Tara Gum', fat: 0, sugar: 0, msnf: 0, fiber: 80, pac: 0, pod: 0, category: 'stabilizer' },
+      { id: 21, name: 'Guar Gum', fat: 0, sugar: 0, msnf: 0, fiber: 80, pac: 0, pod: 0, category: 'stabilizer' },
+      { id: 22, name: 'Locust Bean Gum (LBG)', fat: 0, sugar: 0, msnf: 0, fiber: 80, pac: 0, pod: 0, category: 'stabilizer' },
+      { id: 23, name: 'Kappa Carrageenan', fat: 0, sugar: 0, msnf: 0, fiber: 0, pac: 0, pod: 0, category: 'stabilizer' },
+      { id: 24, name: 'Xanthan Gum', fat: 0, sugar: 0, msnf: 0, fiber: 80, pac: 0, pod: 0, category: 'stabilizer' },
+      { id: 25, name: 'Perfect Gelato Stabilizer', fat: 0, sugar: 32, msnf: 0, fiber: 57, pac: 177, pod: 74, category: 'stabilizer' },
+      { id: 26, name: 'Cremodan 30', fat: 68, sugar: 0, msnf: 0, fiber: 24, pac: 0, pod: 0, category: 'stabilizer' },
+      { id: 27, name: 'Cremodan 64', fat: 0, sugar: 28, msnf: 0, fiber: 37, pac: 28, pod: 0, category: 'stabilizer' },
+      { id: 28, name: 'DGF Stabilizer', fat: 5, sugar: 42, msnf: 0, fiber: 0.8, pac: 41.23, pod: 25.64, category: 'stabilizer' },
+      // OTHER BASE
+      { id: 30, name: 'Water', fat: 0, sugar: 0, msnf: 0, fiber: 0, pac: 0, pod: 0, category: 'other' },
+      { id: 31, name: 'Sea Salt', fat: 0, sugar: 0, msnf: 0, fiber: 0, pac: 0, pod: 0, category: 'other' },
+      { id: 32, name: 'Egg Yolk', fat: 26.5, sugar: 0.6, msnf: 0, fiber: 0, pac: 0.6, pod: 0, category: 'other' },
+      { id: 33, name: 'Vanilla Extract', fat: 0, sugar: 13, msnf: 0, fiber: 0, pac: 13, pod: 0, category: 'other' },
+      { id: 34, name: 'Nielsen Massey Vanilla Paste', fat: 0, sugar: 63, msnf: 0, fiber: 0, pac: 63, pod: 0, category: 'other' },
+      { id: 35, name: 'Instant Coffee', fat: 0.2, sugar: 3.1, msnf: 0, fiber: 34.1, pac: 3, pod: 0, category: 'other' },
+      { id: 36, name: 'Espresso', fat: 0.2, sugar: 0, msnf: 0, fiber: 0, pac: 0, pod: 0, category: 'other' },
+      // FATS
+      { id: 40, name: 'Coconut Oil', fat: 100, sugar: 0, msnf: 0, fiber: 0, pac: 0, pod: 0, category: 'fats' },
+      { id: 41, name: 'Extra Virgin Olive Oil', fat: 100, sugar: 0, msnf: 0, fiber: 0, pac: 0, pod: 0, category: 'fats' },
+      { id: 42, name: 'Cocoa Butter', fat: 100, sugar: 0, msnf: 0, fiber: 0, pac: 0, pod: 0, category: 'fats' },
+      { id: 43, name: 'GMS (Glyceryl Monostearate)', fat: 98, sugar: 0, msnf: 0, fiber: 0, pac: 0, pod: 0, category: 'fats' },
+      // CHOCOLATE
+      { id: 50, name: 'Cocoa Powder 22-24%', fat: 23, sugar: 0, msnf: 0, fiber: 33, pac: 0, pod: 0, category: 'chocolate' },
+      { id: 51, name: 'Callebaut 70.5% Chocolate', fat: 41, sugar: 28, msnf: 0, fiber: 11, pac: 28, pod: 28, category: 'chocolate' },
+      { id: 52, name: 'Dark Chocolate 66% BTSW', fat: 35.71, sugar: 35.71, msnf: 0, fiber: 14.24, pac: 31, pod: 31, category: 'chocolate' },
+      { id: 53, name: 'Milk Chocolate', fat: 32, sugar: 52, msnf: 8, fiber: 3, pac: 52, pod: 52, category: 'chocolate' },
+      { id: 54, name: 'White Chocolate', fat: 32, sugar: 59, msnf: 12, fiber: 0, pac: 59, pod: 59, category: 'chocolate' },
+      // NUTS
+      { id: 60, name: 'Hazelnut Paste', fat: 61, sugar: 6, msnf: 0, fiber: 10, pac: 6, pod: 6, category: 'nuts' },
+      { id: 61, name: 'Pistachio Paste', fat: 54, sugar: 8, msnf: 0, fiber: 10, pac: 8, pod: 0, category: 'nuts' },
+      { id: 62, name: 'Agriland Pistachio Paste', fat: 34.8, sugar: 37, msnf: 0, fiber: 6, pac: 37, pod: 0, category: 'nuts' },
+      { id: 63, name: 'Almond Paste', fat: 52, sugar: 12, msnf: 0, fiber: 12, pac: 12, pod: 12, category: 'nuts' },
+      { id: 64, name: 'Peanut Butter', fat: 50, sugar: 9.375, msnf: 0, fiber: 6.24, pac: 6, pod: 3, category: 'nuts' },
+      // CITRUS
+      { id: 70, name: 'Lemon Juice', fat: 0, sugar: 2.5, msnf: 0, fiber: 0.3, pac: 4.75, pod: 2.5, category: 'fruit-citrus' },
+      { id: 71, name: 'Lime Juice', fat: 0, sugar: 1.7, msnf: 0, fiber: 0.4, pac: 0.5, pod: 0, category: 'fruit-citrus' },
+      { id: 72, name: 'Orange Juice', fat: 0, sugar: 8.4, msnf: 0, fiber: 0.2, pac: 8.4, pod: 0, category: 'fruit-citrus' },
+      { id: 73, name: 'Blood Orange Juice', fat: 0, sugar: 12.4, msnf: 0, fiber: 0.8, pac: 12.4, pod: 0, category: 'fruit-citrus' },
+      { id: 74, name: 'Yuzu Juice', fat: 0, sugar: 3.5, msnf: 0, fiber: 0.2, pac: 3.5, pod: 0, category: 'fruit-citrus' },
+      { id: 75, name: 'Lemon Zest', fat: 0.3, sugar: 5, msnf: 0, fiber: 10, pac: 5, pod: 0, category: 'fruit-citrus' },
+      // BERRIES
+      { id: 80, name: 'Strawberry Purée', fat: 0.3, sugar: 5, msnf: 0, fiber: 2, pac: 9.5, pod: 10, category: 'fruit-berry' },
+      { id: 81, name: 'Blueberry Purée', fat: 0.3, sugar: 10, msnf: 0, fiber: 2.4, pac: 19, pod: 11, category: 'fruit-berry' },
+      { id: 82, name: 'Raspberry Purée', fat: 0.3, sugar: 4.4, msnf: 0, fiber: 6.5, pac: 8.4, pod: 4.4, category: 'fruit-berry' },
+      { id: 83, name: 'Blackberry Purée', fat: 0.5, sugar: 4.9, msnf: 0, fiber: 5.3, pac: 9.3, pod: 4.9, category: 'fruit-berry' },
+      { id: 84, name: 'Boiron Blueberry', fat: 0.3, sugar: 10, msnf: 0, fiber: 2.4, pac: 19, pod: 11, category: 'fruit-berry' },
+      { id: 85, name: 'Capfruit Blackberry Purée', fat: 0, sugar: 11, msnf: 0, fiber: 2, pac: 11, pod: 0, category: 'fruit-berry' },
+      { id: 86, name: 'Mixed Berry Purée', fat: 0.126, sugar: 12.61, msnf: 0, fiber: 2.25, pac: 75, pod: 0, category: 'fruit-berry' },
+      { id: 87, name: 'Huckleberry Purée', fat: 0, sugar: 23.4, msnf: 0, fiber: 0, pac: 23.4, pod: 0, category: 'fruit-berry' },
+      { id: 88, name: 'Raspberry Delipaste', fat: 1, sugar: 60, msnf: 0, fiber: 0, pac: 60, pod: 0, category: 'fruit-berry' },
+      // TROPICAL
+      { id: 90, name: 'Passion Fruit Purée', fat: 0.7, sugar: 11, msnf: 0, fiber: 10, pac: 21, pod: 12, category: 'fruit-tropical' },
+      { id: 91, name: 'Mango Purée', fat: 0.4, sugar: 14, msnf: 0, fiber: 1.6, pac: 26.6, pod: 14, category: 'fruit-tropical' },
+      { id: 92, name: 'Coconut Purée (Boiron)', fat: 15.15, sugar: 12.12, msnf: 0, fiber: 1.25, pac: 5.7, pod: 3, category: 'fruit-tropical' },
+      { id: 93, name: 'Banana Purée', fat: 0.3, sugar: 12, msnf: 0, fiber: 2.6, pac: 22.8, pod: 12, category: 'fruit-tropical' },
+      { id: 94, name: 'Pineapple Purée', fat: 0.1, sugar: 10, msnf: 0, fiber: 1.4, pac: 19, pod: 10, category: 'fruit-tropical' },
+      { id: 95, name: 'Capfruit Passion Fruit', fat: 0, sugar: 22, msnf: 0, fiber: 0, pac: 22, pod: 0, category: 'fruit-tropical' },
+      { id: 96, name: 'Mazzoni Passion Fruit', fat: 0, sugar: 10.2, msnf: 0, fiber: 9.4, pac: 10.2, pod: 0, category: 'fruit-tropical' },
+      { id: 97, name: 'Fabbri Mango DeliPaste', fat: 0.3, sugar: 60.1, msnf: 0, fiber: 0, pac: 60.1, pod: 0, category: 'fruit-tropical' },
+      // STONE FRUIT & OTHER
+      { id: 100, name: 'Peach Purée', fat: 0.3, sugar: 8.4, msnf: 0, fiber: 1.5, pac: 16, pod: 8.4, category: 'fruit-stone' },
+      { id: 101, name: 'Apricot Purée', fat: 0.4, sugar: 9.2, msnf: 0, fiber: 2, pac: 17.5, pod: 9.2, category: 'fruit-stone' },
+      { id: 102, name: 'Cherry Purée', fat: 0.2, sugar: 12.8, msnf: 0, fiber: 2.1, pac: 24.3, pod: 12.8, category: 'fruit-stone' },
+      { id: 103, name: 'Persimmon Purée', fat: 0, sugar: 35.8, msnf: 0, fiber: 18, pac: 35.8, pod: 0, category: 'fruit-stone' },
+      { id: 104, name: 'Apple Cider (Fresh)', fat: 0, sugar: 11.3, msnf: 0, fiber: 0, pac: 16.4, pod: 1, category: 'fruit-other' },
+      { id: 105, name: 'Rhubarb Purée', fat: 0, sugar: 22, msnf: 0, fiber: 1, pac: 16.3, pod: 16.3, category: 'fruit-other' },
+      { id: 106, name: 'Rhubarb Strawberry Purée', fat: 0.2, sugar: 4, msnf: 0, fiber: 2, pac: 7.6, pod: 8, category: 'fruit-other' },
+      { id: 107, name: 'Libby Pumpkin', fat: 0, sugar: 4.05, msnf: 0, fiber: 2.9, pac: 5.58, pod: 4.05, category: 'fruit-other' },
+      // PROTEIN
+      { id: 110, name: 'Prostar Whey', fat: 3.8, sugar: 3.3, msnf: 95.2, fiber: 0, pac: 3, pod: 0, category: 'protein' },
+      { id: 111, name: 'Whey Crisp', fat: 1, sugar: 1.2, msnf: 95.6, fiber: 2.5, pac: 0, pod: 0, category: 'protein' },
+      { id: 112, name: 'Pea Protein Isolate', fat: 5, sugar: 0, msnf: 0, fiber: 0, pac: 10, pod: 0, category: 'protein' },
+      { id: 113, name: 'Rice Protein Concentrate', fat: 1, sugar: 0, msnf: 0, fiber: 0, pac: 10, pod: 0, category: 'protein' },
+      // ALCOHOL
+      { id: 120, name: 'Rum 40%', fat: 0, sugar: 0, msnf: 0, fiber: 0, pac: 223.23, pod: 0, category: 'alcohol' },
+      { id: 121, name: 'Cognac 40%', fat: 0, sugar: 0, msnf: 0, fiber: 0, pac: 220.92, pod: 0, category: 'alcohol' },
+      { id: 122, name: 'Coffee Liqueur 25%', fat: 0.3, sugar: 32.2, msnf: 0, fiber: 0, pac: 138.075, pod: 33, category: 'alcohol' },
+      { id: 123, name: 'Jim Beam Bourbon 40%', fat: 0, sugar: 0, msnf: 0, fiber: 0, pac: 220.92, pod: 0, category: 'alcohol' },
+      { id: 124, name: 'Triple Sec', fat: 0, sugar: 29.92, msnf: 0, fiber: 0, pac: 29.92, pod: 0, category: 'alcohol' },
+      { id: 125, name: 'Tequila 40%', fat: 0, sugar: 0, msnf: 0, fiber: 0, pac: 40, pod: 40, category: 'alcohol' },
+      // PREPARED
+      { id: 130, name: 'Salted Caramel for Gelato', fat: 25.41, sugar: 43.69, msnf: 1.56, fiber: 0, pac: 48.73, pod: 43.18, category: 'prepared' },
+      { id: 131, name: 'Burnt Honey', fat: 0, sugar: 28.34, msnf: 0, fiber: 0, pac: 0.1, pod: 0.1, category: 'prepared' },
+      { id: 132, name: 'Morbifrutta Sorbet Powder', fat: 7.8, sugar: 80.3, msnf: 0, fiber: 1.5, pac: 80.3, pod: 0, category: 'prepared' },
+    ];
+    
+    const CATEGORIES = [
+      { id: 'all', name: 'All' }, { id: 'dairy', name: 'Dairy' }, { id: 'sugar', name: 'Sugar' }, { id: 'stabilizer', name: 'Stabilizer' },
+      { id: 'fats', name: 'Fats' }, { id: 'chocolate', name: 'Chocolate' }, { id: 'nuts', name: 'Nuts' }, { id: 'fruit-citrus', name: 'Citrus' },
+      { id: 'fruit-berry', name: 'Berry' }, { id: 'fruit-tropical', name: 'Tropical' }, { id: 'fruit-stone', name: 'Stone' }, { id: 'fruit-other', name: 'Other Fruit' },
+      { id: 'protein', name: 'Protein' }, { id: 'alcohol', name: 'Alcohol' }, { id: 'prepared', name: 'Prepared' }, { id: 'other', name: 'Other' },
+    ];
+    
+    const DEFAULT_RECIPES = [
+      { id: 1, name: 'Chocolate Sorbet', type: 'sorbet', items: [{ ingredientId: 30, amount: 2600 }, { ingredientId: 10, amount: 800 }, { ingredientId: 11, amount: 240 }, { ingredientId: 16, amount: 100 }, { ingredientId: 20, amount: 13.5 }, { ingredientId: 50, amount: 240 }] },
+      { id: 2, name: 'Buttermilk Gelato', type: 'gelato', items: [{ ingredientId: 1, amount: 1431 }, { ingredientId: 4, amount: 858 }, { ingredientId: 6, amount: 716 }, { ingredientId: 10, amount: 626 }, { ingredientId: 11, amount: 179 }, { ingredientId: 12, amount: 89.5 }, { ingredientId: 5, amount: 89.5 }, { ingredientId: 20, amount: 13.5 }] },
+      { id: 3, name: 'Strawberry Gelato', type: 'gelato', items: [{ ingredientId: 80, amount: 1186 }, { ingredientId: 1, amount: 822 }, { ingredientId: 3, amount: 889 }, { ingredientId: 10, amount: 267 }, { ingredientId: 11, amount: 283 }, { ingredientId: 12, amount: 118 }, { ingredientId: 5, amount: 89 }, { ingredientId: 20, amount: 13.5 }, { ingredientId: 30, amount: 334 }] },
+      { id: 4, name: 'Passion Fruit Sorbet', type: 'sorbet', items: [{ ingredientId: 90, amount: 1200 }, { ingredientId: 70, amount: 40 }, { ingredientId: 10, amount: 720 }, { ingredientId: 11, amount: 120 }, { ingredientId: 12, amount: 160 }, { ingredientId: 20, amount: 13.5 }, { ingredientId: 30, amount: 1420 }, { ingredientId: 15, amount: 320 }] },
+      { id: 5, name: 'Fior di Latte', type: 'gelato', items: [{ ingredientId: 1, amount: 2800 }, { ingredientId: 3, amount: 940 }, { ingredientId: 10, amount: 500 }, { ingredientId: 11, amount: 150 }, { ingredientId: 12, amount: 336 }, { ingredientId: 5, amount: 150 }, { ingredientId: 20, amount: 13.5 }] },
+      { id: 6, name: 'Fior di Latte TEST (Glucose + Stabilizer Blend)', type: 'gelato', items: [{ ingredientId: 1, amount: 1115 }, { ingredientId: 2, amount: 375 }, { ingredientId: 5, amount: 75 }, { ingredientId: 10, amount: 200 }, { ingredientId: 11, amount: 60 }, { ingredientId: 12, amount: 168 }, { ingredientId: 20, amount: 4 }, { ingredientId: 21, amount: 2.5 }, { ingredientId: 23, amount: 1 }] },
+      { id: 7, name: 'Salted Caramel Gelato', type: 'gelato', items: [{ ingredientId: 10, amount: 579.4 }, { ingredientId: 31, amount: 16 }, { ingredientId: 20, amount: 13.5 }, { ingredientId: 1, amount: 2597.4 }, { ingredientId: 3, amount: 479.5 }, { ingredientId: 5, amount: 179.8 }, { ingredientId: 13, amount: 105 }, { ingredientId: 15, amount: 80 }] },
+      { id: 8, name: 'Coconut-Vanilla Gelato', type: 'gelato', items: [{ ingredientId: 3, amount: 68 }, { ingredientId: 1, amount: 1689 }, { ingredientId: 92, amount: 1351 }, { ingredientId: 10, amount: 676 }, { ingredientId: 11, amount: 68 }, { ingredientId: 12, amount: 68 }, { ingredientId: 20, amount: 13.5 }, { ingredientId: 40, amount: 68 }] },
+      { id: 9, name: 'Chocolate Gelato w/ Callebaut', type: 'gelato', items: [{ ingredientId: 1, amount: 2405 }, { ingredientId: 12, amount: 185 }, { ingredientId: 11, amount: 148 }, { ingredientId: 5, amount: 111 }, { ingredientId: 50, amount: 67 }, { ingredientId: 10, amount: 259 }, { ingredientId: 20, amount: 13.5 }, { ingredientId: 51, amount: 740 }, { ingredientId: 14, amount: 74 }] },
+      { id: 10, name: 'Blueberry-Coconut Sorbet', type: 'sorbet', items: [{ ingredientId: 92, amount: 998 }, { ingredientId: 84, amount: 1996 }, { ingredientId: 10, amount: 499 }, { ingredientId: 12, amount: 200 }, { ingredientId: 11, amount: 200 }, { ingredientId: 30, amount: 100 }, { ingredientId: 20, amount: 13.5 }] },
+      { id: 11, name: 'Lemon Olive Oil Gelato', type: 'gelato', items: [{ ingredientId: 1, amount: 2600 }, { ingredientId: 3, amount: 600 }, { ingredientId: 5, amount: 100 }, { ingredientId: 10, amount: 450 }, { ingredientId: 11, amount: 100 }, { ingredientId: 12, amount: 200 }, { ingredientId: 70, amount: 150 }, { ingredientId: 41, amount: 120 }, { ingredientId: 20, amount: 13.5 }] },
+      { id: 12, name: 'Rhubarb Strawberry Gelato', type: 'gelato', items: [{ ingredientId: 106, amount: 2308 }, { ingredientId: 1, amount: 1730 }, { ingredientId: 3, amount: 500 }, { ingredientId: 10, amount: 520 }, { ingredientId: 11, amount: 200 }, { ingredientId: 12, amount: 230 }, { ingredientId: 5, amount: 174 }, { ingredientId: 20, amount: 13.5 }, { ingredientId: 30, amount: 320 }] },
+    ];
+    
+    const GELATO_TARGETS = { fat: { min: 6, max: 10, ideal: 9 }, sugar: { min: 22, max: 27, ideal: 25 }, msnf: { min: 7, max: 11, ideal: 9 }, solids: { min: 36, max: 40, ideal: 38 } };
+    const SORBET_TARGETS = { fat: { min: 0, max: 3, ideal: 0 }, sugar: { min: 26, max: 32, ideal: 29 }, msnf: { min: 0, max: 2, ideal: 0 }, solids: { min: 28, max: 35, ideal: 31 } };
+    
+    function calculateStats(items) {
+      let totalWeight = 0, totalFat = 0, totalSugar = 0, totalMSNF = 0, totalSolids = 0, totalPAC = 0;
+      items.forEach(item => { const ing = INGREDIENT_DB.find(i => i.id === item.ingredientId); if (!ing) return; const amt = item.amount; totalWeight += amt; totalFat += (ing.fat / 100) * amt; totalSugar += (ing.sugar / 100) * amt; totalMSNF += (ing.msnf / 100) * amt; totalPAC += (ing.pac / 100) * amt; const water = 100 - ing.fat - ing.sugar - ing.msnf - ing.fiber; totalSolids += (1 - Math.max(0, water) / 100) * amt; });
+      if (totalWeight === 0) return { fat: 0, sugar: 0, msnf: 0, solids: 0, totalWeight: 0, freezingPoint: 0 };
+      return { fat: (totalFat / totalWeight) * 100, sugar: (totalSugar / totalWeight) * 100, msnf: (totalMSNF / totalWeight) * 100, solids: (totalSolids / totalWeight) * 100, totalWeight, freezingPoint: -(totalPAC / totalWeight) * 0.1 };
+    }
+    
+    function getStatus(v, t) { if (v >= t.min && v <= t.max) return 'good'; if (v >= t.min - 2 && v <= t.max + 2) return 'warning'; return 'bad'; }
+    
+    function PinScreen({ onSuccess }) {
+      const [pin, setPin] = useState(''); const [error, setError] = useState(false);
+      const handleKey = (k) => { if (k === 'del') { setPin(p => p.slice(0, -1)); setError(false); } else if (pin.length < 4) { const np = pin + k; setPin(np); if (np.length === 4) { if (np === CORRECT_PIN) setTimeout(() => onSuccess(), 150); else { setError(true); setTimeout(() => { setPin(''); setError(false); }, 600); } } } };
+      return (<div className="pin-screen"><div className="pin-logo">🍨</div><div className="pin-title">Gelato Formulator</div><div className="pin-subtitle">Enter PIN</div><div className="pin-dots">{[0,1,2,3].map(i => <div key={i} className={`pin-dot ${pin.length > i ? 'filled' : ''} ${error ? 'error' : ''}`} />)}</div><div className="pin-keypad">{[1,2,3,4,5,6,7,8,9,'',0,'del'].map((k,i) => <button key={i} className={`pin-key ${k===''?'empty':''}`} onClick={() => k!=='' && handleKey(String(k))}>{k==='del'?'⌫':k}</button>)}</div></div>);
+    }
+    
+    function App() {
+      const [isAuth, setIsAuth] = useState(false); const [tab, setTab] = useState('recipes'); const [recipes, setRecipes] = useState([]); const [selected, setSelected] = useState(null); const [modal, setModal] = useState(null); const [toast, setToast] = useState(null); const [editing, setEditing] = useState(null);
+      const [recipeSearch, setRecipeSearch] = useState(''); const [recipeFilter, setRecipeFilter] = useState('all'); const [ingSearch, setIngSearch] = useState(''); const [ingCategory, setIngCategory] = useState('all');
+      useEffect(() => { if (sessionStorage.getItem('gelato-auth') === 'true') setIsAuth(true); const saved = localStorage.getItem('gelato-recipes-v4'); setRecipes(saved ? JSON.parse(saved) : DEFAULT_RECIPES); }, []);
+      useEffect(() => { if (recipes.length > 0) localStorage.setItem('gelato-recipes-v4', JSON.stringify(recipes)); }, [recipes]);
+      const showToast = (msg) => { setToast(msg); setTimeout(() => setToast(null), 2500); };
+      const filteredRecipes = useMemo(() => recipes.filter(r => r.name.toLowerCase().includes(recipeSearch.toLowerCase()) && (recipeFilter === 'all' || r.type === recipeFilter)).sort((a, b) => a.name.localeCompare(b.name)), [recipes, recipeSearch, recipeFilter]);
+      const filteredIngredients = useMemo(() => INGREDIENT_DB.filter(i => i.name.toLowerCase().includes(ingSearch.toLowerCase()) && (ingCategory === 'all' || i.category === ingCategory)).sort((a, b) => a.name.localeCompare(b.name)), [ingSearch, ingCategory]);
+      const saveRecipe = (recipe) => { if (recipe.id && recipes.find(r => r.id === recipe.id)) { setRecipes(r => r.map(x => x.id === recipe.id ? recipe : x)); setSelected(recipe); } else { const nr = { ...recipe, id: Date.now() }; setRecipes(r => [...r, nr]); setSelected(nr); } setModal(null); setEditing(null); showToast('Saved!'); };
+      const deleteRecipe = (id) => { if (confirm('Delete?')) { setRecipes(r => r.filter(x => x.id !== id)); setSelected(null); showToast('Deleted'); } };
+      const duplicateRecipe = (recipe) => { const nr = { ...recipe, id: Date.now(), name: recipe.name + ' (Copy)', items: recipe.items.map(i => ({...i})) }; setRecipes(r => [...r, nr]); setSelected(nr); showToast('Duplicated!'); };
+      const exportData = () => { const d = JSON.stringify({ recipes, version: APP_VERSION }, null, 2); const b = new Blob([d], { type: 'application/json' }); const a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = `gelato-backup-${new Date().toISOString().split('T')[0]}.json`; a.click(); showToast('Exported!'); };
+      const importData = (e) => { const f = e.target.files[0]; if (!f) return; const r = new FileReader(); r.onload = (ev) => { try { const d = JSON.parse(ev.target.result); if (d.recipes) { setRecipes(d.recipes); showToast('Imported!'); } } catch { showToast('Invalid'); } }; r.readAsText(f); };
+      if (!isAuth) return <PinScreen onSuccess={() => { setIsAuth(true); sessionStorage.setItem('gelato-auth', 'true'); }} />;
+      return (
+        <div className="app-container">
+          <header className="header"><div className="header-top"><div className="header-brand"><div className="header-icon">🍨</div><div className="header-title">Gelato Formulator</div></div><button className="header-btn" onClick={() => location.reload()}>↻</button></div><div className="tabs"><button className={`tab ${tab === 'recipes' ? 'active' : ''}`} onClick={() => { setTab('recipes'); setSelected(null); }}>Recipes</button><button className={`tab ${tab === 'ingredients' ? 'active' : ''}`} onClick={() => setTab('ingredients')}>Ingredients</button><button className={`tab ${tab === 'settings' ? 'active' : ''}`} onClick={() => setTab('settings')}>Settings</button></div></header>
+          <div className="content">
+            {tab === 'recipes' && !selected && (<><div className="search-box"><span className="search-icon">🔍</span><input className="search-input" placeholder="Search recipes..." value={recipeSearch} onChange={e => setRecipeSearch(e.target.value)} /></div><div className="filter-chips">{['all', 'gelato', 'sorbet'].map(f => <button key={f} className={`filter-chip ${recipeFilter === f ? 'active' : ''}`} onClick={() => setRecipeFilter(f)}>{f === 'all' ? 'All' : f.charAt(0).toUpperCase() + f.slice(1)}</button>)}</div><div className="recipe-header"><span className="recipe-count">{filteredRecipes.length} recipes</span><button className="add-btn" onClick={() => { setEditing({ name: '', type: 'gelato', items: [] }); setModal('recipe'); }}>+ New Recipe</button></div><div className="recipe-list">{filteredRecipes.map(recipe => { const stats = calculateStats(recipe.items); const targets = recipe.type === 'gelato' ? GELATO_TARGETS : SORBET_TARGETS; return (<div key={recipe.id} className="recipe-card" onClick={() => setSelected(recipe)}><div className="recipe-card-header"><div className="recipe-card-info"><div className={`recipe-card-icon ${recipe.type}`}>{recipe.type === 'gelato' ? '🍨' : '🍧'}</div><div><div className="recipe-card-name">{recipe.name}</div><div className="recipe-card-meta">{recipe.items.length} ing · {stats.totalWeight.toFixed(0)}g</div></div></div><span className={`recipe-card-badge ${recipe.type}`}>{recipe.type}</span></div><div className="recipe-card-stats">{[{k:'fat',l:'Fat'},{k:'sugar',l:'Sugar'},{k:'solids',l:'Solids'}].map(({k,l}) => <div key={k} className="recipe-stat"><div className={`recipe-stat-value ${getStatus(stats[k], targets[k])}`}>{stats[k].toFixed(1)}%</div><div className="recipe-stat-label">{l}</div></div>)}<div className="recipe-stat"><div className="recipe-stat-value" style={{color:'var(--info)'}}>{stats.freezingPoint.toFixed(1)}°</div><div className="recipe-stat-label">FP</div></div></div></div>); })}</div></>)}
+            {tab === 'recipes' && selected && (() => { const stats = calculateStats(selected.items); const targets = selected.type === 'gelato' ? GELATO_TARGETS : SORBET_TARGETS; return (<><div className="detail-header"><button className="back-btn" onClick={() => setSelected(null)}>←</button><div className="detail-title"><div className="detail-name">{selected.name}</div><div className="detail-meta">{selected.type === 'gelato' ? '🍨' : '🍧'} {selected.type} · {stats.totalWeight.toFixed(0)}g</div></div><div className="detail-actions"><button className="detail-action-btn" onClick={() => { setEditing(selected); setModal('recipe'); }}>✏️</button><button className="detail-action-btn" onClick={() => duplicateRecipe(selected)}>📋</button><button className="detail-action-btn danger" onClick={() => deleteRecipe(selected.id)}>🗑️</button></div></div><div className="stats-grid">{[{l:'Fat',k:'fat'},{l:'Sugar',k:'sugar'},{l:'MSNF',k:'msnf'},{l:'Solids',k:'solids'}].map(({l,k}) => { const v = stats[k], t = targets[k], s = getStatus(v, t), p = Math.min(100, (v / t.max) * 80); return <div key={k} className="stat-card"><div className="stat-card-header"><span className="stat-card-label">{l}</span><span className="stat-card-target">{t.min}-{t.max}%</span></div><div className={`stat-card-value ${s}`}>{v.toFixed(1)}%</div><div className="stat-card-bar"><div className={`stat-card-fill ${s}`} style={{width:`${p}%`}} /></div></div>; })}</div><div className="section-header"><span className="section-title">Ingredients</span><button className="section-btn" onClick={() => setModal('ingredient')}>+ Add</button></div><div className="ingredients-list">{selected.items.map((item, idx) => { const ing = INGREDIENT_DB.find(i => i.id === item.ingredientId); if (!ing) return null; return (<div key={idx} className="ingredient-row"><span className="ingredient-name">{ing.name}</span><input type="number" className="ingredient-amount-input" value={item.amount} onChange={e => { const updated = { ...selected, items: selected.items.map((it, i) => i === idx ? { ...it, amount: parseFloat(e.target.value) || 0 } : it) }; setRecipes(r => r.map(x => x.id === updated.id ? updated : x)); setSelected(updated); }} /><span className="ingredient-unit">g</span><button className="ingredient-remove" onClick={() => { const updated = { ...selected, items: selected.items.filter((_, i) => i !== idx) }; setRecipes(r => r.map(x => x.id === updated.id ? updated : x)); setSelected(updated); }}>×</button></div>); })}<div className="ingredient-total"><span>Total</span><span className="ingredient-total-value">{stats.totalWeight.toFixed(0)}g</span></div></div><div style={{marginTop:20,padding:16,background:'var(--bg-surface)',borderRadius:14,border:'1px solid var(--border)'}}><div style={{fontSize:12,color:'var(--text-muted)',marginBottom:8,textTransform:'uppercase'}}>Freezing Point</div><div style={{fontSize:24,fontWeight:700,fontFamily:'JetBrains Mono',color:'var(--info)'}}>{stats.freezingPoint.toFixed(2)}°C</div><div style={{fontSize:12,color:'var(--text-muted)',marginTop:4}}>Target: -2.5 to -3.5°C</div></div></>); })()}
+            {tab === 'ingredients' && (<><div className="search-box"><span className="search-icon">🔍</span><input className="search-input" placeholder="Search ingredients..." value={ingSearch} onChange={e => setIngSearch(e.target.value)} /></div><div className="filter-chips">{CATEGORIES.map(c => <button key={c.id} className={`filter-chip ${ingCategory === c.id ? 'active' : ''}`} onClick={() => setIngCategory(c.id)}>{c.name}</button>)}</div><div style={{color:'var(--text-muted)',fontSize:14,marginBottom:16}}>{filteredIngredients.length} ingredients</div>{filteredIngredients.map(ing => (<div key={ing.id} className="ing-card"><div className="ing-card-name">{ing.name}</div><div className="ing-card-stats"><div className="ing-card-stat">Fat <span>{ing.fat}%</span></div><div className="ing-card-stat">Sugar <span>{ing.sugar}%</span></div><div className="ing-card-stat">MSNF <span>{ing.msnf}%</span></div><div className="ing-card-stat">PAC <span>{ing.pac}</span></div><div className="ing-card-stat">POD <span>{ing.pod}</span></div></div></div>))}</>)}
+            {tab === 'settings' && (<><div className="settings-section"><div className="settings-section-title">Data</div><div className="settings-item" onClick={exportData}><span className="settings-item-label">Export Backup</span><span className="settings-item-value">→</span></div><label className="settings-item"><span className="settings-item-label">Import Backup</span><input type="file" accept=".json" onChange={importData} style={{display:'none'}} /><span className="settings-item-value">→</span></label></div><div className="settings-section"><div className="settings-section-title">App Info</div><div className="settings-item"><span className="settings-item-label">Version</span><span className="settings-item-value">{APP_VERSION}</span></div><div className="settings-item"><span className="settings-item-label">Build</span><span className="settings-item-value">{BUILD_DATE}</span></div><div className="settings-item"><span className="settings-item-label">Recipes</span><span className="settings-item-value">{recipes.length}</span></div><div className="settings-item"><span className="settings-item-label">Ingredients</span><span className="settings-item-value">{INGREDIENT_DB.length}</span></div></div><div className="settings-section"><div className="settings-section-title" style={{color:'var(--danger)'}}>Danger Zone</div><div className="settings-item danger" onClick={() => { if (confirm('Reset?')) { setRecipes(DEFAULT_RECIPES); setSelected(null); showToast('Reset!'); } }}><span className="settings-item-label">Reset All Data</span><span className="settings-item-value">→</span></div></div></>)}
+          </div>
+          {modal === 'recipe' && (<div className="modal-overlay" onClick={() => { setModal(null); setEditing(null); }}><div className="modal" onClick={e => e.stopPropagation()}><div className="modal-header"><span className="modal-title">{editing?.id ? 'Edit Recipe' : 'New Recipe'}</span><button className="modal-close" onClick={() => { setModal(null); setEditing(null); }}>×</button></div><div className="modal-content"><div className="form-group"><label className="form-label">Name</label><input type="text" className="form-input" placeholder="Recipe name" value={editing?.name || ''} onChange={e => setEditing({...editing, name: e.target.value})} autoFocus /></div><div className="form-group"><label className="form-label">Type</label><select className="form-select" value={editing?.type || 'gelato'} onChange={e => setEditing({...editing, type: e.target.value})}><option value="gelato">Gelato</option><option value="sorbet">Sorbet</option></select></div></div><div className="modal-footer"><button className="modal-btn secondary" onClick={() => { setModal(null); setEditing(null); }}>Cancel</button><button className="modal-btn primary" onClick={() => { if (editing?.name?.trim()) saveRecipe({...editing, items: editing.items || []}); }}>Save</button></div></div></div>)}
+          {modal === 'ingredient' && selected && <AddIngredientModal onAdd={(id, amt) => { const updated = { ...selected, items: [...selected.items, { ingredientId: id, amount: amt }] }; setRecipes(r => r.map(x => x.id === updated.id ? updated : x)); setSelected(updated); setModal(null); }} onClose={() => setModal(null)} existingIds={selected.items.map(i => i.ingredientId)} />}
+          {toast && <div className="toast">{toast}</div>}
+        </div>
+      );
+    }
+    
+    function AddIngredientModal({ onAdd, onClose, existingIds }) {
+      const [search, setSearch] = useState(''); const [selId, setSelId] = useState(null); const [amount, setAmount] = useState('');
+      const filtered = useMemo(() => INGREDIENT_DB.filter(i => i.name.toLowerCase().includes(search.toLowerCase()) && !existingIds.includes(i.id)).slice(0, 15), [search, existingIds]);
+      const selIng = selId ? INGREDIENT_DB.find(i => i.id === selId) : null;
+      return (<div className="modal-overlay" onClick={onClose}><div className="modal" onClick={e => e.stopPropagation()}><div className="modal-header"><span className="modal-title">Add Ingredient</span><button className="modal-close" onClick={onClose}>×</button></div><div className="modal-content">{!selId ? (<><div className="form-group"><input type="text" className="form-input" placeholder="Search ingredients..." value={search} onChange={e => setSearch(e.target.value)} autoFocus /></div>{search && filtered.length > 0 && <div className="search-results">{filtered.map(ing => (<div key={ing.id} className="search-result-item" onClick={() => setSelId(ing.id)}><div className="search-result-name">{ing.name}</div><div className="search-result-meta">Fat: {ing.fat}% · Sugar: {ing.sugar}% · MSNF: {ing.msnf}%</div></div>))}</div>}</>) : (<><div className="form-group"><label className="form-label">Selected</label><div className="form-input" style={{cursor:'pointer'}} onClick={() => setSelId(null)}>{selIng?.name} <span style={{color:'var(--text-muted)',float:'right'}}>Change</span></div></div><div className="form-group"><label className="form-label">Amount (g)</label><input type="number" className="form-input" placeholder="e.g., 500" value={amount} onChange={e => setAmount(e.target.value)} autoFocus /></div></>)}</div><div className="modal-footer"><button className="modal-btn secondary" onClick={onClose}>Cancel</button><button className="modal-btn primary" onClick={() => selId && amount && onAdd(selId, parseFloat(amount))} style={{opacity:(!selId||!amount)?0.5:1}}>Add</button></div></div></div>);
+    }
+    
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  </script>
 </body>
 </html>
