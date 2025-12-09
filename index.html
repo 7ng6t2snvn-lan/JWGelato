@@ -22,6 +22,7 @@
       --warning: #f59e0b; --warning-soft: rgba(245, 158, 11, 0.15);
       --danger: #ef4444; --danger-soft: rgba(239, 68, 68, 0.15);
       --info: #3b82f6; --info-soft: rgba(59, 130, 246, 0.15);
+      --purple: #8b5cf6; --purple-soft: rgba(139, 92, 246, 0.15);
       --text-primary: #f8fafc; --text-secondary: #94a3b8; --text-muted: #64748b;
       --border: #334155; --border-light: #475569;
     }
@@ -31,71 +32,79 @@
     .pin-screen { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 24px; background: linear-gradient(145deg, var(--bg-base), #1a1a2e); }
     .pin-logo { width: 80px; height: 80px; background: var(--accent-soft); border-radius: 24px; display: flex; align-items: center; justify-content: center; font-size: 40px; margin-bottom: 24px; }
     .pin-title { font-size: 24px; font-weight: 700; margin-bottom: 8px; }
-    .pin-subtitle { color: var(--text-secondary); margin-bottom: 32px; }
-    .pin-dots { display: flex; gap: 16px; margin-bottom: 32px; }
-    .pin-dot { width: 16px; height: 16px; border-radius: 50%; background: var(--bg-elevated); border: 2px solid var(--border-light); transition: all 0.2s; }
+    .pin-subtitle { color: var(--text-muted); margin-bottom: 32px; }
+    .pin-dots { display: flex; gap: 16px; margin-bottom: 40px; }
+    .pin-dot { width: 16px; height: 16px; border-radius: 50%; border: 2px solid var(--border-light); transition: all 0.2s; }
     .pin-dot.filled { background: var(--accent); border-color: var(--accent); }
-    .pin-dot.error { background: var(--danger); border-color: var(--danger); animation: shake 0.4s; }
+    .pin-dot.error { border-color: var(--danger); background: var(--danger); animation: shake 0.5s; }
     @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-8px)} 75%{transform:translateX(8px)} }
-    .pin-keypad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
-    .pin-key { width: 72px; height: 72px; border-radius: 50%; background: var(--bg-surface); border: 1px solid var(--border); color: var(--text-primary); font-size: 28px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-    .pin-key:active { background: var(--bg-elevated); transform: scale(0.95); }
+    .pin-keypad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; width: 100%; max-width: 280px; }
+    .pin-key { height: 64px; border-radius: 16px; background: var(--bg-surface); border: 1px solid var(--border); color: var(--text-primary); font-size: 24px; font-weight: 600; cursor: pointer; transition: all 0.15s; }
+    .pin-key:hover { background: var(--bg-elevated); }
+    .pin-key:active { transform: scale(0.95); }
     .pin-key.empty { visibility: hidden; }
     .app-container { flex: 1; display: flex; flex-direction: column; }
-    .header { background: var(--bg-surface); border-bottom: 1px solid var(--border); padding: 16px 20px; position: sticky; top: 0; z-index: 100; }
+    .header { background: var(--bg-surface); border-bottom: 1px solid var(--border); padding: 16px 20px 0; position: sticky; top: 0; z-index: 100; }
     .header-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
     .header-brand { display: flex; align-items: center; gap: 12px; }
     .header-icon { width: 40px; height: 40px; background: var(--accent-soft); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 22px; }
-    .header-title { font-size: 18px; font-weight: 700; }
-    .header-btn { width: 40px; height: 40px; border-radius: 12px; background: var(--bg-elevated); border: none; color: var(--text-secondary); font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-    .tabs { display: flex; gap: 4px; background: var(--bg-base); border-radius: 12px; padding: 4px; }
-    .tab { flex: 1; padding: 10px 16px; border-radius: 10px; border: none; background: transparent; color: var(--text-muted); font-size: 14px; font-weight: 600; cursor: pointer; }
-    .tab.active { background: var(--accent); color: var(--bg-base); }
-    .content { flex: 1; padding: 20px; overflow-y: auto; padding-bottom: 100px; }
-    .search-box { position: relative; margin-bottom: 16px; }
-    .search-input { width: 100%; padding: 14px 16px 14px 44px; border-radius: 12px; background: var(--bg-surface); border: 1px solid var(--border); color: var(--text-primary); font-size: 15px; font-family: inherit; }
-    .search-input:focus { outline: none; border-color: var(--accent); }
+    .header-title { font-size: 20px; font-weight: 700; }
+    .header-btn { width: 40px; height: 40px; border-radius: 12px; background: var(--bg-elevated); border: none; color: var(--text-secondary); font-size: 18px; cursor: pointer; }
+    .tabs { display: flex; gap: 4px; overflow-x: auto; }
+    .tab { padding: 12px 16px; border: none; background: none; color: var(--text-muted); font-size: 14px; font-weight: 600; cursor: pointer; border-bottom: 2px solid transparent; white-space: nowrap; }
+    .tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+    .tab.test { color: var(--purple); }
+    .tab.test.active { border-bottom-color: var(--purple); }
+    .content { flex: 1; padding: 20px; overflow-y: auto; }
+    .search-box { display: flex; align-items: center; background: var(--bg-surface); border: 1px solid var(--border); border-radius: 12px; padding: 12px 16px; margin-bottom: 16px; }
+    .search-icon { color: var(--text-muted); margin-right: 12px; }
+    .search-input { flex: 1; background: none; border: none; color: var(--text-primary); font-size: 16px; outline: none; }
     .search-input::placeholder { color: var(--text-muted); }
-    .search-icon { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--text-muted); }
-    .filter-chips { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 8px; margin-bottom: 16px; -webkit-overflow-scrolling: touch; }
-    .filter-chips::-webkit-scrollbar { display: none; }
-    .filter-chip { padding: 8px 14px; border-radius: 20px; border: none; background: var(--bg-surface); color: var(--text-secondary); font-size: 13px; font-weight: 600; cursor: pointer; white-space: nowrap; }
-    .filter-chip.active { background: var(--accent); color: var(--bg-base); }
+    .filter-chips { display: flex; gap: 8px; margin-bottom: 16px; overflow-x: auto; padding-bottom: 4px; }
+    .filter-chip { padding: 8px 14px; border-radius: 20px; background: var(--bg-surface); border: 1px solid var(--border); color: var(--text-secondary); font-size: 13px; font-weight: 500; cursor: pointer; white-space: nowrap; }
+    .filter-chip.active { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
     .recipe-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
-    .recipe-count { color: var(--text-secondary); font-size: 14px; }
-    .add-btn { display: flex; align-items: center; gap: 8px; padding: 10px 16px; border-radius: 10px; background: var(--accent); border: none; color: var(--bg-base); font-size: 14px; font-weight: 600; cursor: pointer; }
+    .recipe-count { color: var(--text-muted); font-size: 14px; }
+    .add-btn { padding: 10px 16px; border-radius: 10px; background: var(--accent); border: none; color: var(--bg-base); font-size: 14px; font-weight: 600; cursor: pointer; }
     .recipe-list { display: flex; flex-direction: column; gap: 12px; }
-    .recipe-card { background: var(--bg-surface); border: 1px solid var(--border); border-radius: 16px; padding: 16px; cursor: pointer; }
+    .recipe-card { background: var(--bg-surface); border: 1px solid var(--border); border-radius: 16px; padding: 16px; cursor: pointer; transition: all 0.2s; }
     .recipe-card:hover { border-color: var(--border-light); }
+    .recipe-card.test { border-left: 3px solid var(--purple); }
     .recipe-card-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 12px; }
     .recipe-card-info { display: flex; align-items: center; gap: 12px; }
-    .recipe-card-icon { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px; }
-    .recipe-card-icon.gelato { background: var(--warning-soft); }
+    .recipe-card-icon { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 22px; }
+    .recipe-card-icon.gelato { background: var(--accent-soft); }
     .recipe-card-icon.sorbet { background: var(--info-soft); }
-    .recipe-card-name { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
+    .recipe-card-name { font-weight: 600; margin-bottom: 4px; }
     .recipe-card-meta { font-size: 13px; color: var(--text-muted); }
-    .recipe-card-badge { padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; text-transform: uppercase; }
-    .recipe-card-badge.gelato { background: var(--warning-soft); color: var(--accent); }
+    .recipe-card-badge { padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 600; text-transform: uppercase; }
+    .recipe-card-badge.gelato { background: var(--accent-soft); color: var(--accent); }
     .recipe-card-badge.sorbet { background: var(--info-soft); color: var(--info); }
     .recipe-card-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
-    .recipe-stat { text-align: center; padding: 8px; background: var(--bg-base); border-radius: 8px; }
+    .recipe-stat { text-align: center; }
     .recipe-stat-value { font-size: 15px; font-weight: 700; font-family: 'JetBrains Mono', monospace; }
     .recipe-stat-value.good { color: var(--success); }
     .recipe-stat-value.warning { color: var(--warning); }
     .recipe-stat-value.bad { color: var(--danger); }
-    .recipe-stat-label { font-size: 10px; color: var(--text-muted); text-transform: uppercase; margin-top: 2px; }
+    .recipe-stat-label { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
     .detail-header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
-    .back-btn { width: 40px; height: 40px; border-radius: 12px; background: var(--bg-surface); border: 1px solid var(--border); color: var(--text-primary); font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+    .back-btn { width: 40px; height: 40px; border-radius: 12px; background: var(--bg-surface); border: 1px solid var(--border); color: var(--text-secondary); font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
     .detail-title { flex: 1; }
-    .detail-name { font-size: 20px; font-weight: 700; margin-bottom: 4px; }
-    .detail-meta { font-size: 14px; color: var(--text-secondary); }
+    .detail-name { font-size: 20px; font-weight: 700; }
+    .detail-meta { font-size: 14px; color: var(--text-muted); }
     .detail-actions { display: flex; gap: 8px; }
-    .detail-action-btn { width: 40px; height: 40px; border-radius: 12px; background: var(--bg-surface); border: 1px solid var(--border); color: var(--text-secondary); font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-    .detail-action-btn.danger { color: var(--danger); }
+    .detail-action-btn { width: 40px; height: 40px; border-radius: 10px; background: var(--bg-surface); border: 1px solid var(--border); font-size: 16px; cursor: pointer; }
+    .detail-action-btn.danger { background: var(--danger-soft); border-color: transparent; }
+    .scale-controls { display: flex; align-items: center; justify-content: center; gap: 16px; margin-bottom: 20px; padding: 14px; background: var(--bg-surface); border: 1px solid var(--border); border-radius: 12px; }
+    .scale-btn { width: 48px; height: 48px; border-radius: 12px; background: var(--accent-soft); border: none; color: var(--accent); font-size: 24px; font-weight: 700; cursor: pointer; }
+    .scale-btn:active { transform: scale(0.95); }
+    .scale-info { text-align: center; }
+    .scale-label { font-size: 12px; color: var(--text-muted); margin-bottom: 4px; }
+    .scale-value { font-size: 20px; font-weight: 700; font-family: 'JetBrains Mono', monospace; color: var(--accent); }
     .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 20px; }
     .stat-card { background: var(--bg-surface); border: 1px solid var(--border); border-radius: 14px; padding: 14px; }
     .stat-card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
-    .stat-card-label { font-size: 12px; color: var(--text-muted); text-transform: uppercase; }
+    .stat-card-label { font-size: 13px; color: var(--text-muted); }
     .stat-card-target { font-size: 11px; color: var(--text-muted); }
     .stat-card-value { font-size: 28px; font-weight: 700; font-family: 'JetBrains Mono', monospace; }
     .stat-card-value.good { color: var(--success); }
@@ -155,6 +164,9 @@
     .settings-item.danger .settings-item-label { color: var(--danger); }
     .toast { position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%); background: var(--bg-elevated); border: 1px solid var(--border); padding: 12px 20px; border-radius: 12px; font-size: 14px; font-weight: 500; z-index: 1001; animation: slideUp 0.3s; }
     @keyframes slideUp { from{opacity:0;transform:translateX(-50%) translateY(20px)} to{opacity:1;transform:translateX(-50%) translateY(0)} }
+    .test-info { background: var(--purple-soft); border: 1px solid var(--purple); border-radius: 12px; padding: 14px; margin-bottom: 16px; }
+    .test-info-title { color: var(--purple); font-weight: 600; margin-bottom: 4px; }
+    .test-info-text { font-size: 13px; color: var(--text-secondary); }
     @media (min-width: 768px) { .content { max-width: 600px; margin: 0 auto; } .stats-grid { grid-template-columns: repeat(4, 1fr); } .modal { border-radius: 20px; margin: auto; } }
   </style>
 </head>
@@ -162,10 +174,9 @@
   <div id="root"></div>
   <script type="text/babel">
     const { useState, useEffect, useMemo } = React;
-    const APP_VERSION = '4.1.0', BUILD_DATE = '2025-12-08', CORRECT_PIN = '0119';
+    const APP_VERSION = '5.0.0', BUILD_DATE = '2025-12-09', CORRECT_PIN = '0119';
     
     const INGREDIENT_DB = [
-      // DAIRY
       { id: 1, name: 'Whole Milk 3.6%', fat: 3.6, sugar: 4.8, msnf: 8.9, fiber: 0, pac: 4.8, pod: 16, category: 'dairy' },
       { id: 2, name: 'Cream 38%', fat: 38, sugar: 2.8, msnf: 5.5, fiber: 0, pac: 2.8, pod: 9.3, category: 'dairy' },
       { id: 3, name: 'Cream 40%', fat: 40, sugar: 2.7, msnf: 5.2, fiber: 0, pac: 2.7, pod: 9, category: 'dairy' },
@@ -175,130 +186,75 @@
       { id: 7, name: 'Whole Milk Powder', fat: 26, sugar: 38, msnf: 70, fiber: 0, pac: 38, pod: 38, category: 'dairy' },
       { id: 8, name: 'Cream Cheese', fat: 32.14, sugar: 3.5, msnf: 5, fiber: 0, pac: 3.5, pod: 0, category: 'dairy' },
       { id: 9, name: 'Mascarpone', fat: 44, sugar: 3, msnf: 4, fiber: 0, pac: 3, pod: 0, category: 'dairy' },
-      // SUGARS
       { id: 10, name: 'Sucrose (White Sugar)', fat: 0, sugar: 100, msnf: 0, fiber: 0, pac: 100, pod: 100, category: 'sugar' },
       { id: 11, name: 'Dextrose', fat: 0, sugar: 92, msnf: 0, fiber: 0, pac: 180, pod: 70, category: 'sugar' },
-      { id: 12, name: 'Glucose Syrup 38DE', fat: 0, sugar: 80, msnf: 0, fiber: 0, pac: 90, pod: 45, category: 'sugar' },
+      { id: 12, name: 'Glucose Syrup DE 40 (Caullet)', fat: 0, sugar: 80, msnf: 0, fiber: 0, pac: 90, pod: 45, category: 'sugar' },
       { id: 13, name: 'Glucose Powder 42DE', fat: 0, sugar: 95, msnf: 0, fiber: 0, pac: 100, pod: 50, category: 'sugar' },
       { id: 14, name: 'Trimoline (Invert Sugar)', fat: 0, sugar: 82, msnf: 0, fiber: 0, pac: 190, pod: 170, category: 'sugar' },
       { id: 15, name: 'Inulin', fat: 0, sugar: 0, msnf: 0, fiber: 90, pac: 10, pod: 10, category: 'sugar' },
       { id: 16, name: 'Maltodextrin', fat: 0, sugar: 95, msnf: 0, fiber: 0, pac: 50, pod: 30, category: 'sugar' },
       { id: 17, name: 'Honey', fat: 0, sugar: 82, msnf: 0, fiber: 0, pac: 97, pod: 130, category: 'sugar' },
-      { id: 18, name: 'Brown Sugar', fat: 0, sugar: 100, msnf: 0, fiber: 0, pac: 99, pod: 99, category: 'sugar' },
-      { id: 19, name: 'Rich Syrup', fat: 0, sugar: 66.73, msnf: 0, fiber: 0, pac: 66.73, pod: 66.73, category: 'sugar' },
-      // STABILIZERS
       { id: 20, name: 'Tara Gum', fat: 0, sugar: 0, msnf: 0, fiber: 80, pac: 0, pod: 0, category: 'stabilizer' },
       { id: 21, name: 'Guar Gum', fat: 0, sugar: 0, msnf: 0, fiber: 80, pac: 0, pod: 0, category: 'stabilizer' },
       { id: 22, name: 'Locust Bean Gum (LBG)', fat: 0, sugar: 0, msnf: 0, fiber: 80, pac: 0, pod: 0, category: 'stabilizer' },
       { id: 23, name: 'Kappa Carrageenan', fat: 0, sugar: 0, msnf: 0, fiber: 0, pac: 0, pod: 0, category: 'stabilizer' },
-      { id: 24, name: 'Xanthan Gum', fat: 0, sugar: 0, msnf: 0, fiber: 80, pac: 0, pod: 0, category: 'stabilizer' },
-      { id: 25, name: 'Perfect Gelato Stabilizer', fat: 0, sugar: 32, msnf: 0, fiber: 57, pac: 177, pod: 74, category: 'stabilizer' },
-      { id: 26, name: 'Cremodan 30', fat: 68, sugar: 0, msnf: 0, fiber: 24, pac: 0, pod: 0, category: 'stabilizer' },
-      { id: 27, name: 'Cremodan 64', fat: 0, sugar: 28, msnf: 0, fiber: 37, pac: 28, pod: 0, category: 'stabilizer' },
-      { id: 28, name: 'DGF Stabilizer', fat: 5, sugar: 42, msnf: 0, fiber: 0.8, pac: 41.23, pod: 25.64, category: 'stabilizer' },
-      // OTHER BASE
       { id: 30, name: 'Water', fat: 0, sugar: 0, msnf: 0, fiber: 0, pac: 0, pod: 0, category: 'other' },
       { id: 31, name: 'Sea Salt', fat: 0, sugar: 0, msnf: 0, fiber: 0, pac: 0, pod: 0, category: 'other' },
-      { id: 32, name: 'Egg Yolk', fat: 26.5, sugar: 0.6, msnf: 0, fiber: 0, pac: 0.6, pod: 0, category: 'other' },
-      { id: 33, name: 'Vanilla Extract', fat: 0, sugar: 13, msnf: 0, fiber: 0, pac: 13, pod: 0, category: 'other' },
-      { id: 34, name: 'Nielsen Massey Vanilla Paste', fat: 0, sugar: 63, msnf: 0, fiber: 0, pac: 63, pod: 0, category: 'other' },
-      { id: 35, name: 'Instant Coffee', fat: 0.2, sugar: 3.1, msnf: 0, fiber: 34.1, pac: 3, pod: 0, category: 'other' },
-      { id: 36, name: 'Espresso', fat: 0.2, sugar: 0, msnf: 0, fiber: 0, pac: 0, pod: 0, category: 'other' },
       { id: 37, name: 'Espresso Beans (Ground)', fat: 11, sugar: 0, msnf: 0, fiber: 35, pac: 0, pod: 0, category: 'other' },
-      // FATS
       { id: 40, name: 'Coconut Oil', fat: 100, sugar: 0, msnf: 0, fiber: 0, pac: 0, pod: 0, category: 'fats' },
       { id: 41, name: 'Extra Virgin Olive Oil', fat: 100, sugar: 0, msnf: 0, fiber: 0, pac: 0, pod: 0, category: 'fats' },
-      { id: 42, name: 'Cocoa Butter', fat: 100, sugar: 0, msnf: 0, fiber: 0, pac: 0, pod: 0, category: 'fats' },
-      { id: 43, name: 'GMS (Glyceryl Monostearate)', fat: 98, sugar: 0, msnf: 0, fiber: 0, pac: 0, pod: 0, category: 'fats' },
-      // CHOCOLATE
       { id: 50, name: 'Cocoa Powder 22-24%', fat: 23, sugar: 0, msnf: 0, fiber: 33, pac: 0, pod: 0, category: 'chocolate' },
       { id: 51, name: 'Callebaut 70.5% Chocolate', fat: 41, sugar: 28, msnf: 0, fiber: 11, pac: 28, pod: 28, category: 'chocolate' },
-      { id: 52, name: 'Dark Chocolate 66% BTSW', fat: 35.71, sugar: 35.71, msnf: 0, fiber: 14.24, pac: 31, pod: 31, category: 'chocolate' },
-      { id: 53, name: 'Milk Chocolate', fat: 32, sugar: 52, msnf: 8, fiber: 3, pac: 52, pod: 52, category: 'chocolate' },
-      { id: 54, name: 'White Chocolate', fat: 32, sugar: 59, msnf: 12, fiber: 0, pac: 59, pod: 59, category: 'chocolate' },
-      // NUTS
-      { id: 60, name: 'Hazelnut Paste', fat: 61, sugar: 6, msnf: 0, fiber: 10, pac: 6, pod: 6, category: 'nuts' },
-      { id: 61, name: 'Pistachio Paste', fat: 54, sugar: 8, msnf: 0, fiber: 10, pac: 8, pod: 0, category: 'nuts' },
-      { id: 62, name: 'Agriland Pistachio Paste', fat: 34.8, sugar: 37, msnf: 0, fiber: 6, pac: 37, pod: 0, category: 'nuts' },
-      { id: 63, name: 'Almond Paste', fat: 52, sugar: 12, msnf: 0, fiber: 12, pac: 12, pod: 12, category: 'nuts' },
-      { id: 64, name: 'Peanut Butter', fat: 50, sugar: 9.375, msnf: 0, fiber: 6.24, pac: 6, pod: 3, category: 'nuts' },
-      // CITRUS
+      { id: 52, name: 'Dark Chocolate 66%', fat: 35.71, sugar: 35.71, msnf: 0, fiber: 14.24, pac: 31, pod: 31, category: 'chocolate' },
       { id: 70, name: 'Lemon Juice', fat: 0, sugar: 2.5, msnf: 0, fiber: 0.3, pac: 4.75, pod: 2.5, category: 'fruit-citrus' },
-      { id: 71, name: 'Lime Juice', fat: 0, sugar: 1.7, msnf: 0, fiber: 0.4, pac: 0.5, pod: 0, category: 'fruit-citrus' },
-      { id: 72, name: 'Orange Juice', fat: 0, sugar: 8.4, msnf: 0, fiber: 0.2, pac: 8.4, pod: 0, category: 'fruit-citrus' },
-      { id: 73, name: 'Blood Orange Juice', fat: 0, sugar: 12.4, msnf: 0, fiber: 0.8, pac: 12.4, pod: 0, category: 'fruit-citrus' },
-      { id: 74, name: 'Yuzu Juice', fat: 0, sugar: 3.5, msnf: 0, fiber: 0.2, pac: 3.5, pod: 0, category: 'fruit-citrus' },
-      { id: 75, name: 'Lemon Zest', fat: 0.3, sugar: 5, msnf: 0, fiber: 10, pac: 5, pod: 0, category: 'fruit-citrus' },
-      // BERRIES
       { id: 80, name: 'Strawberry Purée', fat: 0.3, sugar: 5, msnf: 0, fiber: 2, pac: 9.5, pod: 10, category: 'fruit-berry' },
-      { id: 81, name: 'Blueberry Purée', fat: 0.3, sugar: 10, msnf: 0, fiber: 2.4, pac: 19, pod: 11, category: 'fruit-berry' },
-      { id: 82, name: 'Raspberry Purée', fat: 0.3, sugar: 4.4, msnf: 0, fiber: 6.5, pac: 8.4, pod: 4.4, category: 'fruit-berry' },
-      { id: 83, name: 'Blackberry Purée', fat: 0.5, sugar: 4.9, msnf: 0, fiber: 5.3, pac: 9.3, pod: 4.9, category: 'fruit-berry' },
       { id: 84, name: 'Boiron Blueberry', fat: 0.3, sugar: 10, msnf: 0, fiber: 2.4, pac: 19, pod: 11, category: 'fruit-berry' },
-      { id: 85, name: 'Capfruit Blackberry Purée', fat: 0, sugar: 11, msnf: 0, fiber: 2, pac: 11, pod: 0, category: 'fruit-berry' },
-      { id: 86, name: 'Mixed Berry Purée', fat: 0.126, sugar: 12.61, msnf: 0, fiber: 2.25, pac: 75, pod: 0, category: 'fruit-berry' },
-      { id: 87, name: 'Huckleberry Purée', fat: 0, sugar: 23.4, msnf: 0, fiber: 0, pac: 23.4, pod: 0, category: 'fruit-berry' },
-      { id: 88, name: 'Raspberry Delipaste', fat: 1, sugar: 60, msnf: 0, fiber: 0, pac: 60, pod: 0, category: 'fruit-berry' },
-      // TROPICAL
       { id: 90, name: 'Passion Fruit Purée', fat: 0.7, sugar: 11, msnf: 0, fiber: 10, pac: 21, pod: 12, category: 'fruit-tropical' },
-      { id: 91, name: 'Mango Purée', fat: 0.4, sugar: 14, msnf: 0, fiber: 1.6, pac: 26.6, pod: 14, category: 'fruit-tropical' },
       { id: 92, name: 'Coconut Purée (Boiron)', fat: 15.15, sugar: 12.12, msnf: 0, fiber: 1.25, pac: 5.7, pod: 3, category: 'fruit-tropical' },
-      { id: 93, name: 'Banana Purée', fat: 0.3, sugar: 12, msnf: 0, fiber: 2.6, pac: 22.8, pod: 12, category: 'fruit-tropical' },
-      { id: 94, name: 'Pineapple Purée', fat: 0.1, sugar: 10, msnf: 0, fiber: 1.4, pac: 19, pod: 10, category: 'fruit-tropical' },
-      { id: 95, name: 'Capfruit Passion Fruit', fat: 0, sugar: 22, msnf: 0, fiber: 0, pac: 22, pod: 0, category: 'fruit-tropical' },
-      { id: 96, name: 'Mazzoni Passion Fruit', fat: 0, sugar: 10.2, msnf: 0, fiber: 9.4, pac: 10.2, pod: 0, category: 'fruit-tropical' },
-      { id: 97, name: 'Fabbri Mango DeliPaste', fat: 0.3, sugar: 60.1, msnf: 0, fiber: 0, pac: 60.1, pod: 0, category: 'fruit-tropical' },
-      // STONE FRUIT & OTHER
-      { id: 100, name: 'Peach Purée', fat: 0.3, sugar: 8.4, msnf: 0, fiber: 1.5, pac: 16, pod: 8.4, category: 'fruit-stone' },
-      { id: 101, name: 'Apricot Purée', fat: 0.4, sugar: 9.2, msnf: 0, fiber: 2, pac: 17.5, pod: 9.2, category: 'fruit-stone' },
-      { id: 102, name: 'Cherry Purée', fat: 0.2, sugar: 12.8, msnf: 0, fiber: 2.1, pac: 24.3, pod: 12.8, category: 'fruit-stone' },
-      { id: 103, name: 'Persimmon Purée', fat: 0, sugar: 35.8, msnf: 0, fiber: 18, pac: 35.8, pod: 0, category: 'fruit-stone' },
-      { id: 104, name: 'Apple Cider (Fresh)', fat: 0, sugar: 11.3, msnf: 0, fiber: 0, pac: 16.4, pod: 1, category: 'fruit-other' },
-      { id: 105, name: 'Rhubarb Purée', fat: 0, sugar: 22, msnf: 0, fiber: 1, pac: 16.3, pod: 16.3, category: 'fruit-other' },
       { id: 106, name: 'Rhubarb Strawberry Purée', fat: 0.2, sugar: 4, msnf: 0, fiber: 2, pac: 7.6, pod: 8, category: 'fruit-other' },
-      { id: 107, name: 'Libby Pumpkin', fat: 0, sugar: 4.05, msnf: 0, fiber: 2.9, pac: 5.58, pod: 4.05, category: 'fruit-other' },
-      // PROTEIN
-      { id: 110, name: 'Prostar Whey', fat: 3.8, sugar: 3.3, msnf: 95.2, fiber: 0, pac: 3, pod: 0, category: 'protein' },
-      { id: 111, name: 'Whey Crisp', fat: 1, sugar: 1.2, msnf: 95.6, fiber: 2.5, pac: 0, pod: 0, category: 'protein' },
-      { id: 112, name: 'Pea Protein Isolate', fat: 5, sugar: 0, msnf: 0, fiber: 0, pac: 10, pod: 0, category: 'protein' },
-      { id: 113, name: 'Rice Protein Concentrate', fat: 1, sugar: 0, msnf: 0, fiber: 0, pac: 10, pod: 0, category: 'protein' },
-      // ALCOHOL
-      { id: 120, name: 'Rum 40%', fat: 0, sugar: 0, msnf: 0, fiber: 0, pac: 223.23, pod: 0, category: 'alcohol' },
-      { id: 121, name: 'Cognac 40%', fat: 0, sugar: 0, msnf: 0, fiber: 0, pac: 220.92, pod: 0, category: 'alcohol' },
-      { id: 122, name: 'Coffee Liqueur 25%', fat: 0.3, sugar: 32.2, msnf: 0, fiber: 0, pac: 138.075, pod: 33, category: 'alcohol' },
-      { id: 123, name: 'Jim Beam Bourbon 40%', fat: 0, sugar: 0, msnf: 0, fiber: 0, pac: 220.92, pod: 0, category: 'alcohol' },
-      { id: 124, name: 'Triple Sec', fat: 0, sugar: 29.92, msnf: 0, fiber: 0, pac: 29.92, pod: 0, category: 'alcohol' },
-      { id: 125, name: 'Tequila 40%', fat: 0, sugar: 0, msnf: 0, fiber: 0, pac: 40, pod: 40, category: 'alcohol' },
-      // PREPARED
-      { id: 130, name: 'Salted Caramel for Gelato', fat: 25.41, sugar: 43.69, msnf: 1.56, fiber: 0, pac: 48.73, pod: 43.18, category: 'prepared' },
-      { id: 131, name: 'Burnt Honey', fat: 0, sugar: 28.34, msnf: 0, fiber: 0, pac: 0.1, pod: 0.1, category: 'prepared' },
-      { id: 132, name: 'Morbifrutta Sorbet Powder', fat: 7.8, sugar: 80.3, msnf: 0, fiber: 1.5, pac: 80.3, pod: 0, category: 'prepared' },
     ];
     
     const CATEGORIES = [
       { id: 'all', name: 'All' }, { id: 'dairy', name: 'Dairy' }, { id: 'sugar', name: 'Sugar' }, { id: 'stabilizer', name: 'Stabilizer' },
-      { id: 'fats', name: 'Fats' }, { id: 'chocolate', name: 'Chocolate' }, { id: 'nuts', name: 'Nuts' }, { id: 'fruit-citrus', name: 'Citrus' },
-      { id: 'fruit-berry', name: 'Berry' }, { id: 'fruit-tropical', name: 'Tropical' }, { id: 'fruit-stone', name: 'Stone' }, { id: 'fruit-other', name: 'Other Fruit' },
-      { id: 'protein', name: 'Protein' }, { id: 'alcohol', name: 'Alcohol' }, { id: 'prepared', name: 'Prepared' }, { id: 'other', name: 'Other' },
+      { id: 'fats', name: 'Fats' }, { id: 'chocolate', name: 'Chocolate' }, { id: 'fruit-citrus', name: 'Citrus' },
+      { id: 'fruit-berry', name: 'Berry' }, { id: 'fruit-tropical', name: 'Tropical' }, { id: 'fruit-other', name: 'Other Fruit' }, { id: 'other', name: 'Other' },
     ];
     
     const DEFAULT_RECIPES = [
       { id: 1, name: 'Chocolate Sorbet', type: 'sorbet', items: [{ ingredientId: 30, amount: 2600 }, { ingredientId: 10, amount: 800 }, { ingredientId: 11, amount: 240 }, { ingredientId: 16, amount: 100 }, { ingredientId: 20, amount: 13.5 }, { ingredientId: 50, amount: 240 }] },
-      { id: 2, name: 'Buttermilk Gelato', type: 'gelato', items: [{ ingredientId: 1, amount: 1431 }, { ingredientId: 4, amount: 858 }, { ingredientId: 6, amount: 716 }, { ingredientId: 10, amount: 626 }, { ingredientId: 11, amount: 179 }, { ingredientId: 12, amount: 89.5 }, { ingredientId: 5, amount: 89.5 }, { ingredientId: 20, amount: 13.5 }] },
-      { id: 3, name: 'Strawberry Gelato', type: 'gelato', items: [{ ingredientId: 80, amount: 1186 }, { ingredientId: 1, amount: 822 }, { ingredientId: 3, amount: 889 }, { ingredientId: 10, amount: 267 }, { ingredientId: 11, amount: 283 }, { ingredientId: 12, amount: 118 }, { ingredientId: 5, amount: 89 }, { ingredientId: 20, amount: 13.5 }, { ingredientId: 30, amount: 334 }] },
-      { id: 4, name: 'Passion Fruit Sorbet', type: 'sorbet', items: [{ ingredientId: 90, amount: 1200 }, { ingredientId: 70, amount: 40 }, { ingredientId: 10, amount: 720 }, { ingredientId: 11, amount: 120 }, { ingredientId: 12, amount: 160 }, { ingredientId: 20, amount: 13.5 }, { ingredientId: 30, amount: 1420 }, { ingredientId: 15, amount: 320 }] },
-      { id: 5, name: 'Fior di Latte', type: 'gelato', items: [{ ingredientId: 1, amount: 2800 }, { ingredientId: 3, amount: 940 }, { ingredientId: 10, amount: 500 }, { ingredientId: 11, amount: 150 }, { ingredientId: 12, amount: 336 }, { ingredientId: 5, amount: 150 }, { ingredientId: 20, amount: 13.5 }] },
-      { id: 6, name: 'Fior di Latte TEST (Glucose + Stabilizer Blend)', type: 'gelato', items: [{ ingredientId: 1, amount: 1115 }, { ingredientId: 2, amount: 375 }, { ingredientId: 5, amount: 75 }, { ingredientId: 10, amount: 200 }, { ingredientId: 11, amount: 60 }, { ingredientId: 12, amount: 168 }, { ingredientId: 20, amount: 4 }, { ingredientId: 21, amount: 2.5 }, { ingredientId: 23, amount: 1 }] },
-      { id: 7, name: 'Salted Caramel Gelato', type: 'gelato', items: [{ ingredientId: 10, amount: 579.4 }, { ingredientId: 31, amount: 16 }, { ingredientId: 20, amount: 13.5 }, { ingredientId: 1, amount: 2597.4 }, { ingredientId: 3, amount: 479.5 }, { ingredientId: 5, amount: 179.8 }, { ingredientId: 13, amount: 105 }, { ingredientId: 15, amount: 80 }] },
-      { id: 8, name: 'Coconut-Vanilla Gelato', type: 'gelato', items: [{ ingredientId: 3, amount: 68 }, { ingredientId: 1, amount: 1689 }, { ingredientId: 92, amount: 1351 }, { ingredientId: 10, amount: 676 }, { ingredientId: 11, amount: 68 }, { ingredientId: 12, amount: 68 }, { ingredientId: 20, amount: 13.5 }, { ingredientId: 40, amount: 68 }] },
-      { id: 9, name: 'Chocolate Gelato w/ Callebaut', type: 'gelato', items: [{ ingredientId: 1, amount: 2405 }, { ingredientId: 12, amount: 185 }, { ingredientId: 11, amount: 148 }, { ingredientId: 5, amount: 111 }, { ingredientId: 50, amount: 67 }, { ingredientId: 10, amount: 259 }, { ingredientId: 20, amount: 13.5 }, { ingredientId: 51, amount: 740 }, { ingredientId: 14, amount: 74 }] },
-      { id: 10, name: 'Blueberry-Coconut Sorbet', type: 'sorbet', items: [{ ingredientId: 92, amount: 998 }, { ingredientId: 84, amount: 1996 }, { ingredientId: 10, amount: 499 }, { ingredientId: 12, amount: 200 }, { ingredientId: 11, amount: 200 }, { ingredientId: 30, amount: 100 }, { ingredientId: 20, amount: 13.5 }] },
-      { id: 11, name: 'Lemon Olive Oil Gelato', type: 'gelato', items: [{ ingredientId: 1, amount: 2600 }, { ingredientId: 3, amount: 600 }, { ingredientId: 5, amount: 100 }, { ingredientId: 10, amount: 450 }, { ingredientId: 11, amount: 100 }, { ingredientId: 12, amount: 200 }, { ingredientId: 70, amount: 150 }, { ingredientId: 41, amount: 120 }, { ingredientId: 20, amount: 13.5 }] },
-      { id: 12, name: 'Rhubarb Strawberry Gelato', type: 'gelato', items: [{ ingredientId: 106, amount: 2308 }, { ingredientId: 1, amount: 1730 }, { ingredientId: 3, amount: 500 }, { ingredientId: 10, amount: 520 }, { ingredientId: 11, amount: 200 }, { ingredientId: 12, amount: 230 }, { ingredientId: 5, amount: 174 }, { ingredientId: 20, amount: 13.5 }, { ingredientId: 30, amount: 320 }] },
+      { id: 2, name: 'Buttermilk Gelato', type: 'gelato', items: [{ ingredientId: 1, amount: 1431 }, { ingredientId: 4, amount: 858 }, { ingredientId: 6, amount: 716 }, { ingredientId: 10, amount: 626 }, { ingredientId: 11, amount: 179 }, { ingredientId: 13, amount: 89.5 }, { ingredientId: 5, amount: 89.5 }, { ingredientId: 20, amount: 13.5 }] },
+      { id: 3, name: 'Chocolate Gelato w/ Callebaut 70.5%', type: 'gelato', items: [{ ingredientId: 1, amount: 2405 }, { ingredientId: 13, amount: 185 }, { ingredientId: 11, amount: 148 }, { ingredientId: 5, amount: 111 }, { ingredientId: 50, amount: 67 }, { ingredientId: 10, amount: 259 }, { ingredientId: 20, amount: 13.5 }, { ingredientId: 51, amount: 740 }, { ingredientId: 14, amount: 74 }] },
+      { id: 4, name: 'Blueberry-Coconut Sorbet', type: 'sorbet', items: [{ ingredientId: 92, amount: 998 }, { ingredientId: 84, amount: 1996 }, { ingredientId: 10, amount: 499 }, { ingredientId: 13, amount: 200 }, { ingredientId: 11, amount: 200 }, { ingredientId: 30, amount: 100 }, { ingredientId: 20, amount: 13.5 }] },
+      { id: 5, name: 'Strawberry Gelato', type: 'gelato', items: [{ ingredientId: 80, amount: 1186 }, { ingredientId: 1, amount: 822 }, { ingredientId: 3, amount: 889 }, { ingredientId: 10, amount: 267 }, { ingredientId: 11, amount: 283 }, { ingredientId: 13, amount: 118 }, { ingredientId: 5, amount: 89 }, { ingredientId: 20, amount: 13.5 }, { ingredientId: 30, amount: 334 }] },
+      { id: 6, name: 'Passion Fruit Sorbet', type: 'sorbet', items: [{ ingredientId: 90, amount: 1200 }, { ingredientId: 70, amount: 40 }, { ingredientId: 10, amount: 720 }, { ingredientId: 11, amount: 120 }, { ingredientId: 13, amount: 160 }, { ingredientId: 20, amount: 13.5 }, { ingredientId: 30, amount: 1420 }, { ingredientId: 15, amount: 320 }] },
+      { id: 7, name: 'Coconut-Vanilla Gelato', type: 'gelato', items: [{ ingredientId: 3, amount: 68 }, { ingredientId: 1, amount: 1689 }, { ingredientId: 92, amount: 1351 }, { ingredientId: 10, amount: 676 }, { ingredientId: 11, amount: 68 }, { ingredientId: 13, amount: 68 }, { ingredientId: 20, amount: 13.5 }, { ingredientId: 40, amount: 68 }] },
+      { id: 8, name: 'Fior di Latte', type: 'gelato', items: [{ ingredientId: 1, amount: 2220 }, { ingredientId: 3, amount: 800 }, { ingredientId: 10, amount: 560 }, { ingredientId: 13, amount: 140 }, { ingredientId: 11, amount: 80 }, { ingredientId: 5, amount: 180 }, { ingredientId: 20, amount: 13.5 }] },
+      { id: 9, name: 'Lemon Olive Oil Gelato', type: 'gelato', items: [{ ingredientId: 1, amount: 1600 }, { ingredientId: 3, amount: 400 }, { ingredientId: 5, amount: 180 }, { ingredientId: 10, amount: 560 }, { ingredientId: 13, amount: 300 }, { ingredientId: 11, amount: 200 }, { ingredientId: 20, amount: 13.5 }, { ingredientId: 41, amount: 160 }, { ingredientId: 30, amount: 700 }] },
+      { id: 10, name: 'Chocolate Gelato w/ Callebaut 66%', type: 'gelato', items: [{ ingredientId: 1, amount: 2600 }, { ingredientId: 13, amount: 200 }, { ingredientId: 11, amount: 160 }, { ingredientId: 5, amount: 120 }, { ingredientId: 50, amount: 72 }, { ingredientId: 10, amount: 200 }, { ingredientId: 20, amount: 13.5 }, { ingredientId: 52, amount: 600 }, { ingredientId: 14, amount: 40 }] },
+      { id: 11, name: 'Rhubarb Strawberry Gelato', type: 'gelato', items: [{ ingredientId: 106, amount: 1154 }, { ingredientId: 1, amount: 865 }, { ingredientId: 3, amount: 865 }, { ingredientId: 10, amount: 260 }, { ingredientId: 11, amount: 360 }, { ingredientId: 13, amount: 115 }, { ingredientId: 5, amount: 87 }, { ingredientId: 20, amount: 13.5 }, { ingredientId: 30, amount: 288 }] },
+      { id: 12, name: 'Fior di Latte TEST (Caullet Syrup)', type: 'gelato', items: [{ ingredientId: 1, amount: 1131 }, { ingredientId: 2, amount: 400 }, { ingredientId: 5, amount: 72 }, { ingredientId: 10, amount: 185 }, { ingredientId: 11, amount: 60 }, { ingredientId: 12, amount: 172 }, { ingredientId: 20, amount: 4 }, { ingredientId: 21, amount: 2.5 }, { ingredientId: 23, amount: 1 }] },
+      { id: 13, name: 'Salted Caramel Gelato', type: 'gelato', items: [{ ingredientId: 10, amount: 579.4 }, { ingredientId: 31, amount: 16 }, { ingredientId: 20, amount: 13.5 }, { ingredientId: 1, amount: 2597.4 }, { ingredientId: 3, amount: 479.5 }, { ingredientId: 5, amount: 179.8 }, { ingredientId: 13, amount: 105 }, { ingredientId: 15, amount: 80 }] },
+      { id: 14, name: 'Mocha Gelato', type: 'gelato', items: [{ ingredientId: 1, amount: 2220 }, { ingredientId: 3, amount: 800 }, { ingredientId: 10, amount: 560 }, { ingredientId: 13, amount: 140 }, { ingredientId: 11, amount: 80 }, { ingredientId: 5, amount: 180 }, { ingredientId: 20, amount: 13.5 }, { ingredientId: 37, amount: 100 }, { ingredientId: 50, amount: 60 }] },
+    ];
+
+    const DEFAULT_TEST_RECIPES = [
+      { id: 100, name: 'Fior di Latte TEST', type: 'gelato', items: [{ ingredientId: 1, amount: 2200 }, { ingredientId: 2, amount: 700 }, { ingredientId: 5, amount: 100 }, { ingredientId: 10, amount: 500 }, { ingredientId: 11, amount: 100 }, { ingredientId: 12, amount: 340 }, { ingredientId: 20, amount: 8 }, { ingredientId: 21, amount: 5 }, { ingredientId: 23, amount: 2 }] },
+      { id: 101, name: 'Buttermilk Gelato TEST', type: 'gelato', items: [{ ingredientId: 1, amount: 1200 }, { ingredientId: 4, amount: 720 }, { ingredientId: 6, amount: 700 }, { ingredientId: 10, amount: 560 }, { ingredientId: 11, amount: 140 }, { ingredientId: 12, amount: 200 }, { ingredientId: 5, amount: 60 }, { ingredientId: 20, amount: 8 }, { ingredientId: 21, amount: 5 }, { ingredientId: 23, amount: 2 }, { ingredientId: 30, amount: 400 }] },
+      { id: 102, name: 'Strawberry Gelato TEST', type: 'gelato', items: [{ ingredientId: 80, amount: 1300 }, { ingredientId: 1, amount: 600 }, { ingredientId: 3, amount: 820 }, { ingredientId: 10, amount: 460 }, { ingredientId: 11, amount: 220 }, { ingredientId: 12, amount: 180 }, { ingredientId: 5, amount: 60 }, { ingredientId: 15, amount: 60 }, { ingredientId: 20, amount: 8 }, { ingredientId: 21, amount: 5 }, { ingredientId: 23, amount: 2 }, { ingredientId: 30, amount: 280 }] },
+      { id: 103, name: 'Coconut-Vanilla Gelato TEST', type: 'gelato', items: [{ ingredientId: 1, amount: 1700 }, { ingredientId: 3, amount: 100 }, { ingredientId: 92, amount: 1100 }, { ingredientId: 10, amount: 560 }, { ingredientId: 11, amount: 100 }, { ingredientId: 12, amount: 180 }, { ingredientId: 40, amount: 40 }, { ingredientId: 20, amount: 8 }, { ingredientId: 21, amount: 5 }, { ingredientId: 23, amount: 2 }, { ingredientId: 30, amount: 200 }] },
+      { id: 104, name: 'Chocolate 70.5% TEST', type: 'gelato', items: [{ ingredientId: 1, amount: 2100 }, { ingredientId: 10, amount: 320 }, { ingredientId: 11, amount: 130 }, { ingredientId: 12, amount: 220 }, { ingredientId: 5, amount: 80 }, { ingredientId: 50, amount: 55 }, { ingredientId: 51, amount: 680 }, { ingredientId: 14, amount: 70 }, { ingredientId: 20, amount: 8 }, { ingredientId: 21, amount: 5 }, { ingredientId: 23, amount: 2 }, { ingredientId: 30, amount: 320 }] },
+      { id: 105, name: 'Chocolate 66% TEST', type: 'gelato', items: [{ ingredientId: 1, amount: 2200 }, { ingredientId: 3, amount: 200 }, { ingredientId: 10, amount: 320 }, { ingredientId: 11, amount: 150 }, { ingredientId: 12, amount: 220 }, { ingredientId: 5, amount: 90 }, { ingredientId: 50, amount: 60 }, { ingredientId: 52, amount: 520 }, { ingredientId: 14, amount: 35 }, { ingredientId: 20, amount: 8 }, { ingredientId: 21, amount: 5 }, { ingredientId: 23, amount: 2 }, { ingredientId: 30, amount: 160 }] },
+      { id: 106, name: 'Lemon Olive Oil TEST', type: 'gelato', items: [{ ingredientId: 1, amount: 2300 }, { ingredientId: 3, amount: 320 }, { ingredientId: 5, amount: 120 }, { ingredientId: 10, amount: 480 }, { ingredientId: 11, amount: 150 }, { ingredientId: 12, amount: 300 }, { ingredientId: 70, amount: 60 }, { ingredientId: 41, amount: 80 }, { ingredientId: 20, amount: 8 }, { ingredientId: 21, amount: 5 }, { ingredientId: 23, amount: 2 }, { ingredientId: 30, amount: 170 }] },
+      { id: 107, name: 'Rhubarb Strawberry TEST', type: 'gelato', items: [{ ingredientId: 106, amount: 1300 }, { ingredientId: 1, amount: 700 }, { ingredientId: 3, amount: 780 }, { ingredientId: 10, amount: 480 }, { ingredientId: 11, amount: 240 }, { ingredientId: 12, amount: 200 }, { ingredientId: 5, amount: 60 }, { ingredientId: 15, amount: 60 }, { ingredientId: 20, amount: 8 }, { ingredientId: 21, amount: 5 }, { ingredientId: 23, amount: 2 }, { ingredientId: 30, amount: 160 }] },
+      { id: 108, name: 'Salted Caramel TEST', type: 'gelato', items: [{ ingredientId: 1, amount: 2400 }, { ingredientId: 3, amount: 400 }, { ingredientId: 5, amount: 130 }, { ingredientId: 10, amount: 500 }, { ingredientId: 11, amount: 100 }, { ingredientId: 12, amount: 220 }, { ingredientId: 31, amount: 16 }, { ingredientId: 15, amount: 80 }, { ingredientId: 20, amount: 8 }, { ingredientId: 21, amount: 5 }, { ingredientId: 23, amount: 2 }] },
+      { id: 109, name: 'Mocha Gelato TEST', type: 'gelato', items: [{ ingredientId: 1, amount: 2100 }, { ingredientId: 2, amount: 680 }, { ingredientId: 5, amount: 100 }, { ingredientId: 10, amount: 480 }, { ingredientId: 11, amount: 95 }, { ingredientId: 12, amount: 300 }, { ingredientId: 37, amount: 100 }, { ingredientId: 50, amount: 55 }, { ingredientId: 20, amount: 8 }, { ingredientId: 21, amount: 5 }, { ingredientId: 23, amount: 2 }] },
+      { id: 110, name: 'Chocolate Sorbet TEST', type: 'sorbet', items: [{ ingredientId: 30, amount: 2400 }, { ingredientId: 10, amount: 560 }, { ingredientId: 11, amount: 130 }, { ingredientId: 12, amount: 160 }, { ingredientId: 15, amount: 120 }, { ingredientId: 50, amount: 220 }, { ingredientId: 70, amount: 40 }, { ingredientId: 20, amount: 8 }, { ingredientId: 21, amount: 5 }, { ingredientId: 23, amount: 2 }] },
+      { id: 111, name: 'Blueberry-Coconut Sorbet TEST', type: 'sorbet', items: [{ ingredientId: 92, amount: 900 }, { ingredientId: 84, amount: 1800 }, { ingredientId: 10, amount: 480 }, { ingredientId: 11, amount: 160 }, { ingredientId: 12, amount: 160 }, { ingredientId: 15, amount: 120 }, { ingredientId: 70, amount: 60 }, { ingredientId: 30, amount: 300 }, { ingredientId: 20, amount: 8 }, { ingredientId: 21, amount: 5 }, { ingredientId: 23, amount: 2 }] },
+      { id: 112, name: 'Passion Fruit Sorbet TEST', type: 'sorbet', items: [{ ingredientId: 90, amount: 1100 }, { ingredientId: 10, amount: 560 }, { ingredientId: 11, amount: 140 }, { ingredientId: 12, amount: 160 }, { ingredientId: 15, amount: 140 }, { ingredientId: 70, amount: 60 }, { ingredientId: 30, amount: 1820 }, { ingredientId: 20, amount: 8 }, { ingredientId: 21, amount: 5 }, { ingredientId: 23, amount: 2 }] },
     ];
     
-    const GELATO_TARGETS = { fat: { min: 6, max: 10, ideal: 9 }, sugar: { min: 22, max: 27, ideal: 25 }, msnf: { min: 7, max: 11, ideal: 9 }, solids: { min: 36, max: 40, ideal: 38 } };
-    const SORBET_TARGETS = { fat: { min: 0, max: 3, ideal: 0 }, sugar: { min: 26, max: 32, ideal: 29 }, msnf: { min: 0, max: 2, ideal: 0 }, solids: { min: 28, max: 35, ideal: 31 } };
+    const GELATO_TARGETS = { fat: { min: 6, max: 10, ideal: 9 }, sugar: { min: 22, max: 27, ideal: 25 }, msnf: { min: 7, max: 11, ideal: 9 }, solids: { min: 36, max: 42, ideal: 38 } };
+    const SORBET_TARGETS = { fat: { min: 0, max: 3, ideal: 0 }, sugar: { min: 22, max: 32, ideal: 28 }, msnf: { min: 0, max: 2, ideal: 0 }, solids: { min: 28, max: 36, ideal: 31 } };
     
     function calculateStats(items) {
       let totalWeight = 0, totalFat = 0, totalSugar = 0, totalMSNF = 0, totalSolids = 0, totalPAC = 0;
@@ -309,6 +265,14 @@
     
     function getStatus(v, t) { if (v >= t.min && v <= t.max) return 'good'; if (v >= t.min - 2 && v <= t.max + 2) return 'warning'; return 'bad'; }
     
+    function scaleRecipe(recipe, targetWeight) {
+      const currentStats = calculateStats(recipe.items);
+      const currentWeight = currentStats.totalWeight;
+      if (currentWeight === 0) return recipe;
+      const factor = targetWeight / currentWeight;
+      return { ...recipe, items: recipe.items.map(item => ({ ...item, amount: Math.round(item.amount * factor * 10) / 10 })) };
+    }
+    
     function PinScreen({ onSuccess }) {
       const [pin, setPin] = useState(''); const [error, setError] = useState(false);
       const handleKey = (k) => { if (k === 'del') { setPin(p => p.slice(0, -1)); setError(false); } else if (pin.length < 4) { const np = pin + k; setPin(np); if (np.length === 4) { if (np === CORRECT_PIN) setTimeout(() => onSuccess(), 150); else { setError(true); setTimeout(() => { setPin(''); setError(false); }, 600); } } } };
@@ -316,30 +280,35 @@
     }
     
     function App() {
-      const [isAuth, setIsAuth] = useState(false); const [tab, setTab] = useState('recipes'); const [recipes, setRecipes] = useState([]); const [selected, setSelected] = useState(null); const [modal, setModal] = useState(null); const [toast, setToast] = useState(null); const [editing, setEditing] = useState(null);
+      const [isAuth, setIsAuth] = useState(false); const [tab, setTab] = useState('recipes'); const [recipes, setRecipes] = useState([]); const [testRecipes, setTestRecipes] = useState([]); const [selected, setSelected] = useState(null); const [modal, setModal] = useState(null); const [toast, setToast] = useState(null); const [editing, setEditing] = useState(null);
       const [recipeSearch, setRecipeSearch] = useState(''); const [recipeFilter, setRecipeFilter] = useState('all'); const [ingSearch, setIngSearch] = useState(''); const [ingCategory, setIngCategory] = useState('all');
-      useEffect(() => { if (sessionStorage.getItem('gelato-auth') === 'true') setIsAuth(true); const saved = localStorage.getItem('gelato-recipes-v4'); setRecipes(saved ? JSON.parse(saved) : DEFAULT_RECIPES); }, []);
-      useEffect(() => { if (recipes.length > 0) localStorage.setItem('gelato-recipes-v4', JSON.stringify(recipes)); }, [recipes]);
+      useEffect(() => { if (sessionStorage.getItem('gelato-auth') === 'true') setIsAuth(true); const saved = localStorage.getItem('gelato-recipes-v5'); const savedTest = localStorage.getItem('gelato-test-recipes-v5'); setRecipes(saved ? JSON.parse(saved) : DEFAULT_RECIPES); setTestRecipes(savedTest ? JSON.parse(savedTest) : DEFAULT_TEST_RECIPES); }, []);
+      useEffect(() => { if (recipes.length > 0) localStorage.setItem('gelato-recipes-v5', JSON.stringify(recipes)); }, [recipes]);
+      useEffect(() => { if (testRecipes.length > 0) localStorage.setItem('gelato-test-recipes-v5', JSON.stringify(testRecipes)); }, [testRecipes]);
       const showToast = (msg) => { setToast(msg); setTimeout(() => setToast(null), 2500); };
-      const filteredRecipes = useMemo(() => recipes.filter(r => r.name.toLowerCase().includes(recipeSearch.toLowerCase()) && (recipeFilter === 'all' || r.type === recipeFilter)).sort((a, b) => a.name.localeCompare(b.name)), [recipes, recipeSearch, recipeFilter]);
+      const isTestTab = tab === 'test';
+      const currentRecipes = isTestTab ? testRecipes : recipes;
+      const setCurrentRecipes = isTestTab ? setTestRecipes : setRecipes;
+      const filteredRecipes = useMemo(() => currentRecipes.filter(r => r.name.toLowerCase().includes(recipeSearch.toLowerCase()) && (recipeFilter === 'all' || r.type === recipeFilter)).sort((a, b) => a.name.localeCompare(b.name)), [currentRecipes, recipeSearch, recipeFilter]);
       const filteredIngredients = useMemo(() => INGREDIENT_DB.filter(i => i.name.toLowerCase().includes(ingSearch.toLowerCase()) && (ingCategory === 'all' || i.category === ingCategory)).sort((a, b) => a.name.localeCompare(b.name)), [ingSearch, ingCategory]);
-      const saveRecipe = (recipe) => { if (recipe.id && recipes.find(r => r.id === recipe.id)) { setRecipes(r => r.map(x => x.id === recipe.id ? recipe : x)); setSelected(recipe); } else { const nr = { ...recipe, id: Date.now() }; setRecipes(r => [...r, nr]); setSelected(nr); } setModal(null); setEditing(null); showToast('Saved!'); };
-      const deleteRecipe = (id) => { if (confirm('Delete?')) { setRecipes(r => r.filter(x => x.id !== id)); setSelected(null); showToast('Deleted'); } };
-      const duplicateRecipe = (recipe) => { const nr = { ...recipe, id: Date.now(), name: recipe.name + ' (Copy)', items: recipe.items.map(i => ({...i})) }; setRecipes(r => [...r, nr]); setSelected(nr); showToast('Duplicated!'); };
-      const exportData = () => { const d = JSON.stringify({ recipes, version: APP_VERSION }, null, 2); const b = new Blob([d], { type: 'application/json' }); const a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = `gelato-backup-${new Date().toISOString().split('T')[0]}.json`; a.click(); showToast('Exported!'); };
-      const importData = (e) => { const f = e.target.files[0]; if (!f) return; const r = new FileReader(); r.onload = (ev) => { try { const d = JSON.parse(ev.target.result); if (d.recipes) { setRecipes(d.recipes); showToast('Imported!'); } } catch { showToast('Invalid'); } }; r.readAsText(f); };
+      const saveRecipe = (recipe) => { if (recipe.id && currentRecipes.find(r => r.id === recipe.id)) { setCurrentRecipes(r => r.map(x => x.id === recipe.id ? recipe : x)); setSelected(recipe); } else { const nr = { ...recipe, id: Date.now() }; setCurrentRecipes(r => [...r, nr]); setSelected(nr); } setModal(null); setEditing(null); showToast('Saved!'); };
+      const deleteRecipe = (id) => { if (confirm('Delete?')) { setCurrentRecipes(r => r.filter(x => x.id !== id)); setSelected(null); showToast('Deleted'); } };
+      const duplicateRecipe = (recipe) => { const nr = { ...recipe, id: Date.now(), name: recipe.name + ' (Copy)', items: recipe.items.map(i => ({...i})) }; setCurrentRecipes(r => [...r, nr]); setSelected(nr); showToast('Duplicated!'); };
+      const handleScale = (delta) => { if (!selected) return; const stats = calculateStats(selected.items); const currentWeight = stats.totalWeight; const newWeight = Math.max(1000, Math.round((currentWeight + delta) / 1000) * 1000); const scaled = scaleRecipe(selected, newWeight); setCurrentRecipes(r => r.map(x => x.id === scaled.id ? scaled : x)); setSelected(scaled); showToast(`Scaled to ${newWeight}g`); };
+      const exportData = () => { const d = JSON.stringify({ recipes, testRecipes, version: APP_VERSION }, null, 2); const b = new Blob([d], { type: 'application/json' }); const a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = `gelato-backup-${new Date().toISOString().split('T')[0]}.json`; a.click(); showToast('Exported!'); };
+      const importData = (e) => { const f = e.target.files[0]; if (!f) return; const r = new FileReader(); r.onload = (ev) => { try { const d = JSON.parse(ev.target.result); if (d.recipes) { setRecipes(d.recipes); if (d.testRecipes) setTestRecipes(d.testRecipes); showToast('Imported!'); } } catch { showToast('Invalid'); } }; r.readAsText(f); };
       if (!isAuth) return <PinScreen onSuccess={() => { setIsAuth(true); sessionStorage.setItem('gelato-auth', 'true'); }} />;
       return (
         <div className="app-container">
-          <header className="header"><div className="header-top"><div className="header-brand"><div className="header-icon">🍨</div><div className="header-title">Gelato Formulator</div></div><button className="header-btn" onClick={() => location.reload()}>↻</button></div><div className="tabs"><button className={`tab ${tab === 'recipes' ? 'active' : ''}`} onClick={() => { setTab('recipes'); setSelected(null); }}>Recipes</button><button className={`tab ${tab === 'ingredients' ? 'active' : ''}`} onClick={() => setTab('ingredients')}>Ingredients</button><button className={`tab ${tab === 'settings' ? 'active' : ''}`} onClick={() => setTab('settings')}>Settings</button></div></header>
+          <header className="header"><div className="header-top"><div className="header-brand"><div className="header-icon">🍨</div><div className="header-title">Gelato Formulator</div></div><button className="header-btn" onClick={() => location.reload()}>↻</button></div><div className="tabs"><button className={`tab ${tab === 'recipes' ? 'active' : ''}`} onClick={() => { setTab('recipes'); setSelected(null); }}>Recipes</button><button className={`tab test ${tab === 'test' ? 'active' : ''}`} onClick={() => { setTab('test'); setSelected(null); }}>Test Recipes</button><button className={`tab ${tab === 'ingredients' ? 'active' : ''}`} onClick={() => setTab('ingredients')}>Ingredients</button><button className={`tab ${tab === 'settings' ? 'active' : ''}`} onClick={() => setTab('settings')}>Settings</button></div></header>
           <div className="content">
-            {tab === 'recipes' && !selected && (<><div className="search-box"><span className="search-icon">🔍</span><input className="search-input" placeholder="Search recipes..." value={recipeSearch} onChange={e => setRecipeSearch(e.target.value)} /></div><div className="filter-chips">{['all', 'gelato', 'sorbet'].map(f => <button key={f} className={`filter-chip ${recipeFilter === f ? 'active' : ''}`} onClick={() => setRecipeFilter(f)}>{f === 'all' ? 'All' : f.charAt(0).toUpperCase() + f.slice(1)}</button>)}</div><div className="recipe-header"><span className="recipe-count">{filteredRecipes.length} recipes</span><button className="add-btn" onClick={() => { setEditing({ name: '', type: 'gelato', items: [] }); setModal('recipe'); }}>+ New Recipe</button></div><div className="recipe-list">{filteredRecipes.map(recipe => { const stats = calculateStats(recipe.items); const targets = recipe.type === 'gelato' ? GELATO_TARGETS : SORBET_TARGETS; return (<div key={recipe.id} className="recipe-card" onClick={() => setSelected(recipe)}><div className="recipe-card-header"><div className="recipe-card-info"><div className={`recipe-card-icon ${recipe.type}`}>{recipe.type === 'gelato' ? '🍨' : '🍧'}</div><div><div className="recipe-card-name">{recipe.name}</div><div className="recipe-card-meta">{recipe.items.length} ing · {stats.totalWeight.toFixed(0)}g</div></div></div><span className={`recipe-card-badge ${recipe.type}`}>{recipe.type}</span></div><div className="recipe-card-stats">{[{k:'fat',l:'Fat'},{k:'sugar',l:'Sugar'},{k:'solids',l:'Solids'}].map(({k,l}) => <div key={k} className="recipe-stat"><div className={`recipe-stat-value ${getStatus(stats[k], targets[k])}`}>{stats[k].toFixed(1)}%</div><div className="recipe-stat-label">{l}</div></div>)}<div className="recipe-stat"><div className="recipe-stat-value" style={{color:'var(--info)'}}>{stats.freezingPoint.toFixed(1)}°</div><div className="recipe-stat-label">FP</div></div></div></div>); })}</div></>)}
-            {tab === 'recipes' && selected && (() => { const stats = calculateStats(selected.items); const targets = selected.type === 'gelato' ? GELATO_TARGETS : SORBET_TARGETS; return (<><div className="detail-header"><button className="back-btn" onClick={() => setSelected(null)}>←</button><div className="detail-title"><div className="detail-name">{selected.name}</div><div className="detail-meta">{selected.type === 'gelato' ? '🍨' : '🍧'} {selected.type} · {stats.totalWeight.toFixed(0)}g</div></div><div className="detail-actions"><button className="detail-action-btn" onClick={() => { setEditing(selected); setModal('recipe'); }}>✏️</button><button className="detail-action-btn" onClick={() => duplicateRecipe(selected)}>📋</button><button className="detail-action-btn danger" onClick={() => deleteRecipe(selected.id)}>🗑️</button></div></div><div className="stats-grid">{[{l:'Fat',k:'fat'},{l:'Sugar',k:'sugar'},{l:'MSNF',k:'msnf'},{l:'Solids',k:'solids'}].map(({l,k}) => { const v = stats[k], t = targets[k], s = getStatus(v, t), p = Math.min(100, (v / t.max) * 80); return <div key={k} className="stat-card"><div className="stat-card-header"><span className="stat-card-label">{l}</span><span className="stat-card-target">{t.min}-{t.max}%</span></div><div className={`stat-card-value ${s}`}>{v.toFixed(1)}%</div><div className="stat-card-bar"><div className={`stat-card-fill ${s}`} style={{width:`${p}%`}} /></div></div>; })}</div><div className="section-header"><span className="section-title">Ingredients</span><button className="section-btn" onClick={() => setModal('ingredient')}>+ Add</button></div><div className="ingredients-list">{selected.items.map((item, idx) => { const ing = INGREDIENT_DB.find(i => i.id === item.ingredientId); if (!ing) return null; return (<div key={idx} className="ingredient-row"><span className="ingredient-name">{ing.name}</span><input type="number" className="ingredient-amount-input" value={item.amount} onChange={e => { const updated = { ...selected, items: selected.items.map((it, i) => i === idx ? { ...it, amount: parseFloat(e.target.value) || 0 } : it) }; setRecipes(r => r.map(x => x.id === updated.id ? updated : x)); setSelected(updated); }} /><span className="ingredient-unit">g</span><button className="ingredient-remove" onClick={() => { const updated = { ...selected, items: selected.items.filter((_, i) => i !== idx) }; setRecipes(r => r.map(x => x.id === updated.id ? updated : x)); setSelected(updated); }}>×</button></div>); })}<div className="ingredient-total"><span>Total</span><span className="ingredient-total-value">{stats.totalWeight.toFixed(0)}g</span></div></div><div style={{marginTop:20,padding:16,background:'var(--bg-surface)',borderRadius:14,border:'1px solid var(--border)'}}><div style={{fontSize:12,color:'var(--text-muted)',marginBottom:8,textTransform:'uppercase'}}>Freezing Point</div><div style={{fontSize:24,fontWeight:700,fontFamily:'JetBrains Mono',color:'var(--info)'}}>{stats.freezingPoint.toFixed(2)}°C</div><div style={{fontSize:12,color:'var(--text-muted)',marginTop:4}}>Target: -2.5 to -3.5°C</div></div></>); })()}
+            {(tab === 'recipes' || tab === 'test') && !selected && (<>{isTestTab && <div className="test-info"><div className="test-info-title">🧪 Test Recipes</div><div className="test-info-text">Optimized formulations using Caullet glucose syrup and Tara+Guar+Kappa stabilizer blend. Targets: 25% sugar, 9% fat, 38% solids (gelato) or 24-32% sugar, &gt;30% solids (sorbet).</div></div>}<div className="search-box"><span className="search-icon">🔍</span><input className="search-input" placeholder="Search recipes..." value={recipeSearch} onChange={e => setRecipeSearch(e.target.value)} /></div><div className="filter-chips">{['all', 'gelato', 'sorbet'].map(f => <button key={f} className={`filter-chip ${recipeFilter === f ? 'active' : ''}`} onClick={() => setRecipeFilter(f)}>{f === 'all' ? 'All' : f.charAt(0).toUpperCase() + f.slice(1)}</button>)}</div><div className="recipe-header"><span className="recipe-count">{filteredRecipes.length} recipes</span><button className="add-btn" onClick={() => { setEditing({ name: '', type: 'gelato', items: [] }); setModal('recipe'); }}>+ New Recipe</button></div><div className="recipe-list">{filteredRecipes.map(recipe => { const stats = calculateStats(recipe.items); const targets = recipe.type === 'gelato' ? GELATO_TARGETS : SORBET_TARGETS; return (<div key={recipe.id} className={`recipe-card ${isTestTab ? 'test' : ''}`} onClick={() => setSelected(recipe)}><div className="recipe-card-header"><div className="recipe-card-info"><div className={`recipe-card-icon ${recipe.type}`}>{recipe.type === 'gelato' ? '🍨' : '🍧'}</div><div><div className="recipe-card-name">{recipe.name}</div><div className="recipe-card-meta">{recipe.items.length} ing · {stats.totalWeight.toFixed(0)}g</div></div></div><span className={`recipe-card-badge ${recipe.type}`}>{recipe.type}</span></div><div className="recipe-card-stats">{[{k:'fat',l:'Fat'},{k:'sugar',l:'Sugar'},{k:'solids',l:'Solids'}].map(({k,l}) => <div key={k} className="recipe-stat"><div className={`recipe-stat-value ${getStatus(stats[k], targets[k])}`}>{stats[k].toFixed(1)}%</div><div className="recipe-stat-label">{l}</div></div>)}<div className="recipe-stat"><div className="recipe-stat-value" style={{color:'var(--info)'}}>{stats.freezingPoint.toFixed(1)}°</div><div className="recipe-stat-label">FP</div></div></div></div>); })}</div></>)}
+            {(tab === 'recipes' || tab === 'test') && selected && (() => { const stats = calculateStats(selected.items); const targets = selected.type === 'gelato' ? GELATO_TARGETS : SORBET_TARGETS; return (<><div className="detail-header"><button className="back-btn" onClick={() => setSelected(null)}>←</button><div className="detail-title"><div className="detail-name">{selected.name}</div><div className="detail-meta">{selected.type === 'gelato' ? '🍨' : '🍧'} {selected.type} · {stats.totalWeight.toFixed(0)}g</div></div><div className="detail-actions"><button className="detail-action-btn" onClick={() => { setEditing(selected); setModal('recipe'); }}>✏️</button><button className="detail-action-btn" onClick={() => duplicateRecipe(selected)}>📋</button><button className="detail-action-btn danger" onClick={() => deleteRecipe(selected.id)}>🗑️</button></div></div><div className="scale-controls"><button className="scale-btn" onClick={() => handleScale(-1000)}>−</button><div className="scale-info"><div className="scale-label">Batch Size</div><div className="scale-value">{stats.totalWeight.toFixed(0)}g</div></div><button className="scale-btn" onClick={() => handleScale(1000)}>+</button></div><div className="stats-grid">{[{l:'Fat',k:'fat'},{l:'Sugar',k:'sugar'},{l:'MSNF',k:'msnf'},{l:'Solids',k:'solids'}].map(({l,k}) => { const v = stats[k], t = targets[k], s = getStatus(v, t), p = Math.min(100, (v / t.max) * 80); return <div key={k} className="stat-card"><div className="stat-card-header"><span className="stat-card-label">{l}</span><span className="stat-card-target">{t.min}-{t.max}%</span></div><div className={`stat-card-value ${s}`}>{v.toFixed(1)}%</div><div className="stat-card-bar"><div className={`stat-card-fill ${s}`} style={{width:`${p}%`}} /></div></div>; })}</div><div className="section-header"><span className="section-title">Ingredients</span><button className="section-btn" onClick={() => setModal('ingredient')}>+ Add</button></div><div className="ingredients-list">{selected.items.map((item, idx) => { const ing = INGREDIENT_DB.find(i => i.id === item.ingredientId); if (!ing) return null; return (<div key={idx} className="ingredient-row"><span className="ingredient-name">{ing.name}</span><input type="number" className="ingredient-amount-input" value={item.amount} onChange={e => { const updated = { ...selected, items: selected.items.map((it, i) => i === idx ? { ...it, amount: parseFloat(e.target.value) || 0 } : it) }; setCurrentRecipes(r => r.map(x => x.id === updated.id ? updated : x)); setSelected(updated); }} /><span className="ingredient-unit">g</span><button className="ingredient-remove" onClick={() => { const updated = { ...selected, items: selected.items.filter((_, i) => i !== idx) }; setCurrentRecipes(r => r.map(x => x.id === updated.id ? updated : x)); setSelected(updated); }}>×</button></div>); })}<div className="ingredient-total"><span>Total</span><span className="ingredient-total-value">{stats.totalWeight.toFixed(0)}g</span></div></div><div style={{marginTop:20,padding:16,background:'var(--bg-surface)',borderRadius:14,border:'1px solid var(--border)'}}><div style={{fontSize:12,color:'var(--text-muted)',marginBottom:8,textTransform:'uppercase'}}>Freezing Point</div><div style={{fontSize:24,fontWeight:700,fontFamily:'JetBrains Mono',color:'var(--info)'}}>{stats.freezingPoint.toFixed(2)}°C</div><div style={{fontSize:12,color:'var(--text-muted)',marginTop:4}}>Target: -2.5 to -3.5°C</div></div></>); })()}
             {tab === 'ingredients' && (<><div className="search-box"><span className="search-icon">🔍</span><input className="search-input" placeholder="Search ingredients..." value={ingSearch} onChange={e => setIngSearch(e.target.value)} /></div><div className="filter-chips">{CATEGORIES.map(c => <button key={c.id} className={`filter-chip ${ingCategory === c.id ? 'active' : ''}`} onClick={() => setIngCategory(c.id)}>{c.name}</button>)}</div><div style={{color:'var(--text-muted)',fontSize:14,marginBottom:16}}>{filteredIngredients.length} ingredients</div>{filteredIngredients.map(ing => (<div key={ing.id} className="ing-card"><div className="ing-card-name">{ing.name}</div><div className="ing-card-stats"><div className="ing-card-stat">Fat <span>{ing.fat}%</span></div><div className="ing-card-stat">Sugar <span>{ing.sugar}%</span></div><div className="ing-card-stat">MSNF <span>{ing.msnf}%</span></div><div className="ing-card-stat">PAC <span>{ing.pac}</span></div><div className="ing-card-stat">POD <span>{ing.pod}</span></div></div></div>))}</>)}
-            {tab === 'settings' && (<><div className="settings-section"><div className="settings-section-title">Data</div><div className="settings-item" onClick={exportData}><span className="settings-item-label">Export Backup</span><span className="settings-item-value">→</span></div><label className="settings-item"><span className="settings-item-label">Import Backup</span><input type="file" accept=".json" onChange={importData} style={{display:'none'}} /><span className="settings-item-value">→</span></label></div><div className="settings-section"><div className="settings-section-title">App Info</div><div className="settings-item"><span className="settings-item-label">Version</span><span className="settings-item-value">{APP_VERSION}</span></div><div className="settings-item"><span className="settings-item-label">Build</span><span className="settings-item-value">{BUILD_DATE}</span></div><div className="settings-item"><span className="settings-item-label">Recipes</span><span className="settings-item-value">{recipes.length}</span></div><div className="settings-item"><span className="settings-item-label">Ingredients</span><span className="settings-item-value">{INGREDIENT_DB.length}</span></div></div><div className="settings-section"><div className="settings-section-title" style={{color:'var(--danger)'}}>Danger Zone</div><div className="settings-item danger" onClick={() => { if (confirm('Reset?')) { setRecipes(DEFAULT_RECIPES); setSelected(null); showToast('Reset!'); } }}><span className="settings-item-label">Reset All Data</span><span className="settings-item-value">→</span></div></div></>)}
+            {tab === 'settings' && (<><div className="settings-section"><div className="settings-section-title">Data</div><div className="settings-item" onClick={exportData}><span className="settings-item-label">Export Backup</span><span className="settings-item-value">→</span></div><label className="settings-item"><span className="settings-item-label">Import Backup</span><input type="file" accept=".json" onChange={importData} style={{display:'none'}} /><span className="settings-item-value">→</span></label></div><div className="settings-section"><div className="settings-section-title">App Info</div><div className="settings-item"><span className="settings-item-label">Version</span><span className="settings-item-value">{APP_VERSION}</span></div><div className="settings-item"><span className="settings-item-label">Build</span><span className="settings-item-value">{BUILD_DATE}</span></div><div className="settings-item"><span className="settings-item-label">Recipes</span><span className="settings-item-value">{recipes.length}</span></div><div className="settings-item"><span className="settings-item-label">Test Recipes</span><span className="settings-item-value">{testRecipes.length}</span></div><div className="settings-item"><span className="settings-item-label">Ingredients</span><span className="settings-item-value">{INGREDIENT_DB.length}</span></div></div><div className="settings-section"><div className="settings-section-title" style={{color:'var(--danger)'}}>Danger Zone</div><div className="settings-item danger" onClick={() => { if (confirm('Reset all recipes?')) { setRecipes(DEFAULT_RECIPES); setTestRecipes(DEFAULT_TEST_RECIPES); setSelected(null); showToast('Reset!'); } }}><span className="settings-item-label">Reset All Data</span><span className="settings-item-value">→</span></div></div></>)}
           </div>
           {modal === 'recipe' && (<div className="modal-overlay" onClick={() => { setModal(null); setEditing(null); }}><div className="modal" onClick={e => e.stopPropagation()}><div className="modal-header"><span className="modal-title">{editing?.id ? 'Edit Recipe' : 'New Recipe'}</span><button className="modal-close" onClick={() => { setModal(null); setEditing(null); }}>×</button></div><div className="modal-content"><div className="form-group"><label className="form-label">Name</label><input type="text" className="form-input" placeholder="Recipe name" value={editing?.name || ''} onChange={e => setEditing({...editing, name: e.target.value})} autoFocus /></div><div className="form-group"><label className="form-label">Type</label><select className="form-select" value={editing?.type || 'gelato'} onChange={e => setEditing({...editing, type: e.target.value})}><option value="gelato">Gelato</option><option value="sorbet">Sorbet</option></select></div></div><div className="modal-footer"><button className="modal-btn secondary" onClick={() => { setModal(null); setEditing(null); }}>Cancel</button><button className="modal-btn primary" onClick={() => { if (editing?.name?.trim()) saveRecipe({...editing, items: editing.items || []}); }}>Save</button></div></div></div>)}
-          {modal === 'ingredient' && selected && <AddIngredientModal onAdd={(id, amt) => { const updated = { ...selected, items: [...selected.items, { ingredientId: id, amount: amt }] }; setRecipes(r => r.map(x => x.id === updated.id ? updated : x)); setSelected(updated); setModal(null); }} onClose={() => setModal(null)} existingIds={selected.items.map(i => i.ingredientId)} />}
+          {modal === 'ingredient' && selected && <AddIngredientModal onAdd={(id, amt) => { const updated = { ...selected, items: [...selected.items, { ingredientId: id, amount: amt }] }; setCurrentRecipes(r => r.map(x => x.id === updated.id ? updated : x)); setSelected(updated); setModal(null); }} onClose={() => setModal(null)} existingIds={selected.items.map(i => i.ingredientId)} />}
           {toast && <div className="toast">{toast}</div>}
         </div>
       );
