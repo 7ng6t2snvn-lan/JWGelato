@@ -174,7 +174,7 @@
   <div id="root"></div>
   <script type="text/babel">
     const { useState, useEffect, useMemo } = React;
-    const APP_VERSION = '5.0.1', BUILD_DATE = '2026-01-16', CORRECT_PIN = '0119';
+    const APP_VERSION = '5.1.0', BUILD_DATE = '2026-01-16-B', CORRECT_PIN = '0119';
     
     const INGREDIENT_DB = [
       { id: 1, name: 'Whole Milk 3.6%', fat: 3.6, sugar: 4.8, msnf: 8.9, fiber: 0, pac: 4.8, pod: 16, category: 'dairy' },
@@ -290,9 +290,9 @@
     function App() {
       const [isAuth, setIsAuth] = useState(false); const [tab, setTab] = useState('recipes'); const [recipes, setRecipes] = useState([]); const [testRecipes, setTestRecipes] = useState([]); const [selected, setSelected] = useState(null); const [modal, setModal] = useState(null); const [toast, setToast] = useState(null); const [editing, setEditing] = useState(null);
       const [recipeSearch, setRecipeSearch] = useState(''); const [recipeFilter, setRecipeFilter] = useState('all'); const [ingSearch, setIngSearch] = useState(''); const [ingCategory, setIngCategory] = useState('all');
-      useEffect(() => { if (sessionStorage.getItem('gelato-auth') === 'true') setIsAuth(true); const saved = localStorage.getItem('gelato-recipes-v5'); const savedTest = localStorage.getItem('gelato-test-recipes-v5'); setRecipes(saved ? JSON.parse(saved) : DEFAULT_RECIPES); setTestRecipes(savedTest ? JSON.parse(savedTest) : DEFAULT_TEST_RECIPES); }, []);
+      useEffect(() => { if (sessionStorage.getItem('gelato-auth') === 'true') setIsAuth(true); const saved = localStorage.getItem('gelato-recipes-v5'); const savedTest = localStorage.getItem('gelato-test-recipes-v5.1'); setRecipes(saved ? JSON.parse(saved) : DEFAULT_RECIPES); setTestRecipes(savedTest ? JSON.parse(savedTest) : DEFAULT_TEST_RECIPES); }, []);
       useEffect(() => { if (recipes.length > 0) localStorage.setItem('gelato-recipes-v5', JSON.stringify(recipes)); }, [recipes]);
-      useEffect(() => { if (testRecipes.length > 0) localStorage.setItem('gelato-test-recipes-v5', JSON.stringify(testRecipes)); }, [testRecipes]);
+      useEffect(() => { if (testRecipes.length > 0) localStorage.setItem('gelato-test-recipes-v5.1', JSON.stringify(testRecipes)); }, [testRecipes]);
       const showToast = (msg) => { setToast(msg); setTimeout(() => setToast(null), 2500); };
       const isTestTab = tab === 'test';
       const currentRecipes = isTestTab ? testRecipes : recipes;
