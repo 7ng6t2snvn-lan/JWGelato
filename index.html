@@ -179,7 +179,7 @@
   <div id="root"></div>
   <script type="text/babel">
     const { useState, useEffect, useMemo } = React;
-    const APP_VERSION = '5.2.0', BUILD_DATE = '2026-01-16-C', CORRECT_PIN = '0119';
+    const APP_VERSION = '5.3.0', BUILD_DATE = '2026-01-16-D', CORRECT_PIN = '0119';
     
     const INGREDIENT_DB = [
       { id: 1, name: 'Whole Milk 3.6%', fat: 3.6, sugar: 4.8, msnf: 8.9, fiber: 0, pac: 4.8, pod: 16, category: 'dairy' },
@@ -219,6 +219,7 @@
       { id: 87, name: 'Cranberry Purée (unsweetened)', fat: 0.1, sugar: 4, msnf: 0, fiber: 4.6, pac: 8, pod: 6, category: 'fruit-berry' },
       { id: 88, name: 'Lemon Juice (fresh)', fat: 0, sugar: 2.5, msnf: 0, fiber: 0, pac: 3, pod: 2, category: 'fruit-citrus' },
       { id: 89, name: 'Lemon Zest', fat: 0.3, sugar: 5, msnf: 0, fiber: 10, pac: 5, pod: 0, category: 'fruit-citrus' },
+      { id: 90, name: 'Guittard Semisweet Cookie Drops', fat: 26.7, sugar: 53.3, msnf: 0, fiber: 13.3, pac: 53, pod: 50, category: 'chocolate' },
       { id: 90, name: 'Passion Fruit Purée', fat: 0.7, sugar: 11, msnf: 0, fiber: 10, pac: 21, pod: 12, category: 'fruit-tropical' },
       { id: 92, name: 'Coconut Purée (Boiron)', fat: 15.15, sugar: 12.12, msnf: 0, fiber: 1.25, pac: 5.7, pod: 3, category: 'fruit-tropical' },
       { id: 106, name: 'Rhubarb Strawberry Purée', fat: 0.2, sugar: 4, msnf: 0, fiber: 2, pac: 7.6, pod: 8, category: 'fruit-other' },
@@ -264,6 +265,7 @@
       { id: 113, name: 'Morello Cherry Gelato TEST', type: 'gelato', items: [{ ingredientId: 85, amount: 1000 }, { ingredientId: 1, amount: 1500 }, { ingredientId: 3, amount: 700 }, { ingredientId: 10, amount: 420 }, { ingredientId: 11, amount: 160 }, { ingredientId: 12, amount: 220 }, { ingredientId: 5, amount: 140 }, { ingredientId: 15, amount: 40 }, { ingredientId: 20, amount: 8 }, { ingredientId: 21, amount: 5 }, { ingredientId: 23, amount: 2 }] },
       { id: 114, name: 'Pistachio Gelato TEST', type: 'gelato', items: [{ ingredientId: 86, amount: 400 }, { ingredientId: 1, amount: 2000 }, { ingredientId: 3, amount: 320 }, { ingredientId: 10, amount: 420 }, { ingredientId: 11, amount: 140 }, { ingredientId: 12, amount: 200 }, { ingredientId: 5, amount: 100 }, { ingredientId: 30, amount: 410 }, { ingredientId: 20, amount: 8 }, { ingredientId: 21, amount: 5 }, { ingredientId: 23, amount: 2 }] },
       { id: 115, name: 'Cranberry Lemon Sorbet TEST', type: 'sorbet', items: [{ ingredientId: 87, amount: 1400 }, { ingredientId: 88, amount: 200 }, { ingredientId: 89, amount: 8 }, { ingredientId: 10, amount: 700 }, { ingredientId: 11, amount: 180 }, { ingredientId: 12, amount: 300 }, { ingredientId: 30, amount: 1200 }, { ingredientId: 20, amount: 8 }, { ingredientId: 21, amount: 5 }, { ingredientId: 23, amount: 2 }] },
+      { id: 116, name: 'Guittard Semisweet Chocolate TEST', type: 'gelato', items: [{ ingredientId: 90, amount: 600 }, { ingredientId: 1, amount: 2000 }, { ingredientId: 3, amount: 400 }, { ingredientId: 10, amount: 450 }, { ingredientId: 11, amount: 140 }, { ingredientId: 12, amount: 220 }, { ingredientId: 5, amount: 100 }, { ingredientId: 50, amount: 55 }, { ingredientId: 20, amount: 8 }, { ingredientId: 21, amount: 5 }, { ingredientId: 23, amount: 2 }, { ingredientId: 30, amount: 20 }] },
     ];
     
     const GELATO_TARGETS = { fat: { min: 6, max: 10, ideal: 9 }, sugar: { min: 22, max: 27, ideal: 25 }, msnf: { min: 7, max: 11, ideal: 9 }, solids: { min: 36, max: 42, ideal: 38 } };
@@ -296,9 +298,9 @@
       const [isAuth, setIsAuth] = useState(false); const [tab, setTab] = useState('recipes'); const [recipes, setRecipes] = useState([]); const [testRecipes, setTestRecipes] = useState([]); const [selected, setSelected] = useState(null); const [modal, setModal] = useState(null); const [toast, setToast] = useState(null); const [editing, setEditing] = useState(null);
       const [checkedIngredients, setCheckedIngredients] = useState(new Set());
       const [recipeSearch, setRecipeSearch] = useState(''); const [recipeFilter, setRecipeFilter] = useState('all'); const [ingSearch, setIngSearch] = useState(''); const [ingCategory, setIngCategory] = useState('all');
-      useEffect(() => { if (sessionStorage.getItem('gelato-auth') === 'true') setIsAuth(true); const saved = localStorage.getItem('gelato-recipes-v5'); const savedTest = localStorage.getItem('gelato-test-recipes-v5.1'); setRecipes(saved ? JSON.parse(saved) : DEFAULT_RECIPES); setTestRecipes(savedTest ? JSON.parse(savedTest) : DEFAULT_TEST_RECIPES); }, []);
-      useEffect(() => { if (recipes.length > 0) localStorage.setItem('gelato-recipes-v5', JSON.stringify(recipes)); }, [recipes]);
-      useEffect(() => { if (testRecipes.length > 0) localStorage.setItem('gelato-test-recipes-v5.1', JSON.stringify(testRecipes)); }, [testRecipes]);
+      useEffect(() => { if (sessionStorage.getItem('gelato-auth') === 'true') setIsAuth(true); const saved = localStorage.getItem('gelato-recipes-v5.3'); const savedTest = localStorage.getItem('gelato-test-recipes-v5.3'); setRecipes(saved ? JSON.parse(saved) : DEFAULT_RECIPES); setTestRecipes(savedTest ? JSON.parse(savedTest) : DEFAULT_TEST_RECIPES); }, []);
+      useEffect(() => { if (recipes.length > 0) localStorage.setItem('gelato-recipes-v5.3', JSON.stringify(recipes)); }, [recipes]);
+      useEffect(() => { if (testRecipes.length > 0) localStorage.setItem('gelato-test-recipes-v5.3', JSON.stringify(testRecipes)); }, [testRecipes]);
       useEffect(() => { setCheckedIngredients(new Set()); }, [selected]);
       const showToast = (msg) => { setToast(msg); setTimeout(() => setToast(null), 2500); };
       const isTestTab = tab === 'test';
