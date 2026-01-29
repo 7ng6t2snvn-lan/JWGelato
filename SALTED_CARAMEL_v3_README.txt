@@ -1,13 +1,16 @@
 ═══════════════════════════════════════════════════════════════
    GELATO FORMULATOR v5.5.0 - SALTED CARAMEL v3
-   Build: 2026-01-29-B
+   Build: 2026-01-29-C
 ═══════════════════════════════════════════════════════════════
 
 🍮 WHAT'S NEW
 
 ✅ Added: Salted Caramel v3 TEST Recipe (ID 118)
    - 4kg batch optimized for proper sweetness
-   - 300g sugar for caramel (medium-amber)
+   - Complete caramel ingredients shown:
+     • 300g sugar (for caramel)
+     • 45g water (for caramel)
+     • 80g butter (for caramel)
    - 500g sugar for sweetness (regular, not caramelized)
    - 220g dextrose (texture)
    - Sugars separated in ingredient list for clarity!
@@ -23,29 +26,38 @@
 
 INGREDIENT LIST (as shown in app):
   1. Sugar: 300g ← FOR CARAMEL (caramelize this!)
-  2. Butter: 80g ← FOR CARAMEL (add to hot caramel)
-  3. Milk (3.5%): 2000g
-  4. Cream (40%): 600g
-  5. Sugar: 500g ← FOR SWEETNESS (do NOT caramelize!)
-  6. Dextrose: 220g
-  7. Skim Milk Powder: 130g
-  8. Inulin: 150g
-  9. Tara Gum: 12g
-  10. Fine Sea Salt: 10g
+  2. Water: 45g ← FOR CARAMEL (helps dissolve sugar)
+  3. Butter: 80g ← FOR CARAMEL (add to hot caramel)
+  4. Milk (3.5%): 2000g
+  5. Cream (40%): 600g
+  6. Sugar: 500g ← FOR SWEETNESS (do NOT caramelize!)
+  7. Dextrose: 220g
+  8. Skim Milk Powder: 130g
+  9. Inulin: 150g
+  10. Tara Gum: 12g
+  11. Fine Sea Salt: 10g
 
-Note: Sugars are listed separately for clarity!
+Total: 4047g (includes water that mostly evaporates)
+
+Note: The first 3 ingredients are your CARAMEL components!
 
 ═══════════════════════════════════════════════════════════════
 
 METHOD:
 
 STEP 1 - MAKE CARAMEL:
-  Take the FIRST 300g sugar listed:
-  - Add 3 tbsp water
-  - Cook to MEDIUM amber (dark honey color)
-  - Stop when nutty smell (not burnt!)
+  Take the FIRST THREE ingredients:
+  - 300g sugar
+  - 45g water (3 tbsp)
+  - 80g butter (cold, cubed)
+  
+  Process:
+  - Combine sugar + water in heavy pan
+  - Heat, stirring until sugar dissolves
+  - Stop stirring, cook to MEDIUM amber (dark honey color)
+  - When nutty smell appears (not burnt!), remove from heat
   - Add 80g butter immediately
-  - Whisk smooth, set aside
+  - Whisk smooth, set aside to cool slightly
 
 STEP 2 - PREPARE STABILIZER:
   - Mix 12g tara gum + 50g from the SECOND sugar (500g)
@@ -78,7 +90,7 @@ TARGET STATS (4kg batch):
   ✓ MSNF: 8.6% (target 7-11%)
   ✓ Solids: 40.3% (target 36-42%)
 
-Total: 4002g
+Final yield: ~4000g (water evaporates during caramel making)
 
 ═══════════════════════════════════════════════════════════════
 
@@ -96,6 +108,7 @@ v2 (ID 117) - DELETED:
 
 v3 (ID 118) - NEW ✨:
   - Only 300g medium-amber caramel (less bitter!)
+  - Water & butter clearly listed for caramel
   - 500g regular sugar (actual sweetness)
   - SEPARATED in ingredient list for clarity!
   - 220g dextrose (better texture)
@@ -108,10 +121,17 @@ v3 (ID 118) - NEW ✨:
 💡 IMPORTANT TIPS
 
 READING THE INGREDIENT LIST:
-  The app will show "Sugar" TWICE:
-  - First one (300g) = caramelize this!
-  - Second one (500g) = add as regular sugar
-  This makes it crystal clear which is which!
+  The app will show the caramel components FIRST:
+  1. Sugar (300g) ← caramelize
+  2. Water (45g) ← helps dissolve
+  3. Butter (80g) ← stops caramel from burning
+  
+  Then the base ingredients:
+  4-5. Milk & Cream
+  6. Sugar (500g) ← regular sweetness
+  7-11. Other ingredients
+  
+  Crystal clear which is which!
 
 CARAMEL COLOR:
   🟡 Light amber = Maple syrup → Mild flavor
@@ -152,7 +172,7 @@ WHY THIS WORKS:
 📊 CURRENT STATUS
 
 Version: 5.5.0
-Build: 2026-01-29-B
+Build: 2026-01-29-C
 Total Ingredients: 90
 Total Test Recipes: 17 (was 18, deleted 2, added 1)
 New Recipe: #118 - Salted Caramel v3 TEST
@@ -180,8 +200,11 @@ Live URL: https://7ng6t2snvn-lan.github.io/JWGelato/
 This recipe should finally give you proper sweetness with
 strong caramel flavor and no slime! 🎯
 
-The separated sugar entries make it foolproof - you'll know
-exactly which sugar to caramelize and which to add regular!
+The caramel components are now clearly listed FIRST:
+Sugar → Water → Butter
+Then all the base ingredients follow.
+
+No confusion possible!
 
 Questions? Check the recipe details in the app.
 
