@@ -1,15 +1,16 @@
 ═══════════════════════════════════════════════════════════════
    GELATO FORMULATOR v5.5.0 - SALTED CARAMEL v3
-   Build: 2026-01-29-A
+   Build: 2026-01-29-B
 ═══════════════════════════════════════════════════════════════
 
 🍮 WHAT'S NEW
 
 ✅ Added: Salted Caramel v3 TEST Recipe (ID 118)
    - 4kg batch optimized for proper sweetness
-   - 300g medium-amber caramelized sugar (flavor)
-   - 500g regular sugar (sweetness)
+   - 300g sugar for caramel (medium-amber)
+   - 500g sugar for sweetness (regular, not caramelized)
    - 220g dextrose (texture)
+   - Sugars separated in ingredient list for clarity!
    - Uses tara gum (no slime!)
    - Hits all target parameters perfectly
 
@@ -20,50 +21,64 @@
 
 📋 RECIPE #118 - SALTED CARAMEL v3 TEST (4kg batch)
 
-MEDIUM CARAMEL (make first):
-  - 300g sugar
-  - 3 tbsp water
-  - 80g unsalted butter (cold, cubed)
-  → Cook to MEDIUM amber (dark honey color)
-  → Stop when nutty smell (not burnt!)
-  → Add butter immediately, whisk smooth
+INGREDIENT LIST (as shown in app):
+  1. Sugar: 300g ← FOR CARAMEL (caramelize this!)
+  2. Butter: 80g ← FOR CARAMEL (add to hot caramel)
+  3. Milk (3.5%): 2000g
+  4. Cream (40%): 600g
+  5. Sugar: 500g ← FOR SWEETNESS (do NOT caramelize!)
+  6. Dextrose: 220g
+  7. Skim Milk Powder: 130g
+  8. Inulin: 150g
+  9. Tara Gum: 12g
+  10. Fine Sea Salt: 10g
 
-BASE INGREDIENTS:
-  - 2000g whole milk (3.5% fat)
-  - 600g heavy cream (40% fat)
-  - 500g granulated sugar
-  - 220g dextrose powder
-  - 130g skim milk powder (SMP)
-  - 150g inulin (optional but recommended)
-  - 10g fine sea salt
-  - 12g tara gum
+Note: Sugars are listed separately for clarity!
 
-STABILIZER PREP:
-  - Mix 12g tara gum + 50g of the 500g sugar
-  - Whisk thoroughly (prevents clumping)
+═══════════════════════════════════════════════════════════════
 
 METHOD:
-  1. Make caramel (see above)
-  2. Heat milk + cream to 45°C
-  3. Add caramel, whisk smooth
-  4. Add remaining 450g sugar + 220g dextrose
-  5. Add SMP, whisk smooth
-  6. Heat to 50°C
-  7. Add tara gum/sugar mix while whisking HARD
-  8. Heat to 85°C, whisk constantly
-  9. Hold at 85°C for 2 minutes
-  10. Remove from heat
-  11. Add inulin (if using), blend 1 minute
-  12. Cool to 4°C in ice bath
-  13. Refrigerate 12-24 hours
-  14. Before churning: whisk in 10g salt
-  15. Churn and freeze
+
+STEP 1 - MAKE CARAMEL:
+  Take the FIRST 300g sugar listed:
+  - Add 3 tbsp water
+  - Cook to MEDIUM amber (dark honey color)
+  - Stop when nutty smell (not burnt!)
+  - Add 80g butter immediately
+  - Whisk smooth, set aside
+
+STEP 2 - PREPARE STABILIZER:
+  - Mix 12g tara gum + 50g from the SECOND sugar (500g)
+  - Whisk thoroughly
+
+STEP 3 - MAKE BASE:
+  - Heat milk + cream to 45°C
+  - Add caramel (from step 1), whisk smooth
+  - Add remaining 450g sugar (from the 500g) + 220g dextrose
+  - Add 130g SMP, whisk smooth
+  - Heat to 50°C
+  - Add tara gum/sugar mix while whisking HARD
+  - Heat to 85°C, whisk constantly
+  - Hold at 85°C for 2 minutes
+  - Remove from heat
+  - Add 150g inulin, blend 1 minute
+  - Cool to 4°C in ice bath
+
+STEP 4 - AGE & CHURN:
+  - Refrigerate 12-24 hours
+  - Before churning: whisk in 10g salt
+  - Churn according to machine instructions
+  - Freeze 4+ hours
+
+═══════════════════════════════════════════════════════════════
 
 TARGET STATS (4kg batch):
   ✓ Sugar: 24.8% (target 22-27%)
   ✓ Fat: 9.2% (target 8-10%)
   ✓ MSNF: 8.6% (target 7-11%)
   ✓ Solids: 40.3% (target 36-42%)
+
+Total: 4002g
 
 ═══════════════════════════════════════════════════════════════
 
@@ -82,6 +97,7 @@ v2 (ID 117) - DELETED:
 v3 (ID 118) - NEW ✨:
   - Only 300g medium-amber caramel (less bitter!)
   - 500g regular sugar (actual sweetness)
+  - SEPARATED in ingredient list for clarity!
   - 220g dextrose (better texture)
   - 10g salt (proper balance)
   - Tara gum only (no slime!)
@@ -90,6 +106,12 @@ v3 (ID 118) - NEW ✨:
 ═══════════════════════════════════════════════════════════════
 
 💡 IMPORTANT TIPS
+
+READING THE INGREDIENT LIST:
+  The app will show "Sugar" TWICE:
+  - First one (300g) = caramelize this!
+  - Second one (500g) = add as regular sugar
+  This makes it crystal clear which is which!
 
 CARAMEL COLOR:
   🟡 Light amber = Maple syrup → Mild flavor
@@ -130,7 +152,7 @@ WHY THIS WORKS:
 📊 CURRENT STATUS
 
 Version: 5.5.0
-Build: 2026-01-29-A
+Build: 2026-01-29-B
 Total Ingredients: 90
 Total Test Recipes: 17 (was 18, deleted 2, added 1)
 New Recipe: #118 - Salted Caramel v3 TEST
@@ -157,6 +179,9 @@ Live URL: https://7ng6t2snvn-lan.github.io/JWGelato/
 
 This recipe should finally give you proper sweetness with
 strong caramel flavor and no slime! 🎯
+
+The separated sugar entries make it foolproof - you'll know
+exactly which sugar to caramelize and which to add regular!
 
 Questions? Check the recipe details in the app.
 
