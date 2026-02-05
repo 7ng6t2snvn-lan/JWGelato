@@ -1,0 +1,171 @@
+═══════════════════════════════════════════════════════════════
+   GELATO FORMULATOR v5.6.1 - BLOOD ORANGE SORBET
+   Build: 2026-02-05
+═══════════════════════════════════════════════════════════════
+
+🍊 WHAT'S NEW
+
+✅ Added: Blood Orange Sorbet TEST Recipe (ID 120)
+   - Rich, creamy sorbet with 95g inulin per 4kg batch
+   - 30.2% sugar (target 28-30% for rich sorbet)
+   - 33.3% total solids (target 33-35%)
+   - Berry/raspberry undertones from blood orange anthocyanins
+   - DO NOT COOK - keep citrus raw for bright aromatics
+
+✅ Added: Boiron Blood Orange Purée (ID 120)
+   - Sugar: 10.6%
+   - Fiber: 1.5%
+   - Fat: 0.3%
+   - PAC: 20, POD: 11
+   - No added sugar (100% fruit)
+
+═══════════════════════════════════════════════════════════════
+
+📋 RECIPE #120 - BLOOD ORANGE SORBET TEST (4kg batch)
+
+INGREDIENT LIST:
+  1. Boiron Blood Orange Purée: 1600g (40% of batch)
+  2. Sucrose: 565g
+  3. Dextrose: 265g
+  4. Glucose Powder DE42: 240g
+  5. Inulin: 95g (for creamy body)
+  6. Tara Gum: 8g
+  7. Guar Gum: 5g
+  8. Kappa Carrageenan: 2g
+  9. Water: 1220g
+
+Total: 4000g
+
+═══════════════════════════════════════════════════════════════
+
+📊 TARGET STATS (4kg batch):
+
+  ✓ Sugar: 30.2% (target 28-30% for rich sorbet)
+  ✓ Total Solids: 33.3% (target 33-35%)
+  ✓ PAC: 41.6
+  ✓ POD: 25.9
+  ✓ Freezing Point: -0.76°C
+  ✓ Serving Temp: -12°C to -14°C
+
+═══════════════════════════════════════════════════════════════
+
+📝 QUICK METHOD:
+
+CRITICAL: DO NOT COOK THE BLOOD ORANGE PURÉE!
+Keep it raw for bright aromatics and berry notes.
+
+1. Dry-blend stabilizers (8g tara + 5g guar + 2g kappa) with 100g sucrose
+2. Heat 1220g water to 40-45°C
+3. Whisk in stabilizer/sugar blend vigorously
+4. Add remaining sugars (465g sucrose + 265g dextrose + 240g glucose DE42)
+5. High-shear blend in 95g inulin for 2-3 minutes
+6. Add 1600g COLD blood orange purée (do not heat!)
+7. Blend smooth, strain if needed
+8. Age 4-12 hours at 4°C (overnight ideal)
+9. Churn and blast freeze to -18°C
+10. Serve at -12°C to -14°C
+
+═══════════════════════════════════════════════════════════════
+
+💡 KEY FEATURES:
+
+FLAVOR PROFILE:
+- Deep blood orange character
+- Natural berry/raspberry undertones from anthocyanins
+- Less acidic than regular orange (pH ~3.5-3.8)
+- Rich, dessert-forward sweetness (not cloying)
+
+TEXTURE:
+- Luxurious, creamy from 95g inulin
+- Almost gelato-like mouthfeel despite being dairy-free
+- Smooth, no ice crystals
+
+PAIRS WELL WITH:
+- Dark chocolate (70%+)
+- Almond or hazelnut biscotti
+- Olive oil cake
+- Vanilla panna cotta
+- Prosecco or sparkling wine
+
+═══════════════════════════════════════════════════════════════
+
+⚠️ CRITICAL NOTES:
+
+DO NOT COOK THE CITRUS:
+Blood orange's volatile aromatics (limonene, anthocyanins) are
+destroyed by heat. Keep the purée raw for maximum flavor impact.
+
+INULIN HYDRATION:
+The 95g of inulin (2.4% of batch) creates the creamy mouthfeel.
+MUST be fully dissolved with high-shear blending or you'll get
+gritty texture. Blend for 2-3 minutes minimum.
+
+SERVING TEMPERATURE:
+MUST be served at -12°C to -14°C for optimal texture.
+- Too cold (-18°C) = rock hard
+- Too warm (-8°C) = melts too fast
+Temper pans 15 minutes before service.
+
+═══════════════════════════════════════════════════════════════
+
+📦 5KG BATCH SCALING:
+
+For 5kg batch, multiply all ingredients by 1.25:
+
+  1. Blood Orange Purée: 2000g
+  2. Sucrose: 706g
+  3. Dextrose: 331g
+  4. Glucose Powder DE42: 300g
+  5. Inulin: 119g
+  6. Tara Gum: 10g
+  7. Guar Gum: 6g
+  8. Kappa Carrageenan: 3g (round up)
+  9. Water: 1525g
+
+Total: 5000g
+
+═══════════════════════════════════════════════════════════════
+
+📦 INSTALLATION
+
+1. Upload all files to your GitHub repository:
+   - index.html (updated with new recipe)
+   - manifest.json
+   - sw.js
+   - .nojekyll
+   - icon-192.png
+   - icon-512.png
+   - icon.svg
+
+2. Clear browser cache: Cmd+Shift+R (Mac) or Ctrl+Shift+F5 (Windows)
+
+3. Reload app: https://7ng6t2snvn-lan.github.io/JWGelato/
+
+4. Recipe #120 will appear in Test Recipes tab
+
+═══════════════════════════════════════════════════════════════
+
+📊 CURRENT STATUS
+
+Version: 5.6.1
+Build: 2026-02-05
+Total Ingredients: 91 (added Blood Orange Purée)
+Total Test Recipes: 18 (added Blood Orange Sorbet)
+
+Changes This Version:
+- #120 Boiron Blood Orange Purée → ADDED
+- #120 Blood Orange Sorbet TEST → ADDED
+
+Previous Versions:
+- v5.6.0: Rich Chocolate (#119)
+- v5.5.0: Salted Caramel v3 (#118)
+
+GitHub: https://github.com/7ng6t2snvn-lan/JWGelato
+Live URL: https://7ng6t2snvn-lan.github.io/JWGelato/
+
+═══════════════════════════════════════════════════════════════
+
+Full production recipe with detailed methods available in:
+blood_orange_sorbet_recipe.txt
+
+═══════════════════════════════════════════════════════════════

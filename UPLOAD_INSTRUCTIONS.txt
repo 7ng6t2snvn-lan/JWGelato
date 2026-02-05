@@ -1,0 +1,172 @@
+═══════════════════════════════════════════════════════════════
+   GELATO FORMULATOR v5.6.1 - COMPLETE PACKAGE
+   Blood Orange Sorbet Edition
+═══════════════════════════════════════════════════════════════
+
+📦 WHAT'S IN THIS ZIP:
+
+REQUIRED FILES (must upload to GitHub):
+  ✓ index.html - Updated app with Blood Orange Sorbet
+  ✓ manifest.json - PWA manifest
+  ✓ sw.js - Service worker (cache-busting version)
+  ✓ .nojekyll - GitHub Pages configuration
+  ✓ icon-192.png - App icon (small)
+  ✓ icon-512.png - App icon (large)
+  ✓ icon.svg - Vector icon
+
+DOCUMENTATION (optional):
+  • BLOOD_ORANGE_v5.6.1.txt - Quick reference
+  • blood_orange_sorbet_recipe.txt - Full production recipe
+  • README.md - Version info
+  • gelato-backup-2026-02-05-WITH-BLOOD-ORANGE.json - Backup file
+
+═══════════════════════════════════════════════════════════════
+
+🚀 UPLOAD TO GITHUB (Method 1 - Recommended):
+
+1. Go to: https://github.com/7ng6t2snvn-lan/JWGelato
+
+2. Click "Add file" → "Upload files"
+
+3. Drag these 7 files into GitHub:
+   • index.html
+   • manifest.json
+   • sw.js
+   • .nojekyll
+   • icon-192.png
+   • icon-512.png
+   • icon.svg
+
+4. Scroll down, add commit message:
+   "Update to v5.6.1 - Add Blood Orange Sorbet"
+
+5. Click "Commit changes"
+
+6. Wait 2-3 minutes for GitHub Pages to rebuild
+
+7. On your iPhone:
+   • Settings → Safari → Clear History and Website Data
+   • This is CRITICAL - must clear cache!
+
+8. Open app: https://7ng6t2snvn-lan.github.io/JWGelato/
+
+9. Enter PIN: 0119
+
+10. Go to Test Recipes tab → Blood Orange Sorbet TEST appears!
+
+═══════════════════════════════════════════════════════════════
+
+📲 ALTERNATIVE: IMPORT BACKUP (Method 2 - Instant):
+
+If you don't want to wait for GitHub:
+
+1. Open your current gelato app on iPhone
+
+2. Go to Settings tab
+
+3. Tap "Import Backup"
+
+4. Select: gelato-backup-2026-02-05-WITH-BLOOD-ORANGE.json
+
+5. Blood Orange Sorbet TEST instantly appears!
+
+Note: This only adds the recipe to your current installation.
+Still upload to GitHub so future devices have it!
+
+═══════════════════════════════════════════════════════════════
+
+🔧 WHY YOU NEED THIS UPDATE:
+
+OLD VERSION (v5.6.0):
+  • localStorage key: v5.6
+  • Your browser kept loading OLD recipes
+  • Blood Orange Sorbet wasn't showing
+
+NEW VERSION (v5.6.1):
+  • localStorage key: v5.6.1 ← Forces fresh load!
+  • Blood Orange Sorbet TEST included
+  • Cache-busting service worker
+  • Fixed rendering issues
+
+═══════════════════════════════════════════════════════════════
+
+🍊 BLOOD ORANGE SORBET DETAILS:
+
+Recipe ID: 120
+Type: Sorbet
+Batch: 4kg (scales to 5kg in recipe doc)
+
+Stats:
+  ✓ Sugar: 30.2% (target 28-30%)
+  ✓ Solids: 33.3% (target 33-35%)
+  ✓ PAC: 41.6
+  ✓ POD: 25.9
+  ✓ Freezing Point: -0.76°C
+
+Key Features:
+  • 95g inulin for creamy, gelato-like texture
+  • DO NOT COOK - keep purée raw!
+  • Berry/raspberry undertones
+  • Serve at -12°C to -14°C
+
+Full recipe with 5kg batch in:
+blood_orange_sorbet_recipe.txt
+
+═══════════════════════════════════════════════════════════════
+
+⚠️ CRITICAL REMINDERS:
+
+1. MUST clear Safari cache after uploading
+   Without this, you'll still see old version!
+
+2. Wait 2-3 minutes after GitHub commit
+   GitHub Pages needs time to rebuild
+
+3. Check version in app Settings
+   Should show: v5.6.1 (Build: 2026-02-05)
+
+4. If Blood Orange still doesn't appear:
+   • Force close app completely
+   • Clear cache again
+   • Try incognito/private browsing first to test
+
+═══════════════════════════════════════════════════════════════
+
+📊 CURRENT STATUS AFTER UPDATE:
+
+Version: 5.6.1
+Regular Recipes: 14
+Test Recipes: 17 (includes Blood Orange Sorbet)
+Total Ingredients: 91
+
+Latest Test Recipes:
+  #115 - Cranberry Lemon Sorbet TEST
+  #118 - Salted Caramel v3 TEST
+  #119 - Rich Chocolate TEST
+  #120 - Blood Orange Sorbet TEST ← NEW!
+
+═══════════════════════════════════════════════════════════════
+
+✅ VERIFICATION CHECKLIST:
+
+After uploading, verify:
+  □ App opens without code showing at bottom
+  □ Settings shows version 5.6.1
+  □ Test Recipes tab has 17+ recipes
+  □ Blood Orange Sorbet TEST appears in list
+  □ Recipe opens and shows all 9 ingredients
+  □ Stats calculate correctly
+
+If ANY of these fail:
+  1. Clear cache again
+  2. Wait 5 more minutes
+  3. Force close and reopen app
+
+═══════════════════════════════════════════════════════════════
+
+Need help? The issue was localStorage caching old recipes.
+This version fixes it by changing the storage key!
+
+Ready to upload! 🍊✨
+
+═══════════════════════════════════════════════════════════════
