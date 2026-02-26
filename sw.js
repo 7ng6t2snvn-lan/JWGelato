@@ -1,4 +1,4 @@
-const CACHE_NAME = 'gelato-v5.6.3';
+const CACHE_NAME = 'gelato-v5.6.4';
 const urlsToCache = [
   './',
   './index.html',
