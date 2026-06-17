@@ -12,7 +12,7 @@
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
-  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.24.7/babel.min.js"></script>
   <script type="module" id="firebase-init">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
@@ -198,7 +198,7 @@
   <div id="root"></div>
   <script type="text/babel">
     const { useState, useEffect, useMemo } = React;
-    const APP_VERSION = '6.1.4', BUILD_DATE = '2026-03-25', CORRECT_PIN = '0119';
+    const APP_VERSION = '6.1.5', BUILD_DATE = '2026-03-25', CORRECT_PIN = '0119';
     
     const INGREDIENT_DB = [
       { id: 1, name: 'Whole Milk 3.6%', fat: 3.6, sugar: 4.8, msnf: 8.9, fiber: 0, pac: 4.8, pod: 16, category: 'dairy' },
