@@ -198,7 +198,7 @@
   <div id="root"></div>
   <script type="text/babel">
     const { useState, useEffect, useMemo } = React;
-    const APP_VERSION = '6.1.8', BUILD_DATE = '2026-03-25', CORRECT_PIN = '0119';
+    const APP_VERSION = '6.1.9', BUILD_DATE = '2026-03-25', CORRECT_PIN = '0119';
     
     const INGREDIENT_DB = [
       { id: 1, name: 'Whole Milk 3.6%', fat: 3.6, sugar: 4.8, msnf: 8.9, fiber: 0, pac: 4.8, pod: 16, category: 'dairy' },
@@ -384,12 +384,12 @@
       const duplicateRecipe = (recipe) => { const nr = { ...recipe, id: Date.now(), name: recipe.name + ' (Copy)', items: recipe.items.map(i => ({...i})) }; setCurrentRecipes(r => [...r, nr]); setSelected(nr); showToast('Duplicated!'); };
       const promoteRecipe = (recipe) => { if (confirm('Promote to main Recipes?')) { const cleanName = recipe.name.replace(/ TEST/gi, '').trim(); const nr = { ...recipe, id: Date.now(), name: cleanName, items: recipe.items.map(i => ({...i})) }; setRecipes(r => [...r, nr]); showToast('Promoted!'); } };
       const handleScale = (delta) => { if (!selected) return; const stats = calculateStats(selected.items); const currentWeight = stats.totalWeight; const newWeight = Math.max(1000, Math.round((currentWeight + delta) / 1000) * 1000); const scaled = scaleRecipe(selected, newWeight); setCurrentRecipes(r => r.map(x => x.id === scaled.id ? scaled : x)); setSelected(scaled); showToast(`Scaled to ${newWeight}g`); };
-      const PUREE_INGREDIENT_IDS = [107, 113, 115, 116, 118, 91, 85, 87, 88];
+      const PUREE_INGREDIENT_IDS = [107, 113, 115, 116, 118, 123, 204, 91, 85, 87, 88];
       const handlePureeScale = () => {
         if (!selected || selected.type !== 'sorbet') return;
         const newPuree = parseFloat(pureeInput);
         if (!newPuree || newPuree < 100) { showToast('Enter a valid purée weight'); return; }
-        const pureeItem = selected.items.find(i => PUREE_INGREDIENT_IDS.includes(i.ingredientId));
+        const pureeItem = selected.items.find(i => { const ing = INGREDIENT_DB.find(x => x.id === i.ingredientId); return ing && /pur[eé]e/i.test(ing.name); });
         if (!pureeItem) { showToast('No purée ingredient found'); return; }
         const factor = newPuree / pureeItem.amount;
         const scaled = { ...selected, items: selected.items.map(i => ({ ...i, amount: Math.round(i.amount * factor * 10) / 10 })) };
