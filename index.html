@@ -197,8 +197,8 @@
 <body>
   <div id="root"></div>
   <script type="text/babel">
-    const { useState, useEffect, useMemo } = React;
-    const APP_VERSION = '6.5.0', BUILD_DATE = '2026-03-25', CORRECT_PIN = '0119';
+    const { useState, useEffect, useMemo, useRef } = React;
+    const APP_VERSION = '6.5.1', BUILD_DATE = '2026-03-25', CORRECT_PIN = '0119';
     
     const INGREDIENT_DB = [
       { id: 1, name: 'Whole Milk 3.6%', fat: 3.6, sugar: 4.8, msnf: 8.9, fiber: 0, pac: 4.8, pod: 16, category: 'dairy' },
@@ -379,15 +379,16 @@
     }
     
     function App() {
-      const [isAuth, setIsAuth] = useState(false); const [tab, setTab] = useState('recipes'); const [recipes, setRecipes] = useState([]); const [testRecipes, setTestRecipes] = useState([]); const [selected, setSelected] = useState(null); const [modal, setModal] = useState(null); const [toast, setToast] = useState(null); const [editing, setEditing] = useState(null); const [syncStatus, setSyncStatus] = useState('connecting'); const [pureeInput, setPureeInput] = useState('');
+      const [isAuth, setIsAuth] = useState(false); const [tab, setTab] = useState('recipes'); const [recipes, setRecipes] = useState([]); const [testRecipes, setTestRecipes] = useState([]); const [selected, setSelected] = useState(null); const [modal, setModal] = useState(null); const [toast, setToast] = useState(null); const [editing, setEditing] = useState(null); const [syncStatus, setSyncStatus] = useState('connecting'); const [pureeInput, setPureeInput] = useState(''); const [mergeNote, setMergeNote] = useState(null);
       const [checkedIngredients, setCheckedIngredients] = useState(new Set());
       const [recipeSearch, setRecipeSearch] = useState(''); const [recipeFilter, setRecipeFilter] = useState('all'); const [ingSearch, setIngSearch] = useState(''); const [ingCategory, setIngCategory] = useState('all');
-      const mergedOnce = React.useRef({ recipes: false, testRecipes: false });
+      const mergedOnce = useRef({ recipes: false, testRecipes: false });
       // Auto-merge: adds NEW default recipes without touching user edits or deletions.
       // 'seen' = every default id the app has ever introduced. Anything in defaults but
       // not in 'seen' is genuinely new → append. Anything in 'seen' but missing from the
       // doc was deliberately deleted → leave it deleted.
       const autoMerge = (docName, key, defaults, current, seen, setter) => {
+        try {
         const seenSet = new Set(seen || []);
         const haveIds = new Set(current.map(r => r.id));
         const additions = defaults.filter(d => !seenSet.has(d.id) && !haveIds.has(d.id));
@@ -400,8 +401,9 @@
         }
         const merged = [...current, ...additions];
         window._fsSetDoc(window._fsDoc(window._db, 'gelato', docName), { [key]: merged, seenIds: newSeen });
-        setTimeout(() => showToast(`Added ${additions.length} new recipe${additions.length>1?'s':''}`), 600);
+        setMergeNote(`Added ${additions.length} new recipe${additions.length>1?'s':''}`);
         return merged;
+        } catch (e) { console.error('autoMerge failed:', e); return current; }
       };
       useEffect(() => { if (sessionStorage.getItem('gelato-auth') === 'true') setIsAuth(true);
         // Firestore real-time sync
@@ -446,6 +448,7 @@
       useEffect(() => { if (testRecipes.length > 0 && window._db && mergedOnce.current.testRecipes) { window._fsSetDoc(window._fsDoc(window._db, 'gelato', 'testRecipes'), { testRecipes, seenIds: Array.from(new Set([...DEFAULT_TEST_RECIPES.map(r=>r.id), ...testRecipes.map(r=>r.id)])) }); } }, [testRecipes]);
       useEffect(() => { setCheckedIngredients(new Set()); setPureeInput(''); }, [selected]);
       const showToast = (msg) => { setToast(msg); setTimeout(() => setToast(null), 2500); };
+      useEffect(() => { if (mergeNote) { setToast(mergeNote); setTimeout(() => setToast(null), 3000); setMergeNote(null); } }, [mergeNote]);
       const isTestTab = tab === 'test';
       const currentRecipes = isTestTab ? testRecipes : recipes;
       const setCurrentRecipes = isTestTab ? setTestRecipes : setRecipes;
