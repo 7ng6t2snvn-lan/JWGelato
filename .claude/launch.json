@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "gelato-render-check",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["-m", "http.server", "8731", "--directory", "/private/tmp/claude-501/-Users-justinwills/7b0660d0-5c34-4a41-97cc-11801df419b2/scratchpad/preview"],
+      "port": 8731
+    }
+  ]
+}
